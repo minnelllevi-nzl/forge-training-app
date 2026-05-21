@@ -411,6 +411,11 @@ svg {
   color: #d1e688;
 }
 
+.row-icon.meals {
+  background: #2f2d1d;
+  color: var(--amber);
+}
+
 .module-list,
 .library-list,
 .cohort-list {
@@ -567,7 +572,7 @@ svg {
   right: 16px;
   bottom: 16px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 6px;
   padding: 8px;
   border: 1px solid #3a4433;
@@ -585,7 +590,7 @@ svg {
   border-radius: 7px;
   background: transparent;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 900;
 }
 
@@ -929,6 +934,136 @@ textarea {
   color: var(--lime);
   font-family: "Arial Narrow", Impact, Inter, sans-serif;
   font-size: 28px;
+}
+
+.meal-form,
+.nutrition-summary,
+.day-plan {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent), var(--card);
+}
+
+.meal-form {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.nutrition-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+  padding: 10px;
+}
+
+.nutrition-summary article {
+  display: grid;
+  gap: 5px;
+  padding: 10px 8px;
+  border: 1px solid #30382d;
+  border-radius: 8px;
+  background: #10160f;
+}
+
+.nutrition-summary span,
+.meal-card span {
+  color: var(--green-2);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.nutrition-summary strong {
+  color: var(--lime);
+  font-size: 15px;
+  line-height: 1.1;
+}
+
+.nutrition-summary small {
+  color: var(--green-2);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.meal-tools {
+  margin-top: 12px;
+}
+
+.weekly-plan {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.day-plan {
+  padding: 12px;
+}
+
+.day-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.day-head h3 {
+  font-family: "Arial Narrow", Impact, Inter, sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.day-head span {
+  color: var(--lime);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.meal-list {
+  display: grid;
+  gap: 8px;
+}
+
+.meal-card {
+  display: grid;
+  grid-template-columns: 1fr 38px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #30382d;
+  border-radius: 8px;
+  background: #10160f;
+}
+
+.meal-card strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.meal-card small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.refresh-meal {
+  width: 38px;
+  height: 38px;
+  border-color: #3f4b35;
+  background: #202718;
 }
 
 .cognitive-panel {

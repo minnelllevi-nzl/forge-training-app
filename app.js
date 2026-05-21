@@ -55,6 +55,8 @@ const state = {
   role: "trainee",
   category: "All",
   modules: loadModules(),
+  mealProfile: loadMealProfile(),
+  mealPlan: [],
   breathingTimer: null,
   phaseIndex: 0,
   phaseCount: 4,
@@ -108,8 +110,47 @@ const colourOptions = [
   { name: "Blue", value: "#8fc1af" },
   { name: "Red", value: "#d07158" },
 ];
+const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const mealSlots = ["breakfast", "lunch", "dinner", "snack"];
+const mealTargets = {
+  breakfast: 0.25,
+  lunch: 0.3,
+  dinner: 0.32,
+  snack: 0.13,
+};
+const mealPools = {
+  breakfast: [
+    { name: "Eggs, kumara hash, spinach", calories: 520, protein: 34, tags: ["lose", "maintain", "build"] },
+    { name: "Greek yoghurt, oats, berries", calories: 430, protein: 32, tags: ["lose", "maintain"] },
+    { name: "Protein oats with banana", calories: 610, protein: 38, tags: ["maintain", "build"] },
+    { name: "Turkey omelette wrap", calories: 560, protein: 42, tags: ["lose", "maintain", "build"] },
+    { name: "Cottage cheese toast and fruit", calories: 450, protein: 33, tags: ["lose", "maintain"] },
+  ],
+  lunch: [
+    { name: "Chicken rice bowl with greens", calories: 720, protein: 52, tags: ["maintain", "build"] },
+    { name: "Tuna potato salad", calories: 560, protein: 43, tags: ["lose", "maintain"] },
+    { name: "Lean beef burrito bowl", calories: 760, protein: 55, tags: ["maintain", "build"] },
+    { name: "Turkey salad wrap and apple", calories: 510, protein: 38, tags: ["lose", "maintain"] },
+    { name: "Salmon quinoa field bowl", calories: 680, protein: 45, tags: ["lose", "maintain", "build"] },
+  ],
+  dinner: [
+    { name: "Steak, potatoes, mixed veg", calories: 780, protein: 58, tags: ["maintain", "build"] },
+    { name: "Chicken stir fry with rice", calories: 660, protein: 50, tags: ["lose", "maintain"] },
+    { name: "Turkey chilli and beans", calories: 620, protein: 48, tags: ["lose", "maintain", "build"] },
+    { name: "Fish tacos with slaw", calories: 590, protein: 41, tags: ["lose", "maintain"] },
+    { name: "Lamb, couscous, greens", calories: 820, protein: 52, tags: ["maintain", "build"] },
+  ],
+  snack: [
+    { name: "Protein shake and banana", calories: 310, protein: 30, tags: ["maintain", "build"] },
+    { name: "Boiled eggs and carrots", calories: 220, protein: 16, tags: ["lose", "maintain"] },
+    { name: "Beef jerky, nuts, orange", calories: 330, protein: 28, tags: ["maintain", "build"] },
+    { name: "Cottage cheese and berries", calories: 240, protein: 26, tags: ["lose", "maintain"] },
+    { name: "Hummus, crackers, cucumber", calories: 280, protein: 13, tags: ["lose", "maintain"] },
+  ],
+};
 
 const traineeScreen = document.querySelector("#traineeScreen");
+const mealPlanScreen = document.querySelector("#mealPlanScreen");
 const managerScreen = document.querySelector("#managerScreen");
 const screenTitle = document.querySelector("#screenTitle");
 const traineeRole = document.querySelector("#traineeRole");
@@ -156,6 +197,15 @@ const colourChoices = document.querySelector("#colourChoices");
 const mathsCard = document.querySelector("#mathsCard");
 const mathsQuestion = document.querySelector("#mathsQuestion");
 const mathsChoices = document.querySelector("#mathsChoices");
+const mealPlanForm = document.querySelector("#mealPlanForm");
+const mealGoal = document.querySelector("#mealGoal");
+const mealWeight = document.querySelector("#mealWeight");
+const mealHeight = document.querySelector("#mealHeight");
+const mealAge = document.querySelector("#mealAge");
+const mealActivity = document.querySelector("#mealActivity");
+const nutritionSummary = document.querySelector("#nutritionSummary");
+const weeklyMealPlan = document.querySelector("#weeklyMealPlan");
+const refreshWeekPlan = document.querySelector("#refreshWeekPlan");
 const moduleDetailTitle = document.querySelector("#moduleDetailTitle");
 const moduleDetailCategory = document.querySelector("#moduleDetailCategory");
 const moduleDetailNotes = document.querySelector("#moduleDetailNotes");
@@ -204,6 +254,8 @@ workoutControl.addEventListener("click", toggleWorkout);
 confirmHeartRate.addEventListener("click", confirmCognitiveLoad);
 resetSequence.addEventListener("click", resetCognitiveDrill);
 moduleDetailAction.addEventListener("click", startActiveModule);
+mealPlanForm.addEventListener("submit", buildMealPlanFromForm);
+refreshWeekPlan.addEventListener("click", refreshFullMealPlan);
 traineeRole.addEventListener("click", () => setRole("trainee"));
 managerRole.addEventListener("click", () => setRole("manager"));
 roleToggle.addEventListener("click", () => setRole(state.role === "trainee" ? "manager" : "trainee"));
@@ -278,6 +330,23 @@ function loadModules() {
   return [...missingDefaults, ...savedModules];
 }
 
+function loadMealProfile() {
+  const fallback = {
+    goal: "lose",
+    weight: 86,
+    height: 178,
+    age: 32,
+    activity: 1.55,
+    targetCalories: 2400,
+  };
+  const saved = localStorage.getItem("forgeMealProfile");
+  return saved ? { ...fallback, ...JSON.parse(saved) } : fallback;
+}
+
+function persistMealProfile() {
+  localStorage.setItem("forgeMealProfile", JSON.stringify(state.mealProfile));
+}
+
 function normalizeModule(module) {
   if (module.title !== "SEB pressure cycle") return module;
   return {
@@ -298,6 +367,7 @@ function setRole(role) {
   state.role = role;
   const isTrainee = role === "trainee";
   traineeScreen.classList.toggle("active", isTrainee);
+  mealPlanScreen.classList.remove("active");
   managerScreen.classList.toggle("active", !isTrainee);
   traineeRole.classList.toggle("active", isTrainee);
   managerRole.classList.toggle("active", !isTrainee);
@@ -309,6 +379,9 @@ function render() {
   renderLibrary();
   renderAssigned();
   renderAssignOptions();
+  renderMealInputs();
+  if (!state.mealPlan.length) state.mealPlan = buildWeekPlan(state.mealProfile);
+  renderMealPlan();
 }
 
 function renderLibrary() {
@@ -474,10 +547,158 @@ function handleNav(destination) {
     return;
   }
 
+  if (destination === "meals") {
+    state.role = "trainee";
+    traineeScreen.classList.remove("active");
+    managerScreen.classList.remove("active");
+    mealPlanScreen.classList.add("active");
+    traineeRole.classList.add("active");
+    managerRole.classList.remove("active");
+    screenTitle.textContent = "Meals";
+    mealPlanScreen.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
   if (destination === "train") {
     setRole("trainee");
     assignedModules.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+}
+
+function renderMealInputs() {
+  mealGoal.value = state.mealProfile.goal;
+  mealWeight.value = state.mealProfile.weight;
+  mealHeight.value = state.mealProfile.height;
+  mealAge.value = state.mealProfile.age;
+  mealActivity.value = String(state.mealProfile.activity);
+}
+
+function buildMealPlanFromForm(event) {
+  event.preventDefault();
+  state.mealProfile = {
+    goal: mealGoal.value,
+    weight: Number(mealWeight.value),
+    height: Number(mealHeight.value),
+    age: Number(mealAge.value),
+    activity: Number(mealActivity.value),
+  };
+  state.mealProfile.targetCalories = calculateCalories(state.mealProfile);
+  state.mealPlan = buildWeekPlan(state.mealProfile);
+  persistMealProfile();
+  renderMealPlan();
+  showToast("Weekly meal plan built");
+}
+
+function calculateCalories(profile) {
+  const bmr = 10 * profile.weight + 6.25 * profile.height - 5 * profile.age + 5;
+  const goalShift = profile.goal === "lose" ? -420 : profile.goal === "build" ? 320 : 0;
+  return Math.max(1600, Math.round((bmr * profile.activity + goalShift) / 25) * 25);
+}
+
+function buildWeekPlan(profile) {
+  const targetCalories = profile.targetCalories || calculateCalories(profile);
+  return dayNames.map((day, dayIndex) => {
+    const meals = {};
+    mealSlots.forEach((slot, slotIndex) => {
+      meals[slot] = pickMeal(slot, profile.goal, targetCalories * mealTargets[slot], dayIndex + slotIndex);
+    });
+    return { day, meals };
+  });
+}
+
+function pickMeal(slot, goal, targetCalories, offset = 0) {
+  const ranked = mealPools[slot]
+    .filter((meal) => meal.tags.includes(goal))
+    .sort((a, b) => Math.abs(a.calories - targetCalories) - Math.abs(b.calories - targetCalories));
+  const options = ranked.length ? ranked : mealPools[slot];
+  return options[offset % options.length];
+}
+
+function refreshFullMealPlan() {
+  state.mealPlan = buildWeekPlan({
+    ...state.mealProfile,
+    targetCalories: calculateCalories(state.mealProfile) + randomInt(-75, 75),
+  });
+  renderMealPlan();
+  showToast("New weekly meal plan loaded");
+}
+
+function refreshMeal(dayIndex, slot) {
+  const current = state.mealPlan[dayIndex].meals[slot];
+  const targetCalories = state.mealProfile.targetCalories * mealTargets[slot];
+  const options = mealPools[slot].filter((meal) => meal.tags.includes(state.mealProfile.goal) && meal.name !== current.name);
+  const pool = options.length ? options : mealPools[slot].filter((meal) => meal.name !== current.name);
+  state.mealPlan[dayIndex].meals[slot] = pickClosestRandom(pool, targetCalories);
+  renderMealPlan();
+  showToast(`${capitalize(slot)} refreshed`);
+}
+
+function pickClosestRandom(pool, targetCalories) {
+  const ranked = [...pool].sort((a, b) => Math.abs(a.calories - targetCalories) - Math.abs(b.calories - targetCalories));
+  return ranked[randomInt(0, Math.min(2, ranked.length - 1))];
+}
+
+function renderMealPlan() {
+  const profile = state.mealProfile;
+  const targetCalories = profile.targetCalories || calculateCalories(profile);
+  profile.targetCalories = targetCalories;
+  const goalLabel =
+    profile.goal === "lose" ? "Burn / lose weight" : profile.goal === "build" ? "Build strength" : "Maintain and perform";
+  nutritionSummary.innerHTML = `
+    <article>
+      <span>Goal</span>
+      <strong>${escapeHtml(goalLabel)}</strong>
+    </article>
+    <article>
+      <span>Daily target</span>
+      <strong>${targetCalories}<small> kcal</small></strong>
+    </article>
+    <article>
+      <span>Protein guide</span>
+      <strong>${Math.round(profile.weight * 1.8)}<small> g</small></strong>
+    </article>
+  `;
+
+  weeklyMealPlan.innerHTML = state.mealPlan
+    .map((dayPlan, dayIndex) => {
+      const dayCalories = mealSlots.reduce((total, slot) => total + dayPlan.meals[slot].calories, 0);
+      return `
+        <article class="day-plan">
+          <div class="day-head">
+            <h3>${dayPlan.day}</h3>
+            <span>${dayCalories} kcal</span>
+          </div>
+          <div class="meal-list">
+            ${mealSlots.map((slot) => renderMealCard(dayPlan.meals[slot], slot, dayIndex)).join("")}
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  weeklyMealPlan.querySelectorAll("[data-refresh-meal]").forEach((button) => {
+    button.addEventListener("click", () => refreshMeal(Number(button.dataset.day), button.dataset.slot));
+  });
+}
+
+function renderMealCard(meal, slot, dayIndex) {
+  return `
+    <div class="meal-card">
+      <div>
+        <span>${escapeHtml(capitalize(slot))}</span>
+        <strong>${escapeHtml(meal.name)}</strong>
+        <small>${meal.calories} kcal · ${meal.protein}g protein</small>
+      </div>
+      <button class="icon-button plain refresh-meal" data-refresh-meal type="button" data-day="${dayIndex}" data-slot="${slot}" aria-label="Refresh ${slot}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12a7 7 0 0 1 11.8-5.1" />
+          <path d="M17 3v4h-4" />
+          <path d="M19 12a7 7 0 0 1-11.8 5.1" />
+          <path d="M7 21v-4h4" />
+        </svg>
+      </button>
+    </div>
+  `;
 }
 
 function saveSebReflection() {
@@ -799,7 +1020,7 @@ function showToast(message) {
 }
 
 function escapeHtml(value) {
-  return value.replace(/[&<>"']/g, (char) => {
+  return String(value).replace(/[&<>"']/g, (char) => {
     const entities = {
       "&": "&amp;",
       "<": "&lt;",
@@ -809,6 +1030,10 @@ function escapeHtml(value) {
     };
     return entities[char];
   });
+}
+
+function capitalize(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 render();

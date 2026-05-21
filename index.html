@@ -50,6 +50,14 @@
         <path d="M12 21s-7-4.4-7-10.4A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7 3.6C19 16.6 12 21 12 21Z" />
         <path d="M8 13h2.2l1-2.5 1.8 5 1-2.5H16" />
       </symbol>
+      <symbol id="icon-meals" viewBox="0 0 24 24">
+        <path d="M4 3v18" />
+        <path d="M8 3v18" />
+        <path d="M4 8h4" />
+        <path d="M17 3v18" />
+        <path d="M14 3c3 2 3 6 3 9" />
+        <path d="M11 21h9" />
+      </symbol>
       <symbol id="icon-upload" viewBox="0 0 24 24">
         <path d="M12 15V4" />
         <path d="m8 8 4-4 4 4" />
@@ -170,6 +178,54 @@
           </section>
         </section>
 
+        <section class="screen" id="mealPlanScreen">
+          <form class="meal-form" id="mealPlanForm">
+            <div class="section-heading">
+              <h2>Meal plan</h2>
+              <span>7 day fuel</span>
+            </div>
+            <label>
+              Goal
+              <select id="mealGoal">
+                <option value="lose">Burn / lose weight</option>
+                <option value="maintain">Maintain and perform</option>
+                <option value="build">Build strength</option>
+              </select>
+            </label>
+            <div class="input-grid">
+              <label>
+                Weight kg
+                <input id="mealWeight" type="number" inputmode="decimal" min="40" max="180" value="86" />
+              </label>
+              <label>
+                Height cm
+                <input id="mealHeight" type="number" inputmode="numeric" min="130" max="220" value="178" />
+              </label>
+              <label>
+                Age
+                <input id="mealAge" type="number" inputmode="numeric" min="16" max="80" value="32" />
+              </label>
+              <label>
+                Activity
+                <select id="mealActivity">
+                  <option value="1.35">Light</option>
+                  <option value="1.55" selected>Training</option>
+                  <option value="1.75">Hard ops</option>
+                </select>
+              </label>
+            </div>
+            <button class="primary wide" type="submit">Build week plan</button>
+          </form>
+
+          <section class="nutrition-summary" id="nutritionSummary" aria-live="polite"></section>
+
+          <div class="meal-tools">
+            <button class="secondary wide" id="refreshWeekPlan" type="button">Refresh full week</button>
+          </div>
+
+          <section class="weekly-plan" id="weeklyMealPlan"></section>
+        </section>
+
         <section class="screen" id="managerScreen">
           <div class="manager-actions">
             <button class="primary" id="newModuleButton" type="button">
@@ -231,6 +287,10 @@
           <button class="nav-item" data-nav="progress" type="button">
             <svg aria-hidden="true"><use href="#icon-progress"></use></svg>
             Progress
+          </button>
+          <button class="nav-item" data-nav="meals" type="button">
+            <svg aria-hidden="true"><use href="#icon-meals"></use></svg>
+            Meals
           </button>
           <button class="nav-item" data-nav="train" type="button">
             <svg aria-hidden="true"><use href="#icon-train"></use></svg>
