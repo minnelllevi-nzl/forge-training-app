@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#070908" />
     <title>Forge Training</title>
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=meal-ingredients" />
+    <link rel="stylesheet" href="./styles.css?v=health-sync" />
   </head>
   <body>
     <svg class="icon-sprite" aria-hidden="true">
@@ -221,6 +221,42 @@
                 </select>
               </label>
             </div>
+            <section class="health-sync-card">
+              <div class="health-sync-head">
+                <div>
+                  <span>Health sync</span>
+                  <strong id="healthSyncStatus">Manual entry</strong>
+                </div>
+                <div class="health-source-buttons" aria-label="Health source">
+                  <button type="button" data-health-source="Apple Health">Apple</button>
+                  <button type="button" data-health-source="Health Connect">Android</button>
+                  <button type="button" data-health-source="Garmin">Garmin</button>
+                </div>
+              </div>
+              <div class="input-grid">
+                <label>
+                  Active kcal today
+                  <input id="activeCalories" type="number" inputmode="numeric" min="0" max="3000" value="0" />
+                </label>
+                <label>
+                  Steps today
+                  <input id="stepCount" type="number" inputmode="numeric" min="0" max="60000" value="0" />
+                </label>
+                <label>
+                  Resting HR
+                  <input id="restingHeartRate" type="number" inputmode="numeric" min="35" max="120" value="60" />
+                </label>
+                <label>
+                  Recovery feel
+                  <select id="recoveryFeel">
+                    <option value="steady" selected>Steady</option>
+                    <option value="flat">Flat</option>
+                    <option value="sharp">Sharp</option>
+                  </select>
+                </label>
+              </div>
+              <button class="secondary wide" id="applyHealthData" type="button">Apply today's burn</button>
+            </section>
             <button class="primary wide" type="submit">Build week plan</button>
           </form>
 
@@ -579,6 +615,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="./app.js?v=meal-ingredients"></script>
+    <script src="./app.js?v=health-sync"></script>
   </body>
 </html>

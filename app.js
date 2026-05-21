@@ -440,6 +440,12 @@ const mealWeight = document.querySelector("#mealWeight");
 const mealHeight = document.querySelector("#mealHeight");
 const mealAge = document.querySelector("#mealAge");
 const mealActivity = document.querySelector("#mealActivity");
+const healthSyncStatus = document.querySelector("#healthSyncStatus");
+const activeCalories = document.querySelector("#activeCalories");
+const stepCount = document.querySelector("#stepCount");
+const restingHeartRate = document.querySelector("#restingHeartRate");
+const recoveryFeel = document.querySelector("#recoveryFeel");
+const applyHealthData = document.querySelector("#applyHealthData");
 const nutritionSummary = document.querySelector("#nutritionSummary");
 const weeklyMealPlan = document.querySelector("#weeklyMealPlan");
 const refreshWeekPlan = document.querySelector("#refreshWeekPlan");
@@ -493,9 +499,14 @@ resetSequence.addEventListener("click", resetCognitiveDrill);
 moduleDetailAction.addEventListener("click", startActiveModule);
 mealPlanForm.addEventListener("submit", buildMealPlanFromForm);
 refreshWeekPlan.addEventListener("click", refreshFullMealPlan);
+applyHealthData.addEventListener("click", applyDailyHealthData);
 traineeRole.addEventListener("click", () => setRole("trainee"));
 managerRole.addEventListener("click", () => setRole("manager"));
 roleToggle.addEventListener("click", () => setRole(state.role === "trainee" ? "manager" : "trainee"));
+
+document.querySelectorAll("[data-health-source]").forEach((button) => {
+  button.addEventListener("click", () => setHealthSource(button.dataset.healthSource));
+});
 
 document.querySelectorAll(".nav-item").forEach((button) => {
   button.addEventListener("click", () => handleNav(button.dataset.nav));
@@ -575,6 +586,11 @@ function loadMealProfile() {
     height: 178,
     age: 32,
     activity: 1.55,
+    activeCalories: 0,
+    steps: 0,
+    restingHeartRate: 60,
+    recoveryFeel: "steady",
+    syncSource: "Manual entry",
     targetCalories: 2400,
   };
   const saved = localStorage.getItem("forgeMealProfile");
@@ -810,29 +826,80 @@ function renderMealInputs() {
   mealHeight.value = state.mealProfile.height;
   mealAge.value = state.mealProfile.age;
   mealActivity.value = String(state.mealProfile.activity);
+  activeCalories.value = state.mealProfile.activeCalories || 0;
+  stepCount.value = state.mealProfile.steps || 0;
+  restingHeartRate.value = state.mealProfile.restingHeartRate || 60;
+  recoveryFeel.value = state.mealProfile.recoveryFeel || "steady";
+  healthSyncStatus.textContent = state.mealProfile.syncSource || "Manual entry";
+  document.querySelectorAll("[data-health-source]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.healthSource === state.mealProfile.syncSource);
+  });
 }
 
 function buildMealPlanFromForm(event) {
   event.preventDefault();
-  state.mealProfile = {
-    goal: mealGoal.value,
-    budget: mealBudget.checked,
-    weight: Number(mealWeight.value),
-    height: Number(mealHeight.value),
-    age: Number(mealAge.value),
-    activity: Number(mealActivity.value),
-  };
-  state.mealProfile.targetCalories = calculateCalories(state.mealProfile);
+  state.mealProfile = readMealProfileFromInputs();
   state.mealPlan = buildWeekPlan(state.mealProfile);
   persistMealProfile();
   renderMealPlan();
   showToast("Weekly meal plan built");
 }
 
-function calculateCalories(profile) {
+function readMealProfileFromInputs() {
+  const profile = {
+    goal: mealGoal.value,
+    budget: mealBudget.checked,
+    weight: Number(mealWeight.value),
+    height: Number(mealHeight.value),
+    age: Number(mealAge.value),
+    activity: Number(mealActivity.value),
+    activeCalories: Number(activeCalories.value) || 0,
+    steps: Number(stepCount.value) || 0,
+    restingHeartRate: Number(restingHeartRate.value) || 60,
+    recoveryFeel: recoveryFeel.value,
+    syncSource: state.mealProfile.syncSource || "Manual entry",
+  };
+  profile.baseCalories = calculateBaseCalories(profile);
+  profile.activityAdjustment = calculateActivityAdjustment(profile);
+  profile.targetCalories = calculateCalories(profile);
+  return profile;
+}
+
+function calculateBaseCalories(profile) {
   const bmr = 10 * profile.weight + 6.25 * profile.height - 5 * profile.age + 5;
   const goalShift = profile.goal === "lose" ? -420 : profile.goal === "build" ? 320 : 0;
   return Math.max(1600, Math.round((bmr * profile.activity + goalShift) / 25) * 25);
+}
+
+function calculateActivityAdjustment(profile) {
+  const addBackRate = profile.goal === "lose" ? 0.5 : profile.goal === "build" ? 0.9 : 0.75;
+  const recoveryMultiplier = profile.recoveryFeel === "flat" ? 0.8 : profile.recoveryFeel === "sharp" ? 1.05 : 1;
+  return Math.round(((profile.activeCalories || 0) * addBackRate * recoveryMultiplier) / 25) * 25;
+}
+
+function calculateCalories(profile) {
+  const baseCalories = profile.baseCalories || calculateBaseCalories(profile);
+  const activityAdjustment = profile.activityAdjustment ?? calculateActivityAdjustment(profile);
+  return Math.max(1600, baseCalories + activityAdjustment);
+}
+
+function setHealthSource(source) {
+  state.mealProfile.syncSource = source;
+  healthSyncStatus.textContent = source;
+  document.querySelectorAll("[data-health-source]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.healthSource === source);
+  });
+  persistMealProfile();
+  showToast(`${source} selected`);
+}
+
+function applyDailyHealthData() {
+  state.mealProfile = readMealProfileFromInputs();
+  state.mealPlan = buildWeekPlan(state.mealProfile);
+  persistMealProfile();
+  renderMealInputs();
+  renderMealPlan();
+  showToast("Activity burn applied to meals");
 }
 
 function buildWeekPlan(profile) {
@@ -889,6 +956,8 @@ function renderMealPlan() {
   const profile = state.mealProfile;
   const targetCalories = profile.targetCalories || calculateCalories(profile);
   profile.targetCalories = targetCalories;
+  profile.baseCalories = profile.baseCalories || calculateBaseCalories(profile);
+  profile.activityAdjustment = profile.activityAdjustment ?? calculateActivityAdjustment(profile);
   const goalLabel =
     profile.goal === "lose" ? "Burn / lose weight" : profile.goal === "build" ? "Build strength" : "Maintain and perform";
   const budgetLabel = profile.budget ? "Tight budget" : "Standard";
@@ -900,6 +969,14 @@ function renderMealPlan() {
     <article>
       <span>Daily target</span>
       <strong>${targetCalories}<small> kcal</small></strong>
+    </article>
+    <article>
+      <span>Activity burn</span>
+      <strong>${profile.activeCalories || 0}<small> kcal</small></strong>
+    </article>
+    <article>
+      <span>Meal adjustment</span>
+      <strong>+${profile.activityAdjustment || 0}<small> kcal</small></strong>
     </article>
     <article>
       <span>Protein guide</span>

@@ -986,6 +986,58 @@ textarea {
   text-transform: none;
 }
 
+.health-sync-card {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #30382d;
+  border-radius: 8px;
+  background: #10160f;
+}
+
+.health-sync-head {
+  display: grid;
+  gap: 10px;
+}
+
+.health-sync-head span {
+  display: block;
+  color: var(--green-2);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.health-sync-head strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--lime);
+  font-size: 13px;
+}
+
+.health-source-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.health-source-buttons button {
+  min-height: 36px;
+  border: 1px solid #3f4b35;
+  border-radius: 8px;
+  background: #151d12;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.health-source-buttons button.active {
+  border-color: var(--lime);
+  background: linear-gradient(180deg, #8db457, #557536);
+  color: #081008;
+}
+
 .input-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
