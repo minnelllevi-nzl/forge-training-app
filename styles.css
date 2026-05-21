@@ -940,6 +940,167 @@ textarea {
   background: #10160f;
 }
 
+.exercise-video {
+  display: grid;
+  gap: 10px;
+}
+
+.video-frame {
+  position: relative;
+  min-height: 176px;
+  overflow: hidden;
+  border: 1px solid rgba(198, 227, 107, 0.22);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(198, 227, 107, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(37, 43, 33, 0.72), rgba(10, 14, 9, 0.98)),
+    #0c110b;
+}
+
+.video-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(198, 227, 107, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(198, 227, 107, 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.burpee-athlete {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  width: 96px;
+  height: 104px;
+  transform: translateX(-50%);
+  animation: burpee-cycle 2.4s infinite steps(1, end);
+}
+
+.burpee-athlete span {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background: var(--lime);
+  box-shadow: 0 0 18px rgba(198, 227, 107, 0.35);
+  transition: transform 180ms ease, width 180ms ease, height 180ms ease, left 180ms ease, top 180ms ease;
+}
+
+.athlete-head {
+  left: 38px;
+  top: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.athlete-body {
+  left: 42px;
+  top: 22px;
+  width: 12px;
+  height: 42px;
+  border-radius: 8px;
+}
+
+.athlete-arm {
+  top: 28px;
+  width: 10px;
+  height: 42px;
+}
+
+.athlete-arm.left {
+  left: 29px;
+  transform: rotate(36deg);
+}
+
+.athlete-arm.right {
+  right: 29px;
+  transform: rotate(-36deg);
+}
+
+.athlete-leg {
+  top: 62px;
+  width: 10px;
+  height: 44px;
+}
+
+.athlete-leg.left {
+  left: 34px;
+  transform: rotate(18deg);
+}
+
+.athlete-leg.right {
+  right: 34px;
+  transform: rotate(-18deg);
+}
+
+.video-hud {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--green-2);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.video-hud strong {
+  color: var(--lime);
+}
+
+.video-controls {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  grid-template-columns: 16px 1fr 34px;
+  gap: 8px;
+  align-items: center;
+}
+
+.video-controls span {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(198, 227, 107, 0.28);
+}
+
+.video-controls span:first-child {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 12px solid var(--lime);
+  border-radius: 0;
+  background: transparent;
+}
+
+.video-controls span:nth-child(2)::before {
+  content: "";
+  display: block;
+  width: 46%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--lime);
+  animation: video-progress 2.4s linear infinite;
+}
+
+.exercise-brief h3 {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.exercise-brief p {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
 .test-tabs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1117,6 +1278,34 @@ textarea {
   font-size: 13px;
   font-weight: 950;
   text-transform: uppercase;
+}
+
+@keyframes burpee-cycle {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  25% {
+    transform: translateX(-50%) translateY(34px) scaleX(1.34);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(58px) rotate(90deg) scaleX(1.12);
+  }
+
+  75% {
+    transform: translateX(-50%) translateY(-18px);
+  }
+}
+
+@keyframes video-progress {
+  0% {
+    width: 8%;
+  }
+
+  100% {
+    width: 100%;
+  }
 }
 
 .toast {
