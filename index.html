@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#070908" />
     <title>Forge Training</title>
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=health-connect" />
+    <link rel="stylesheet" href="./styles.css?v=native-health-sync" />
   </head>
   <body>
     <svg class="icon-sprite" aria-hidden="true">
@@ -249,8 +249,13 @@
                 </div>
               </div>
               <p class="health-sync-copy">
-                Choose the source you want this app to use, then enter today's activity burn. Full automatic syncing needs the native phone wrapper next.
+                Tap Sync now to request phone health permissions. In a browser this stays manual; in the native app it asks Apple Health, Health Connect, or Garmin.
               </p>
+              <div class="sync-status-panel">
+                <span>Permission state</span>
+                <strong id="healthPermissionState">Not requested</strong>
+                <small id="healthLastSynced">No health data synced yet</small>
+              </div>
               <div class="input-grid">
                 <label>
                   Active kcal today
@@ -273,7 +278,10 @@
                   </select>
                 </label>
               </div>
-              <button class="secondary wide" id="applyHealthData" type="button">Apply today's burn</button>
+              <div class="health-actions">
+                <button class="primary wide" id="syncHealthData" type="button">Sync now</button>
+                <button class="secondary wide" id="applyHealthData" type="button">Apply manual data</button>
+              </div>
             </section>
             <button class="primary wide" type="submit">Build week plan</button>
           </form>
@@ -633,6 +641,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="./app.js?v=health-connect"></script>
+    <script src="./app.js?v=native-health-sync"></script>
   </body>
 </html>

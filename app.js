@@ -443,11 +443,14 @@ const mealActivity = document.querySelector("#mealActivity");
 const healthSyncStatus = document.querySelector("#healthSyncStatus");
 const healthConnectionPanel = document.querySelector("#healthConnectionPanel");
 const healthConnectShortcut = document.querySelector("#healthConnectShortcut");
+const healthPermissionState = document.querySelector("#healthPermissionState");
+const healthLastSynced = document.querySelector("#healthLastSynced");
 const activeCalories = document.querySelector("#activeCalories");
 const stepCount = document.querySelector("#stepCount");
 const restingHeartRate = document.querySelector("#restingHeartRate");
 const recoveryFeel = document.querySelector("#recoveryFeel");
 const applyHealthData = document.querySelector("#applyHealthData");
+const syncHealthData = document.querySelector("#syncHealthData");
 const nutritionSummary = document.querySelector("#nutritionSummary");
 const weeklyMealPlan = document.querySelector("#weeklyMealPlan");
 const refreshWeekPlan = document.querySelector("#refreshWeekPlan");
@@ -503,6 +506,7 @@ moduleDetailAction.addEventListener("click", startActiveModule);
 mealPlanForm.addEventListener("submit", buildMealPlanFromForm);
 refreshWeekPlan.addEventListener("click", refreshFullMealPlan);
 applyHealthData.addEventListener("click", applyDailyHealthData);
+syncHealthData.addEventListener("click", syncSelectedHealthSource);
 traineeRole.addEventListener("click", () => setRole("trainee"));
 managerRole.addEventListener("click", () => setRole("manager"));
 roleToggle.addEventListener("click", () => setRole(state.role === "trainee" ? "manager" : "trainee"));
@@ -594,6 +598,8 @@ function loadMealProfile() {
     restingHeartRate: 60,
     recoveryFeel: "steady",
     syncSource: "Manual entry",
+    permissionState: "Not requested",
+    lastSynced: "",
     targetCalories: 2400,
   };
   const saved = localStorage.getItem("forgeMealProfile");
@@ -842,6 +848,10 @@ function renderMealInputs() {
   restingHeartRate.value = state.mealProfile.restingHeartRate || 60;
   recoveryFeel.value = state.mealProfile.recoveryFeel || "steady";
   healthSyncStatus.textContent = state.mealProfile.syncSource || "Manual entry";
+  healthPermissionState.textContent = state.mealProfile.permissionState || "Not requested";
+  healthLastSynced.textContent = state.mealProfile.lastSynced
+    ? `Last sync ${formatSyncTime(state.mealProfile.lastSynced)}`
+    : "No health data synced yet";
   document.querySelectorAll("[data-health-source]").forEach((button) => {
     button.classList.toggle("active", button.dataset.healthSource === state.mealProfile.syncSource);
   });
@@ -869,6 +879,8 @@ function readMealProfileFromInputs() {
     restingHeartRate: Number(restingHeartRate.value) || 60,
     recoveryFeel: recoveryFeel.value,
     syncSource: state.mealProfile.syncSource || "Manual entry",
+    permissionState: state.mealProfile.permissionState || "Not requested",
+    lastSynced: state.mealProfile.lastSynced || "",
   };
   profile.baseCalories = calculateBaseCalories(profile);
   profile.activityAdjustment = calculateActivityAdjustment(profile);
@@ -896,7 +908,9 @@ function calculateCalories(profile) {
 
 function setHealthSource(source) {
   state.mealProfile.syncSource = source;
+  state.mealProfile.permissionState = source === "Manual entry" ? "Manual entry" : "Ready to request";
   healthSyncStatus.textContent = source;
+  healthPermissionState.textContent = state.mealProfile.permissionState;
   document.querySelectorAll("[data-health-source]").forEach((button) => {
     button.classList.toggle("active", button.dataset.healthSource === source);
   });
@@ -904,8 +918,125 @@ function setHealthSource(source) {
   showToast(`${source} selected`);
 }
 
+async function syncSelectedHealthSource() {
+  const source = state.mealProfile.syncSource || "Manual entry";
+  if (source === "Manual entry") {
+    showToast("Choose Apple, Android, or Garmin first");
+    return;
+  }
+
+  const connector = getNativeHealthConnector(source);
+  if (!connector) {
+    state.mealProfile.permissionState = "Native app required";
+    persistMealProfile();
+    renderMealInputs();
+    showToast("Install as native app to request health permissions");
+    return;
+  }
+
+  syncHealthData.disabled = true;
+  syncHealthData.textContent = "Syncing...";
+  state.mealProfile.permissionState = "Requesting permission";
+  renderMealInputs();
+
+  try {
+    await connector.requestPermissions();
+    state.mealProfile.permissionState = "Permission granted";
+    renderMealInputs();
+
+    const healthData = await connector.readDailyActivity();
+    applySyncedHealthData(source, healthData);
+    showToast(`${source} synced`);
+  } catch (error) {
+    state.mealProfile.permissionState = getHealthSyncError(error);
+    persistMealProfile();
+    renderMealInputs();
+    showToast(state.mealProfile.permissionState);
+  } finally {
+    syncHealthData.disabled = false;
+    syncHealthData.textContent = "Sync now";
+  }
+}
+
+function getNativeHealthConnector(source) {
+  const bridge = window.ForgeHealth || window.Capacitor?.Plugins?.ForgeHealth;
+  if (bridge) return normalizeHealthBridge(bridge, source);
+
+  const capacitorPlugins = window.Capacitor?.Plugins || {};
+  if (source === "Apple Health" && capacitorPlugins.HealthKit) return normalizeHealthBridge(capacitorPlugins.HealthKit, source);
+  if (source === "Health Connect" && capacitorPlugins.HealthConnect) return normalizeHealthBridge(capacitorPlugins.HealthConnect, source);
+  if (source === "Garmin" && (window.ForgeGarmin || capacitorPlugins.GarminHealth)) {
+    return normalizeHealthBridge(window.ForgeGarmin || capacitorPlugins.GarminHealth, source);
+  }
+
+  return null;
+}
+
+function normalizeHealthBridge(bridge, source) {
+  return {
+    requestPermissions: () => {
+      if (typeof bridge.requestPermissions === "function") return bridge.requestPermissions({ source, metrics: healthMetricKeys() });
+      if (typeof bridge.requestAuthorization === "function") return bridge.requestAuthorization({ source, metrics: healthMetricKeys() });
+      if (typeof bridge.authorize === "function") return bridge.authorize({ source, metrics: healthMetricKeys() });
+      return Promise.resolve();
+    },
+    readDailyActivity: async () => {
+      const request = { source, date: new Date().toISOString(), metrics: healthMetricKeys() };
+      if (typeof bridge.readDailyActivity === "function") return bridge.readDailyActivity(request);
+      if (typeof bridge.getDailyActivity === "function") return bridge.getDailyActivity(request);
+      if (typeof bridge.query === "function") return bridge.query(request);
+      throw new Error("Daily activity read is not available");
+    },
+  };
+}
+
+function healthMetricKeys() {
+  return ["activeCalories", "steps", "restingHeartRate"];
+}
+
+function applySyncedHealthData(source, healthData = {}) {
+  const syncedAt = new Date().toISOString();
+  const activeBurn = Number(healthData.activeCalories ?? healthData.activeEnergyBurned ?? healthData.caloriesBurned ?? 0);
+  const syncedSteps = Number(healthData.steps ?? healthData.stepCount ?? 0);
+  const syncedRestingHr = Number(healthData.restingHeartRate ?? healthData.restingHr ?? 60);
+
+  activeCalories.value = Math.max(0, Math.round(activeBurn));
+  stepCount.value = Math.max(0, Math.round(syncedSteps));
+  restingHeartRate.value = Math.max(35, Math.round(syncedRestingHr || 60));
+
+  state.mealProfile = {
+    ...readMealProfileFromInputs(),
+    syncSource: source,
+    permissionState: "Synced",
+    lastSynced: syncedAt,
+  };
+  state.mealPlan = buildWeekPlan(state.mealProfile);
+  persistMealProfile();
+  renderMealInputs();
+  renderMealPlan();
+}
+
+function getHealthSyncError(error) {
+  const message = String(error?.message || error || "");
+  if (/denied|not authorized|permission/i.test(message)) return "Permission denied";
+  if (/cancel/i.test(message)) return "Permission cancelled";
+  if (/unavailable|not installed|not available/i.test(message)) return "Health source unavailable";
+  return "Sync failed";
+}
+
+function formatSyncTime(value) {
+  return new Intl.DateTimeFormat(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+    day: "numeric",
+    month: "short",
+  }).format(new Date(value));
+}
+
 function applyDailyHealthData() {
   state.mealProfile = readMealProfileFromInputs();
+  state.mealProfile.permissionState =
+    state.mealProfile.syncSource === "Manual entry" ? "Manual entry applied" : state.mealProfile.permissionState;
   state.mealPlan = buildWeekPlan(state.mealProfile);
   persistMealProfile();
   renderMealInputs();
