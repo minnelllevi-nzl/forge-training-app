@@ -441,6 +441,8 @@ const mealHeight = document.querySelector("#mealHeight");
 const mealAge = document.querySelector("#mealAge");
 const mealActivity = document.querySelector("#mealActivity");
 const healthSyncStatus = document.querySelector("#healthSyncStatus");
+const healthConnectionPanel = document.querySelector("#healthConnectionPanel");
+const healthConnectShortcut = document.querySelector("#healthConnectShortcut");
 const activeCalories = document.querySelector("#activeCalories");
 const stepCount = document.querySelector("#stepCount");
 const restingHeartRate = document.querySelector("#restingHeartRate");
@@ -491,6 +493,7 @@ document.querySelector("#closeWorkout").addEventListener("click", closeWorkout);
 document.querySelector("#closeModuleDetail").addEventListener("click", () => moduleDetailDialog.close());
 document.querySelector("#closeProgress").addEventListener("click", () => progressDialog.close());
 document.querySelector("#startWorkout").addEventListener("click", openWorkoutDialog);
+healthConnectShortcut.addEventListener("click", openHealthConnectionPanel);
 document.querySelector("#saveSebReflection").addEventListener("click", saveSebReflection);
 breathControl.addEventListener("click", toggleBreathing);
 workoutControl.addEventListener("click", toggleWorkout);
@@ -817,6 +820,14 @@ function handleNav(destination) {
     setRole("trainee");
     assignedModules.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+}
+
+function openHealthConnectionPanel() {
+  handleNav("meals");
+  requestAnimationFrame(() => {
+    healthConnectionPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  showToast("Health connection area opened");
 }
 
 function renderMealInputs() {

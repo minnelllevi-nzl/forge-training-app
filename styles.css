@@ -416,6 +416,10 @@ svg {
   color: var(--amber);
 }
 
+.row-icon.health {
+  background: #17261a;
+}
+
 .module-list,
 .library-list,
 .cohort-list {
@@ -989,10 +993,34 @@ textarea {
 .health-sync-card {
   display: grid;
   gap: 12px;
-  padding: 12px;
-  border: 1px solid #30382d;
+  padding: 14px;
+  border: 1px solid #6f8d4b;
   border-radius: 8px;
-  background: #10160f;
+  background: linear-gradient(180deg, #172214, #0f150e);
+  box-shadow: inset 0 0 0 1px rgba(198, 227, 107, 0.08), 0 14px 30px rgba(0, 0, 0, 0.22);
+}
+
+.connection-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 8px;
+  border: 1px solid #4f6337;
+  border-radius: 8px;
+  background: #0a0f09;
+  color: var(--lime);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.connection-badge svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
 }
 
 .health-sync-head {
@@ -1012,7 +1040,15 @@ textarea {
   display: block;
   margin-top: 3px;
   color: var(--lime);
-  font-size: 13px;
+  font-size: 18px;
+}
+
+.health-sync-copy {
+  margin: 0;
+  color: var(--green-2);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.45;
 }
 
 .health-source-buttons {
@@ -1027,7 +1063,7 @@ textarea {
   border-radius: 8px;
   background: #151d12;
   color: var(--text);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 950;
   text-transform: uppercase;
 }

@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#070908" />
     <title>Forge Training</title>
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=health-sync" />
+    <link rel="stylesheet" href="./styles.css?v=health-connect" />
   </head>
   <body>
     <svg class="icon-sprite" aria-hidden="true">
@@ -122,6 +122,17 @@
             <button class="primary" id="startWorkout" type="button">Start</button>
           </article>
 
+          <button class="training-row health-shortcut" id="healthConnectShortcut" type="button">
+            <span class="row-icon health"><svg aria-hidden="true"><use href="#icon-health"></use></svg></span>
+            <span>
+              <strong>Connect health apps</strong>
+              <small>Apple Health · Android Health Connect · Garmin activity burn</small>
+            </span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+
           <section class="stack">
             <div class="section-heading">
               <h2>Pressure tools</h2>
@@ -221,18 +232,25 @@
                 </select>
               </label>
             </div>
-            <section class="health-sync-card">
+            <section class="health-sync-card" id="healthConnectionPanel">
+              <div class="connection-badge">
+                <svg aria-hidden="true"><use href="#icon-health"></use></svg>
+                <span>Connection area</span>
+              </div>
               <div class="health-sync-head">
                 <div>
-                  <span>Health sync</span>
+                  <span>Connect health apps</span>
                   <strong id="healthSyncStatus">Manual entry</strong>
                 </div>
                 <div class="health-source-buttons" aria-label="Health source">
-                  <button type="button" data-health-source="Apple Health">Apple</button>
-                  <button type="button" data-health-source="Health Connect">Android</button>
+                  <button type="button" data-health-source="Apple Health">Apple Health</button>
+                  <button type="button" data-health-source="Health Connect">Android Health</button>
                   <button type="button" data-health-source="Garmin">Garmin</button>
                 </div>
               </div>
+              <p class="health-sync-copy">
+                Choose the source you want this app to use, then enter today's activity burn. Full automatic syncing needs the native phone wrapper next.
+              </p>
               <div class="input-grid">
                 <label>
                   Active kcal today
@@ -615,6 +633,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="./app.js?v=health-sync"></script>
+    <script src="./app.js?v=health-connect"></script>
   </body>
 </html>
