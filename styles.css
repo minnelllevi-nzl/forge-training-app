@@ -950,6 +950,42 @@ textarea {
   padding: 14px;
 }
 
+.budget-toggle {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid #30382d;
+  border-radius: 8px;
+  background: #10160f;
+  cursor: pointer;
+}
+
+.budget-toggle input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--lime);
+  flex: 0 0 auto;
+}
+
+.budget-toggle span {
+  display: grid;
+  gap: 3px;
+}
+
+.budget-toggle strong {
+  color: var(--text);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.budget-toggle small {
+  color: var(--green-2);
+  font-size: 11px;
+  line-height: 1.25;
+  text-transform: none;
+}
+
 .input-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -958,7 +994,7 @@ textarea {
 
 .nutrition-summary {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin-top: 14px;
   padding: 10px;

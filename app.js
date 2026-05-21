@@ -120,32 +120,44 @@ const mealTargets = {
 };
 const mealPools = {
   breakfast: [
-    { name: "Eggs, kumara hash, spinach", calories: 520, protein: 34, tags: ["lose", "maintain", "build"] },
-    { name: "Greek yoghurt, oats, berries", calories: 430, protein: 32, tags: ["lose", "maintain"] },
-    { name: "Protein oats with banana", calories: 610, protein: 38, tags: ["maintain", "build"] },
-    { name: "Turkey omelette wrap", calories: 560, protein: 42, tags: ["lose", "maintain", "build"] },
-    { name: "Cottage cheese toast and fruit", calories: 450, protein: 33, tags: ["lose", "maintain"] },
+    { name: "Eggs, kumara hash, spinach", calories: 520, protein: 34, tags: ["lose", "maintain", "build"], cost: "standard" },
+    { name: "Greek yoghurt, oats, berries", calories: 430, protein: 32, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Protein oats with banana", calories: 610, protein: 38, tags: ["maintain", "build"], cost: "standard" },
+    { name: "Turkey omelette wrap", calories: 560, protein: 42, tags: ["lose", "maintain", "build"], cost: "standard" },
+    { name: "Cottage cheese toast and fruit", calories: 450, protein: 33, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Porridge, milk, peanut butter", calories: 470, protein: 24, tags: ["lose", "maintain", "build"], cost: "budget" },
+    { name: "Scrambled eggs on toast", calories: 430, protein: 26, tags: ["lose", "maintain"], cost: "budget" },
+    { name: "Banana oats and yoghurt", calories: 540, protein: 28, tags: ["maintain", "build"], cost: "budget" },
   ],
   lunch: [
-    { name: "Chicken rice bowl with greens", calories: 720, protein: 52, tags: ["maintain", "build"] },
-    { name: "Tuna potato salad", calories: 560, protein: 43, tags: ["lose", "maintain"] },
-    { name: "Lean beef burrito bowl", calories: 760, protein: 55, tags: ["maintain", "build"] },
-    { name: "Turkey salad wrap and apple", calories: 510, protein: 38, tags: ["lose", "maintain"] },
-    { name: "Salmon quinoa field bowl", calories: 680, protein: 45, tags: ["lose", "maintain", "build"] },
+    { name: "Chicken rice bowl with greens", calories: 720, protein: 52, tags: ["maintain", "build"], cost: "standard" },
+    { name: "Tuna potato salad", calories: 560, protein: 43, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Lean beef burrito bowl", calories: 760, protein: 55, tags: ["maintain", "build"], cost: "standard" },
+    { name: "Turkey salad wrap and apple", calories: 510, protein: 38, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Salmon quinoa field bowl", calories: 680, protein: 45, tags: ["lose", "maintain", "build"], cost: "standard" },
+    { name: "Tuna, rice, frozen veg", calories: 610, protein: 42, tags: ["lose", "maintain", "build"], cost: "budget" },
+    { name: "Egg fried rice with peas", calories: 590, protein: 28, tags: ["maintain", "build"], cost: "budget" },
+    { name: "Lentil and chicken soup", calories: 500, protein: 34, tags: ["lose", "maintain"], cost: "budget" },
   ],
   dinner: [
-    { name: "Steak, potatoes, mixed veg", calories: 780, protein: 58, tags: ["maintain", "build"] },
-    { name: "Chicken stir fry with rice", calories: 660, protein: 50, tags: ["lose", "maintain"] },
-    { name: "Turkey chilli and beans", calories: 620, protein: 48, tags: ["lose", "maintain", "build"] },
-    { name: "Fish tacos with slaw", calories: 590, protein: 41, tags: ["lose", "maintain"] },
-    { name: "Lamb, couscous, greens", calories: 820, protein: 52, tags: ["maintain", "build"] },
+    { name: "Steak, potatoes, mixed veg", calories: 780, protein: 58, tags: ["maintain", "build"], cost: "standard" },
+    { name: "Chicken stir fry with rice", calories: 660, protein: 50, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Turkey chilli and beans", calories: 620, protein: 48, tags: ["lose", "maintain", "build"], cost: "standard" },
+    { name: "Fish tacos with slaw", calories: 590, protein: 41, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Lamb, couscous, greens", calories: 820, protein: 52, tags: ["maintain", "build"], cost: "standard" },
+    { name: "Chicken drumsticks, rice, veg", calories: 680, protein: 46, tags: ["lose", "maintain", "build"], cost: "budget" },
+    { name: "Mince chilli, beans, rice", calories: 720, protein: 45, tags: ["maintain", "build"], cost: "budget" },
+    { name: "Tuna pasta with peas", calories: 610, protein: 38, tags: ["lose", "maintain"], cost: "budget" },
   ],
   snack: [
-    { name: "Protein shake and banana", calories: 310, protein: 30, tags: ["maintain", "build"] },
-    { name: "Boiled eggs and carrots", calories: 220, protein: 16, tags: ["lose", "maintain"] },
-    { name: "Beef jerky, nuts, orange", calories: 330, protein: 28, tags: ["maintain", "build"] },
-    { name: "Cottage cheese and berries", calories: 240, protein: 26, tags: ["lose", "maintain"] },
-    { name: "Hummus, crackers, cucumber", calories: 280, protein: 13, tags: ["lose", "maintain"] },
+    { name: "Protein shake and banana", calories: 310, protein: 30, tags: ["maintain", "build"], cost: "standard" },
+    { name: "Boiled eggs and carrots", calories: 220, protein: 16, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Beef jerky, nuts, orange", calories: 330, protein: 28, tags: ["maintain", "build"], cost: "standard" },
+    { name: "Cottage cheese and berries", calories: 240, protein: 26, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Hummus, crackers, cucumber", calories: 280, protein: 13, tags: ["lose", "maintain"], cost: "standard" },
+    { name: "Peanut butter toast", calories: 260, protein: 11, tags: ["lose", "maintain"], cost: "budget" },
+    { name: "Boiled eggs and banana", calories: 300, protein: 17, tags: ["maintain", "build"], cost: "budget" },
+    { name: "Yoghurt and rolled oats", calories: 280, protein: 18, tags: ["lose", "maintain", "build"], cost: "budget" },
   ],
 };
 
@@ -199,6 +211,7 @@ const mathsQuestion = document.querySelector("#mathsQuestion");
 const mathsChoices = document.querySelector("#mathsChoices");
 const mealPlanForm = document.querySelector("#mealPlanForm");
 const mealGoal = document.querySelector("#mealGoal");
+const mealBudget = document.querySelector("#mealBudget");
 const mealWeight = document.querySelector("#mealWeight");
 const mealHeight = document.querySelector("#mealHeight");
 const mealAge = document.querySelector("#mealAge");
@@ -333,6 +346,7 @@ function loadModules() {
 function loadMealProfile() {
   const fallback = {
     goal: "lose",
+    budget: false,
     weight: 86,
     height: 178,
     age: 32,
@@ -567,6 +581,7 @@ function handleNav(destination) {
 
 function renderMealInputs() {
   mealGoal.value = state.mealProfile.goal;
+  mealBudget.checked = Boolean(state.mealProfile.budget);
   mealWeight.value = state.mealProfile.weight;
   mealHeight.value = state.mealProfile.height;
   mealAge.value = state.mealProfile.age;
@@ -577,6 +592,7 @@ function buildMealPlanFromForm(event) {
   event.preventDefault();
   state.mealProfile = {
     goal: mealGoal.value,
+    budget: mealBudget.checked,
     weight: Number(mealWeight.value),
     height: Number(mealHeight.value),
     age: Number(mealAge.value),
@@ -600,17 +616,18 @@ function buildWeekPlan(profile) {
   return dayNames.map((day, dayIndex) => {
     const meals = {};
     mealSlots.forEach((slot, slotIndex) => {
-      meals[slot] = pickMeal(slot, profile.goal, targetCalories * mealTargets[slot], dayIndex + slotIndex);
+      meals[slot] = pickMeal(slot, profile.goal, profile.budget, targetCalories * mealTargets[slot], dayIndex + slotIndex);
     });
     return { day, meals };
   });
 }
 
-function pickMeal(slot, goal, targetCalories, offset = 0) {
+function pickMeal(slot, goal, budget, targetCalories, offset = 0) {
   const ranked = mealPools[slot]
-    .filter((meal) => meal.tags.includes(goal))
+    .filter((meal) => meal.tags.includes(goal) && (!budget || meal.cost === "budget"))
     .sort((a, b) => Math.abs(a.calories - targetCalories) - Math.abs(b.calories - targetCalories));
-  const options = ranked.length ? ranked : mealPools[slot];
+  const goalMatches = mealPools[slot].filter((meal) => meal.tags.includes(goal));
+  const options = ranked.length ? ranked : goalMatches.length ? goalMatches : mealPools[slot];
   return options[offset % options.length];
 }
 
@@ -626,8 +643,14 @@ function refreshFullMealPlan() {
 function refreshMeal(dayIndex, slot) {
   const current = state.mealPlan[dayIndex].meals[slot];
   const targetCalories = state.mealProfile.targetCalories * mealTargets[slot];
-  const options = mealPools[slot].filter((meal) => meal.tags.includes(state.mealProfile.goal) && meal.name !== current.name);
-  const pool = options.length ? options : mealPools[slot].filter((meal) => meal.name !== current.name);
+  const options = mealPools[slot].filter(
+    (meal) =>
+      meal.tags.includes(state.mealProfile.goal) &&
+      (!state.mealProfile.budget || meal.cost === "budget") &&
+      meal.name !== current.name,
+  );
+  const fallback = mealPools[slot].filter((meal) => meal.tags.includes(state.mealProfile.goal) && meal.name !== current.name);
+  const pool = options.length ? options : fallback.length ? fallback : mealPools[slot].filter((meal) => meal.name !== current.name);
   state.mealPlan[dayIndex].meals[slot] = pickClosestRandom(pool, targetCalories);
   renderMealPlan();
   showToast(`${capitalize(slot)} refreshed`);
@@ -644,6 +667,7 @@ function renderMealPlan() {
   profile.targetCalories = targetCalories;
   const goalLabel =
     profile.goal === "lose" ? "Burn / lose weight" : profile.goal === "build" ? "Build strength" : "Maintain and perform";
+  const budgetLabel = profile.budget ? "Tight budget" : "Standard";
   nutritionSummary.innerHTML = `
     <article>
       <span>Goal</span>
@@ -656,6 +680,10 @@ function renderMealPlan() {
     <article>
       <span>Protein guide</span>
       <strong>${Math.round(profile.weight * 1.8)}<small> g</small></strong>
+    </article>
+    <article>
+      <span>Meal budget</span>
+      <strong>${escapeHtml(budgetLabel)}</strong>
     </article>
   `;
 
@@ -687,7 +715,7 @@ function renderMealCard(meal, slot, dayIndex) {
       <div>
         <span>${escapeHtml(capitalize(slot))}</span>
         <strong>${escapeHtml(meal.name)}</strong>
-        <small>${meal.calories} kcal · ${meal.protein}g protein</small>
+        <small>${meal.calories} kcal · ${meal.protein}g protein · ${meal.cost === "budget" ? "budget" : "standard"}</small>
       </div>
       <button class="icon-button plain refresh-meal" data-refresh-meal type="button" data-day="${dayIndex}" data-slot="${slot}" aria-label="Refresh ${slot}">
         <svg viewBox="0 0 24 24" aria-hidden="true">

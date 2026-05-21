@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#070908" />
     <title>Forge Training</title>
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=meal-planner" />
+    <link rel="stylesheet" href="./styles.css?v=budget-meals" />
   </head>
   <body>
     <svg class="icon-sprite" aria-hidden="true">
@@ -191,6 +191,13 @@
                 <option value="maintain">Maintain and perform</option>
                 <option value="build">Build strength</option>
               </select>
+            </label>
+            <label class="budget-toggle">
+              <input id="mealBudget" type="checkbox" />
+              <span>
+                <strong>Tight budget</strong>
+                <small>Use lower-cost meals and simple staples</small>
+              </span>
             </label>
             <div class="input-grid">
               <label>
@@ -572,6 +579,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="./app.js?v=meal-planner"></script>
+    <script src="./app.js?v=budget-meals"></script>
   </body>
 </html>
