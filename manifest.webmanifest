@@ -1,0 +1,17 @@
+{
+  "name": "Forge Training",
+  "short_name": "Forge",
+  "description": "Military-style physical, health, and mental resilience training.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070908",
+  "theme_color": "#070908",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

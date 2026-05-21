@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070908" />
+    <title>Forge Training</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-user-command" viewBox="0 0 24 24">
+        <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" />
+        <path d="M4 22a8 8 0 0 1 16 0" />
+        <path d="M9 8h6" />
+      </symbol>
+      <symbol id="icon-conditioning" viewBox="0 0 24 24">
+        <path d="M5 8h14" />
+        <path d="M7 6v4M17 6v4" />
+        <path d="M9 14h6" />
+        <path d="M11 12v4M13 12v4" />
+        <path d="M6 18h12" />
+      </symbol>
+      <symbol id="icon-breath" viewBox="0 0 24 24">
+        <path d="M12 5v14" />
+        <path d="M12 11c-2.8-3.2-6-3.6-7.4-1.8-1.5 1.9-.5 6.4 7.4 9.8" />
+        <path d="M12 11c2.8-3.2 6-3.6 7.4-1.8 1.5 1.9.5 6.4-7.4 9.8" />
+        <path d="M9 5c0 2 1.2 3 3 3s3-1 3-3" />
+      </symbol>
+      <symbol id="icon-seb" viewBox="0 0 24 24">
+        <path d="M7 7h10v10H7Z" />
+        <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+        <path d="M9.5 12h5" />
+      </symbol>
+      <symbol id="icon-cognitive" viewBox="0 0 24 24">
+        <path d="M5 7h14v10H5Z" />
+        <path d="M8 10h2M14 10h2M8 14h2M14 14h2" />
+        <path d="M12 3v4M12 17v4" />
+        <path d="M8 21h8" />
+      </symbol>
+      <symbol id="icon-reset" viewBox="0 0 24 24">
+        <path d="M5 12a7 7 0 0 1 11.8-5.1" />
+        <path d="M17 3v4h-4" />
+        <path d="M19 12a7 7 0 0 1-11.8 5.1" />
+        <path d="M7 21v-4h4" />
+        <path d="M12 9v4l2.4 1.6" />
+      </symbol>
+      <symbol id="icon-health" viewBox="0 0 24 24">
+        <path d="M12 21s-7-4.4-7-10.4A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7 3.6C19 16.6 12 21 12 21Z" />
+        <path d="M8 13h2.2l1-2.5 1.8 5 1-2.5H16" />
+      </symbol>
+      <symbol id="icon-upload" viewBox="0 0 24 24">
+        <path d="M12 15V4" />
+        <path d="m8 8 4-4 4 4" />
+        <path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" />
+      </symbol>
+      <symbol id="icon-assign" viewBox="0 0 24 24">
+        <path d="M9 5H7a2 2 0 0 0-2 2v12h14v-5" />
+        <path d="M9 5a3 3 0 0 1 6 0h-6Z" />
+        <path d="M14 11h7" />
+        <path d="m18 8 3 3-3 3" />
+        <path d="M8 12h3M8 16h5" />
+      </symbol>
+      <symbol id="icon-today" viewBox="0 0 24 24">
+        <path d="M4 10.5 12 4l8 6.5V21H4Z" />
+        <path d="M9 21v-6h6v6" />
+      </symbol>
+      <symbol id="icon-progress" viewBox="0 0 24 24">
+        <path d="M4 19V5" />
+        <path d="M4 19h16" />
+        <path d="M8 15V9M12 15V7M16 15v-4" />
+      </symbol>
+      <symbol id="icon-train" viewBox="0 0 24 24">
+        <path d="M12 3v18" />
+        <path d="M6 8h12M6 16h12" />
+        <path d="M9 6v4M15 14v4" />
+      </symbol>
+    </svg>
+    <main class="app-shell">
+      <section class="device" aria-label="Forge training app">
+        <header class="topbar">
+          <div>
+            <p class="micro">FORGE</p>
+            <h1 id="screenTitle">Today</h1>
+          </div>
+          <button class="icon-button" id="roleToggle" type="button" aria-label="Switch to manager view">
+            <svg aria-hidden="true"><use href="#icon-user-command"></use></svg>
+          </button>
+        </header>
+
+        <div class="role-switch" role="tablist" aria-label="App role">
+          <button class="segment active" id="traineeRole" type="button">Trainee</button>
+          <button class="segment" id="managerRole" type="button">Manager</button>
+        </div>
+
+        <section class="screen active" id="traineeScreen">
+          <div class="readiness">
+            <div>
+              <span>Readiness</span>
+              <strong>82%</strong>
+            </div>
+            <div class="ring" aria-label="82 percent readiness">
+              <span></span>
+            </div>
+          </div>
+
+          <article class="focus-card">
+            <div>
+              <p class="label">Next session</p>
+              <h2>Tactical conditioning</h2>
+              <p>Forty minutes of loaded carries, sprint intervals, and controlled recovery.</p>
+            </div>
+            <button class="primary" id="startWorkout" type="button">Start</button>
+          </article>
+
+          <section class="stack">
+            <div class="section-heading">
+              <h2>Pressure tools</h2>
+              <span>Calm under load</span>
+            </div>
+            <button class="training-row" id="breathingButton" type="button">
+              <span class="row-icon breath"><svg aria-hidden="true"><use href="#icon-breath"></use></svg></span>
+              <span>
+                <strong>Box breathing drill</strong>
+                <small>4 in · 4 hold · 4 out · 4 hold</small>
+              </span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <button class="training-row" id="sebButton" type="button">
+              <span class="row-icon seb"><svg aria-hidden="true"><use href="#icon-seb"></use></svg></span>
+              <span>
+                <strong>SEB pressure cycle</strong>
+                <small>Stress indicators · Eyes up · Breathing and body language</small>
+              </span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <button class="training-row" id="cognitiveButton" type="button">
+              <span class="row-icon cognitive"><svg aria-hidden="true"><use href="#icon-cognitive"></use></svg></span>
+              <span>
+                <strong>HR cognitive stress drill</strong>
+                <small>Target 170-190 bpm · Select the numbers in order</small>
+              </span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <button class="training-row" id="stressResetButton" type="button">
+              <span class="row-icon mind"><svg aria-hidden="true"><use href="#icon-reset"></use></svg></span>
+              <span>
+                <strong>Stress response reset</strong>
+                <small>Recognize threat signals and choose action</small>
+              </span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+          </section>
+
+          <section class="stack compact">
+            <div class="section-heading">
+              <h2>Assigned modules</h2>
+              <span id="assignedCount">0 ready</span>
+            </div>
+            <div id="assignedModules" class="module-list"></div>
+          </section>
+        </section>
+
+        <section class="screen" id="managerScreen">
+          <div class="manager-actions">
+            <button class="primary" id="newModuleButton" type="button">
+              <svg aria-hidden="true"><use href="#icon-upload"></use></svg>
+              Upload training
+            </button>
+            <button class="secondary" id="assignButton" type="button">
+              <svg aria-hidden="true"><use href="#icon-assign"></use></svg>
+              Assign
+            </button>
+          </div>
+
+          <div class="category-tabs" role="tablist" aria-label="Training categories">
+            <button class="category active" data-category="All" type="button">All</button>
+            <button class="category" data-category="Workout" type="button">Workout</button>
+            <button class="category" data-category="Breathing" type="button">Breathing</button>
+            <button class="category" data-category="Mental Health" type="button">Mental</button>
+            <button class="category" data-category="Health" type="button">Health</button>
+          </div>
+
+          <section class="stack">
+            <div class="section-heading">
+              <h2>Content library</h2>
+              <span id="libraryCount">0 items</span>
+            </div>
+            <div id="libraryList" class="library-list"></div>
+          </section>
+
+          <section class="stack compact">
+            <div class="section-heading">
+              <h2>Cohort progress</h2>
+              <span>Alpha team</span>
+            </div>
+            <div class="cohort-list">
+              <div class="cohort-row">
+                <span>Reid</span>
+                <div class="progress"><span style="width: 78%"></span></div>
+                <strong>78%</strong>
+              </div>
+              <div class="cohort-row">
+                <span>Kane</span>
+                <div class="progress"><span style="width: 64%"></span></div>
+                <strong>64%</strong>
+              </div>
+              <div class="cohort-row">
+                <span>Avery</span>
+                <div class="progress"><span style="width: 91%"></span></div>
+                <strong>91%</strong>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <nav class="bottom-nav" aria-label="Primary navigation">
+          <button class="nav-item active" data-nav="today" type="button">
+            <svg aria-hidden="true"><use href="#icon-today"></use></svg>
+            Today
+          </button>
+          <button class="nav-item" data-nav="progress" type="button">
+            <svg aria-hidden="true"><use href="#icon-progress"></use></svg>
+            Progress
+          </button>
+          <button class="nav-item" data-nav="train" type="button">
+            <svg aria-hidden="true"><use href="#icon-train"></use></svg>
+            Train
+          </button>
+        </nav>
+      </section>
+    </main>
+
+    <dialog id="moduleDialog" class="dialog">
+      <form method="dialog" id="moduleForm">
+        <div class="dialog-head">
+          <h2>Upload training</h2>
+          <button class="icon-button plain" value="cancel" type="submit" aria-label="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18" />
+            </svg>
+          </button>
+        </div>
+        <label>
+          Title
+          <input id="moduleTitle" name="title" autocomplete="off" required />
+        </label>
+        <label>
+          Category
+          <select id="moduleCategory" name="category">
+            <option>Workout</option>
+            <option>Breathing</option>
+            <option>Mental Health</option>
+            <option>Health</option>
+          </select>
+        </label>
+        <label>
+          Training notes
+          <textarea id="moduleNotes" name="notes" rows="4" required></textarea>
+        </label>
+        <label>
+          Media link
+          <input id="moduleMedia" name="media" type="url" placeholder="https://example.com/video" />
+        </label>
+        <button class="primary wide" type="submit">Save module</button>
+      </form>
+    </dialog>
+
+    <dialog id="assignDialog" class="dialog">
+      <form method="dialog" id="assignForm">
+        <div class="dialog-head">
+          <h2>Assign module</h2>
+          <button class="icon-button plain" value="cancel" type="submit" aria-label="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18" />
+            </svg>
+          </button>
+        </div>
+        <label>
+          Module
+          <select id="assignModule"></select>
+        </label>
+        <label>
+          Group
+          <select id="assignGroup">
+            <option>Alpha team</option>
+            <option>Bravo team</option>
+            <option>New recruits</option>
+          </select>
+        </label>
+        <button class="primary wide" type="submit">Assign now</button>
+      </form>
+    </dialog>
+
+    <dialog id="breathingDialog" class="dialog breath-dialog">
+      <div class="dialog-head">
+        <h2 id="breathTitle">Box breathing</h2>
+        <button class="icon-button plain" id="closeBreathing" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="breath-tabs" aria-label="Breathing method">
+        <button class="breath-tab active" data-breath="box" type="button">Box</button>
+        <button class="breath-tab" data-breath="rocking" type="button">Rocking</button>
+        <button class="breath-tab" data-breath="recovery" type="button">Recovery</button>
+      </div>
+      <div class="breath-orb" id="breathOrb">
+        <span id="breathPhase">Inhale</span>
+        <strong id="breathCount">4</strong>
+      </div>
+      <p id="breathInstruction">Follow the count. Keep your jaw loose, shoulders low, and attention on the next breath.</p>
+      <button class="primary wide" id="breathControl" type="button">Begin drill</button>
+    </dialog>
+
+    <dialog id="workoutDialog" class="dialog workout-dialog">
+      <div class="dialog-head">
+        <h2>Tactical conditioning</h2>
+        <button class="icon-button plain" id="closeWorkout" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="workout-status">
+        <span>Session state</span>
+        <strong id="workoutStatus">Ready</strong>
+      </div>
+      <ol class="drill-list">
+        <li>Loaded carry or bodyweight circuit to raise heart rate.</li>
+        <li>Controlled recovery: eyes up, posture set, breathing under control.</li>
+        <li>Move into a pressure tool or cognitive task while still under load.</li>
+      </ol>
+      <button class="primary wide" id="workoutControl" type="button">Begin effort</button>
+    </dialog>
+
+    <dialog id="sebDialog" class="dialog seb-dialog">
+      <div class="dialog-head">
+        <h2>SEB system</h2>
+        <button class="icon-button plain" id="closeSeb" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="seb-cycle" aria-label="SEB cycle">
+        <article>
+          <strong>S</strong>
+          <span>Stress indicators</span>
+          <p>Notice trigger cues, body signals, thoughts, and emotion shifts.</p>
+        </article>
+        <article>
+          <strong>E</strong>
+          <span>Eyes up</span>
+          <p>Lift attention, scan the scene, and find the next useful action.</p>
+        </article>
+        <article>
+          <strong>B</strong>
+          <span>Breathing and body language</span>
+          <p>Control breath, posture, hands, jaw, and voice under pressure.</p>
+        </article>
+      </div>
+      <section class="seb-panel">
+        <h3>No Ah F**k moment reset</h3>
+        <div class="reset-steps">
+          <button class="reset-step active" data-step="Recognize" type="button">Recognize</button>
+          <button class="reset-step" data-step="Ground" type="button">Ground</button>
+          <button class="reset-step" data-step="Breathe" type="button">Breathe</button>
+          <button class="reset-step" data-step="Act" type="button">Act</button>
+        </div>
+        <p id="resetCopy">Name the stress indicator before it becomes your whole focus.</p>
+      </section>
+      <section class="seb-panel">
+        <h3>Action plan</h3>
+        <label>
+          What's important to me now?
+          <textarea id="sebReflection" rows="3" placeholder="Safety, professionalism, the team, the task..."></textarea>
+        </label>
+        <button class="primary wide" id="saveSebReflection" type="button">Save reflection</button>
+      </section>
+      <section class="seb-panel">
+        <h3>Training outcomes</h3>
+        <ul class="outcome-list">
+          <li>Explain the SEB components and how they connect.</li>
+          <li>Apply the cycle in high-pressure scenarios.</li>
+          <li>Use grounding, breathing, and mental resets to regain control.</li>
+          <li>Self-assess reactions and create a personal response plan.</li>
+        </ul>
+      </section>
+    </dialog>
+
+    <dialog id="cognitiveDialog" class="dialog cognitive-dialog">
+      <div class="dialog-head">
+        <h2>HR cognitive drill</h2>
+        <button class="icon-button plain" id="closeCognitive" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <section class="cognitive-panel">
+        <div class="hr-readout">
+          <span>Target load</span>
+          <strong>180 <small>bpm</small></strong>
+        </div>
+        <p>Complete the physical burst first. When heart rate is around the target zone, unlock the cognitive test battery.</p>
+        <label>
+          Current heart rate
+          <input id="heartRateInput" type="number" inputmode="numeric" min="80" max="220" value="180" />
+        </label>
+        <button class="primary wide" id="confirmHeartRate" type="button">Confirm HR</button>
+      </section>
+      <section class="cognitive-panel">
+        <div class="test-tabs" aria-label="Cognitive test type">
+          <button class="test-tab active" data-test="sequence" type="button">Sequence</button>
+          <button class="test-tab" data-test="colour" type="button">Colour</button>
+          <button class="test-tab" data-test="maths" type="button">Maths</button>
+        </div>
+        <div class="sequence-head">
+          <div>
+            <h3 id="cognitiveTaskTitle">Number sequence</h3>
+            <p id="sequenceStatus">Locked until heart rate is in the training zone.</p>
+          </div>
+          <span id="sequenceProgress">Next: 1</span>
+        </div>
+        <div class="cognitive-task active" id="sequenceTask">
+          <div class="number-grid locked" id="numberGrid" aria-label="Cognitive number sequence"></div>
+        </div>
+        <div class="cognitive-task" id="colourTask">
+          <div class="colour-card locked" id="colourCard">
+            <span id="colourWord">GREEN</span>
+          </div>
+          <div class="choice-grid" id="colourChoices" aria-label="Colour interference choices"></div>
+        </div>
+        <div class="cognitive-task" id="mathsTask">
+          <div class="maths-card locked" id="mathsCard">
+            <span id="mathsQuestion">12 + 7</span>
+          </div>
+          <div class="choice-grid" id="mathsChoices" aria-label="Quick maths choices"></div>
+        </div>
+        <button class="secondary wide" id="resetSequence" type="button">Reset drill</button>
+      </section>
+    </dialog>
+
+    <dialog id="moduleDetailDialog" class="dialog module-detail-dialog">
+      <div class="dialog-head">
+        <h2 id="moduleDetailTitle">Module</h2>
+        <button class="icon-button plain" id="closeModuleDetail" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <span class="tag" id="moduleDetailCategory">Workout</span>
+      <p id="moduleDetailNotes"></p>
+      <a class="media-link" id="moduleDetailMedia" href="#" target="_blank" rel="noreferrer">Open media</a>
+      <button class="primary wide" id="moduleDetailAction" type="button">Start module</button>
+    </dialog>
+
+    <dialog id="progressDialog" class="dialog progress-dialog">
+      <div class="dialog-head">
+        <h2>Progress</h2>
+        <button class="icon-button plain" id="closeProgress" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="progress-metrics">
+        <article><strong>5</strong><span>Ready modules</span></article>
+        <article><strong>82%</strong><span>Readiness</span></article>
+        <article><strong>3</strong><span>Pressure tools</span></article>
+      </div>
+      <p>Track completion, pressure drill attempts, and recovery work here as the app grows.</p>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
