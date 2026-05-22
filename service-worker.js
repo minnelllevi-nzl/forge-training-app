@@ -1,4 +1,4 @@
-const CACHE_NAME = "forge-training-v18";
+const CACHE_NAME = "forge-training-v47";
 const ASSETS = [
   "./",
   "./index.html",
@@ -6,6 +6,12 @@ const ASSETS = [
   "./app.js",
   "./manifest.webmanifest",
   "./icon.svg",
+  "./assets/burpee-steps/step-1-stand.png",
+  "./assets/burpee-steps/step-2-squat.png",
+  "./assets/burpee-steps/step-3-kick-back.png",
+  "./assets/burpee-steps/step-4-push-up.png",
+  "./assets/burpee-steps/step-5-bring-feet-in.png",
+  "./assets/burpee-steps/step-6-jump-up.png",
 ];
 
 self.addEventListener("install", (event) => {

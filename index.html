@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#070908" />
+    <meta id="themeColorMeta" name="theme-color" content="#070908" />
     <title>Forge Training</title>
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=native-health-sync" />
+    <link rel="stylesheet" href="./styles.css?v=burpee-clean-v13" />
   </head>
-  <body>
+  <body data-theme="police">
     <svg class="icon-sprite" aria-hidden="true">
       <symbol id="icon-user-command" viewBox="0 0 24 24">
         <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" />
@@ -84,17 +84,28 @@
         <path d="M6 8h12M6 16h12" />
         <path d="M9 6v4M15 14v4" />
       </symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24">
+        <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
+        <path d="M19.4 15a1.8 1.8 0 0 0 .4 2l.1.1-2 3.4-.2-.1a1.8 1.8 0 0 0-2.1.3l-.4.2-3.1-1.8v-.4a1.8 1.8 0 0 0-1.6-1.8h-.4l-1.8-3.1.2-.4a1.8 1.8 0 0 0-.3-2.1l-.2-.3 1.8-3.1h.4a1.8 1.8 0 0 0 1.8-1.6v-.4L15.1 4l.3.2a1.8 1.8 0 0 0 2.1-.3l.3-.2 2 3.4-.2.2a1.8 1.8 0 0 0-.4 2l.1.4 1.8 1v3.6Z" />
+      </symbol>
     </svg>
     <main class="app-shell">
       <section class="device" aria-label="Forge training app">
         <header class="topbar">
-          <div>
-            <p class="micro">FORGE</p>
-            <h1 id="screenTitle">Today</h1>
+          <div class="profile-head">
+            <p class="micro" id="screenTitle">Welcome to FORGE</p>
+            <h1 id="profileName">Jane Doe</h1>
+            <p class="profile-meta" id="profileMeta">Senior Constable · Police Officer</p>
           </div>
-          <button class="icon-button" id="roleToggle" type="button" aria-label="Switch to manager view">
-            <svg aria-hidden="true"><use href="#icon-user-command"></use></svg>
-          </button>
+          <div class="profile-command">
+            <div class="rank-badge" aria-label="Current rank: Recruit">
+              <span class="rank-icon"><i></i><i></i></span>
+              <span>Recruit</span>
+            </div>
+            <button class="icon-button" id="roleToggle" type="button" aria-label="Switch to manager view">
+              <svg aria-hidden="true"><use href="#icon-user-command"></use></svg>
+            </button>
+          </div>
         </header>
 
         <div class="role-switch" role="tablist" aria-label="App role">
@@ -103,16 +114,6 @@
         </div>
 
         <section class="screen active" id="traineeScreen">
-          <div class="readiness">
-            <div>
-              <span>Readiness</span>
-              <strong>82%</strong>
-            </div>
-            <div class="ring" aria-label="82 percent readiness">
-              <span></span>
-            </div>
-          </div>
-
           <article class="focus-card">
             <div>
               <p class="label">Next session</p>
@@ -121,17 +122,6 @@
             </div>
             <button class="primary" id="startWorkout" type="button">Start</button>
           </article>
-
-          <button class="training-row health-shortcut" id="healthConnectShortcut" type="button">
-            <span class="row-icon health"><svg aria-hidden="true"><use href="#icon-health"></use></svg></span>
-            <span>
-              <strong>Connect health apps</strong>
-              <small>Apple Health · Android Health Connect · Garmin activity burn</small>
-            </span>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-          </button>
 
           <section class="stack">
             <div class="section-heading">
@@ -151,7 +141,7 @@
             <button class="training-row" id="sebButton" type="button">
               <span class="row-icon seb"><svg aria-hidden="true"><use href="#icon-seb"></use></svg></span>
               <span>
-                <strong>SEB pressure cycle</strong>
+                <strong>Stress Inoculation Training (SIT)</strong>
                 <small>Stress indicators · Eyes up · Breathing and body language</small>
               </span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -162,7 +152,7 @@
               <span class="row-icon cognitive"><svg aria-hidden="true"><use href="#icon-cognitive"></use></svg></span>
               <span>
                 <strong>HR cognitive stress drill</strong>
-                <small>Target 170-190 bpm · Select the numbers in order</small>
+                <small>Target 170-190 bpm · Choose a workout and cognitive test</small>
               </span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
@@ -189,6 +179,50 @@
           </section>
         </section>
 
+        <section class="screen" id="trainScreen">
+          <section class="stack command-stack">
+            <div class="section-heading">
+              <h2>Drill bay</h2>
+              <span>Choose protocol</span>
+            </div>
+            <div class="drill-grid">
+              <button class="drill-card active" id="drillCognitiveButton" type="button">
+                <span class="row-icon cognitive"><svg aria-hidden="true"><use href="#icon-cognitive"></use></svg></span>
+                <strong>HR cognitive stress</strong>
+                <small>Load body, test decision-making, track recovery.</small>
+              </button>
+              <button class="drill-card" id="drillBreathingButton" type="button">
+                <span class="row-icon breath"><svg aria-hidden="true"><use href="#icon-breath"></use></svg></span>
+                <strong>Breathing control</strong>
+                <small>Box, rocking and reset breathing methods.</small>
+              </button>
+              <button class="drill-card" id="drillSitButton" type="button">
+                <span class="row-icon seb"><svg aria-hidden="true"><use href="#icon-seb"></use></svg></span>
+                <strong>SIT pressure cycle</strong>
+                <small>Stress cues, awareness and body control.</small>
+              </button>
+            </div>
+          </section>
+
+          <section class="stack command-stack">
+            <div class="section-heading">
+              <h2>Workout selector</h2>
+              <span>For HR drill</span>
+            </div>
+            <button class="workout-option active" id="burpeeWorkoutButton" type="button">
+              <span>01</span>
+              <strong>Burpee</strong>
+              <small>Full body movement to spike heart rate before the cognitive task.</small>
+            </button>
+            <button class="workout-option locked" type="button">
+              <span>02</span>
+              <strong>Shuttle sprint</strong>
+              <small>Coming next: short sprint load with fast recovery tracking.</small>
+            </button>
+            <button class="primary wide" id="startSelectedDrill" type="button">Start selected drill</button>
+          </section>
+        </section>
+
         <section class="screen" id="mealPlanScreen">
           <form class="meal-form" id="mealPlanForm">
             <div class="section-heading">
@@ -210,6 +244,48 @@
                 <small>Use lower-cost meals and simple staples</small>
               </span>
             </label>
+            <section class="budget-questionnaire" aria-label="Meal budget questionnaire">
+              <div class="section-heading compact-heading">
+                <h2>Budget check</h2>
+                <span>Affordability</span>
+              </div>
+              <div class="input-grid">
+                <label>
+                  Weekly food budget
+                  <input id="weeklyFoodBudget" type="number" inputmode="decimal" min="25" max="600" step="5" value="90" />
+                </label>
+                <label>
+                  People covered
+                  <input id="mealPeople" type="number" inputmode="numeric" min="1" max="8" value="1" />
+                </label>
+                <label>
+                  Meals covered
+                  <select id="mealsCovered">
+                    <option value="2">Two meals daily</option>
+                    <option value="3">Three meals daily</option>
+                    <option value="4" selected>Meals and snacks</option>
+                  </select>
+                </label>
+                <label>
+                  Budget priority
+                  <select id="budgetPriority">
+                    <option value="flexible">Flexible</option>
+                    <option value="balanced" selected>Balanced</option>
+                    <option value="strict">Strict cheapest</option>
+                  </select>
+                </label>
+              </div>
+              <label class="budget-toggle compact-toggle">
+                <input id="avoidPremiumFoods" type="checkbox" checked />
+                <span>
+                  <strong>Avoid pricey proteins</strong>
+                  <small>Skip turkey, salmon, steak, lamb, jerky and protein powder where possible</small>
+                </span>
+              </label>
+              <p class="budget-note">
+                Costs are estimates for planning. Prices move by shop and location, so use this as a field guide, not a receipt.
+              </p>
+            </section>
             <div class="input-grid">
               <label>
                 Weight kg
@@ -232,57 +308,6 @@
                 </select>
               </label>
             </div>
-            <section class="health-sync-card" id="healthConnectionPanel">
-              <div class="connection-badge">
-                <svg aria-hidden="true"><use href="#icon-health"></use></svg>
-                <span>Connection area</span>
-              </div>
-              <div class="health-sync-head">
-                <div>
-                  <span>Connect health apps</span>
-                  <strong id="healthSyncStatus">Manual entry</strong>
-                </div>
-                <div class="health-source-buttons" aria-label="Health source">
-                  <button type="button" data-health-source="Apple Health">Apple Health</button>
-                  <button type="button" data-health-source="Health Connect">Android Health</button>
-                  <button type="button" data-health-source="Garmin">Garmin</button>
-                </div>
-              </div>
-              <p class="health-sync-copy">
-                Tap Sync now to request phone health permissions. In a browser this stays manual; in the native app it asks Apple Health, Health Connect, or Garmin.
-              </p>
-              <div class="sync-status-panel">
-                <span>Permission state</span>
-                <strong id="healthPermissionState">Not requested</strong>
-                <small id="healthLastSynced">No health data synced yet</small>
-              </div>
-              <div class="input-grid">
-                <label>
-                  Active kcal today
-                  <input id="activeCalories" type="number" inputmode="numeric" min="0" max="3000" value="0" />
-                </label>
-                <label>
-                  Steps today
-                  <input id="stepCount" type="number" inputmode="numeric" min="0" max="60000" value="0" />
-                </label>
-                <label>
-                  Resting HR
-                  <input id="restingHeartRate" type="number" inputmode="numeric" min="35" max="120" value="60" />
-                </label>
-                <label>
-                  Recovery feel
-                  <select id="recoveryFeel">
-                    <option value="steady" selected>Steady</option>
-                    <option value="flat">Flat</option>
-                    <option value="sharp">Sharp</option>
-                  </select>
-                </label>
-              </div>
-              <div class="health-actions">
-                <button class="primary wide" id="syncHealthData" type="button">Sync now</button>
-                <button class="secondary wide" id="applyHealthData" type="button">Apply manual data</button>
-              </div>
-            </section>
             <button class="primary wide" type="submit">Build week plan</button>
           </form>
 
@@ -306,6 +331,63 @@
               Assign
             </button>
           </div>
+
+          <section class="stack profession-theme-panel">
+            <div class="section-heading">
+              <h2>Profession style</h2>
+              <span>Sign-up preview</span>
+            </div>
+            <p class="theme-helper">
+              Later this can be chosen during sign-up. For now, use these manager toggles to test the app feel for each user type.
+            </p>
+            <div class="theme-grid" role="tablist" aria-label="Profession style preview">
+              <button class="theme-card active" data-theme-choice="military" type="button">
+                <span class="theme-swatches">
+                  <i style="background: #151d12"></i>
+                  <i style="background: #8aa052"></i>
+                  <i style="background: #c6e36b"></i>
+                </span>
+                <strong>Military</strong>
+                <small>Olive field kit</small>
+              </button>
+              <button class="theme-card" data-theme-choice="police" type="button">
+                <span class="theme-swatches">
+                  <i style="background: #101722"></i>
+                  <i style="background: #3f6c9c"></i>
+                  <i style="background: #d5aa55"></i>
+                </span>
+                <strong>Police</strong>
+                <small>Navy and steel</small>
+              </button>
+              <button class="theme-card" data-theme-choice="ems" type="button">
+                <span class="theme-swatches">
+                  <i style="background: #10202a"></i>
+                  <i style="background: #2ea7a0"></i>
+                  <i style="background: #8fd6ff"></i>
+                </span>
+                <strong>EMS</strong>
+                <small>Medical teal</small>
+              </button>
+              <button class="theme-card" data-theme-choice="fire" type="button">
+                <span class="theme-swatches">
+                  <i style="background: #1d1110"></i>
+                  <i style="background: #b3452d"></i>
+                  <i style="background: #e0a84f"></i>
+                </span>
+                <strong>Fire</strong>
+                <small>Rescue amber</small>
+              </button>
+              <button class="theme-card" data-theme-choice="general" type="button">
+                <span class="theme-swatches">
+                  <i style="background: #101313"></i>
+                  <i style="background: #7c8581"></i>
+                  <i style="background: #d0b982"></i>
+                </span>
+                <strong>General</strong>
+                <small>Graphite sand</small>
+              </button>
+            </div>
+          </section>
 
           <div class="category-tabs" role="tablist" aria-label="Training categories">
             <button class="category active" data-category="All" type="button">All</button>
@@ -348,6 +430,74 @@
           </section>
         </section>
 
+        <section class="screen" id="settingsScreen">
+          <section class="stack">
+            <div class="section-heading">
+              <h2>Settings</h2>
+              <span>Profile and sync</span>
+            </div>
+            <div class="settings-profile">
+              <span class="row-icon health"><svg aria-hidden="true"><use href="#icon-user-command"></use></svg></span>
+              <div>
+                <strong>Jane Doe</strong>
+                <small>Senior Constable · Police Officer</small>
+              </div>
+            </div>
+          </section>
+
+          <section class="health-sync-card" id="healthConnectionPanel">
+            <div class="connection-badge">
+              <svg aria-hidden="true"><use href="#icon-health"></use></svg>
+              <span>Connection area</span>
+            </div>
+            <div class="health-sync-head">
+              <div>
+                <span>Connect health apps</span>
+                <strong id="healthSyncStatus">Manual entry</strong>
+              </div>
+              <div class="health-source-buttons" aria-label="Health source">
+                <button type="button" data-health-source="Apple Health">Apple Health</button>
+                <button type="button" data-health-source="Health Connect">Android Health</button>
+                <button type="button" data-health-source="Garmin">Garmin</button>
+              </div>
+            </div>
+            <p class="health-sync-copy">
+              Tap Sync now to request phone health permissions. In a browser this stays manual; in the native app it asks Apple Health, Health Connect, or Garmin.
+            </p>
+            <div class="sync-status-panel">
+              <span>Permission state</span>
+              <strong id="healthPermissionState">Not requested</strong>
+              <small id="healthLastSynced">No health data synced yet</small>
+            </div>
+            <div class="input-grid">
+              <label>
+                Active kcal today
+                <input id="activeCalories" type="number" inputmode="numeric" min="0" max="3000" value="0" />
+              </label>
+              <label>
+                Steps today
+                <input id="stepCount" type="number" inputmode="numeric" min="0" max="60000" value="0" />
+              </label>
+              <label>
+                Resting HR
+                <input id="restingHeartRate" type="number" inputmode="numeric" min="35" max="120" value="60" />
+              </label>
+              <label>
+                Recovery feel
+                <select id="recoveryFeel">
+                  <option value="steady" selected>Steady</option>
+                  <option value="flat">Flat</option>
+                  <option value="sharp">Sharp</option>
+                </select>
+              </label>
+            </div>
+            <div class="health-actions">
+              <button class="primary wide" id="syncHealthData" type="button">Sync now</button>
+              <button class="secondary wide" id="applyHealthData" type="button">Apply manual data</button>
+            </div>
+          </section>
+        </section>
+
         <nav class="bottom-nav" aria-label="Primary navigation">
           <button class="nav-item active" data-nav="today" type="button">
             <svg aria-hidden="true"><use href="#icon-today"></use></svg>
@@ -363,7 +513,11 @@
           </button>
           <button class="nav-item" data-nav="train" type="button">
             <svg aria-hidden="true"><use href="#icon-train"></use></svg>
-            Train
+            Drills
+          </button>
+          <button class="nav-item" data-nav="settings" type="button">
+            <svg aria-hidden="true"><use href="#icon-settings"></use></svg>
+            Settings
           </button>
         </nav>
       </section>
@@ -475,7 +629,7 @@
 
     <dialog id="sebDialog" class="dialog seb-dialog">
       <div class="dialog-head">
-        <h2>SEB system</h2>
+        <h2>Stress Inoculation Training (SIT)</h2>
         <button class="icon-button plain" id="closeSeb" type="button" aria-label="Close">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6l12 12M18 6 6 18" />
@@ -520,7 +674,7 @@
       <section class="seb-panel">
         <h3>Training outcomes</h3>
         <ul class="outcome-list">
-          <li>Explain the SEB components and how they connect.</li>
+          <li>Explain the SIT/SEB components and how they connect.</li>
           <li>Apply the cycle in high-pressure scenarios.</li>
           <li>Use grounding, breathing, and mental resets to regain control.</li>
           <li>Self-assess reactions and create a personal response plan.</li>
@@ -538,27 +692,210 @@
         </button>
       </div>
       <section class="cognitive-panel">
-        <div class="exercise-video" aria-label="Mock exercise video: burpees">
-          <div class="video-frame">
-            <div class="video-grid" aria-hidden="true"></div>
-            <div class="burpee-athlete" aria-hidden="true">
-              <span class="athlete-head"></span>
-              <span class="athlete-body"></span>
-              <span class="athlete-arm left"></span>
-              <span class="athlete-arm right"></span>
-              <span class="athlete-leg left"></span>
-              <span class="athlete-leg right"></span>
+        <div class="protocol-grid">
+          <article>
+            <span>Stage</span>
+            <strong id="protocolStage">Ready</strong>
+          </article>
+          <article>
+            <span>Timer</span>
+            <strong id="protocolTimer">00:00</strong>
+          </article>
+          <article>
+            <span>Baseline</span>
+            <strong id="baselineMetric">--</strong>
+          </article>
+          <article>
+            <span>Tactical efficiency</span>
+            <strong id="tacticalEfficiency">--</strong>
+          </article>
+        </div>
+        <div class="protocol-actions">
+          <button class="secondary wide" id="startBaselineTest" type="button">Start rested baseline</button>
+          <button class="secondary wide" id="startLoadTimer" type="button">Start 1 min burpee timer</button>
+        </div>
+        <div class="drill-workout-picker" aria-label="Workout selected for this drill">
+          <button class="workout-chip active" type="button">Burpee</button>
+          <button class="workout-chip" type="button" disabled>Shuttle sprint</button>
+          <button class="workout-chip" type="button" disabled>Loaded carry</button>
+        </div>
+        <div class="burpee-hud-diagram clean" aria-label="Burpee movement diagram">
+          <div class="burpee-title">
+            <strong>Burpee</strong>
+            <span>Bodyweight exercise</span>
+          </div>
+          <div class="burpee-info-grid">
+            <div class="target-strip clean">
+              <span>Target areas</span>
+              <div class="target-anatomy" aria-hidden="true">
+                <svg class="anatomy-diagram" viewBox="0 0 360 244" role="img">
+                  <defs>
+                    <filter id="muscleGlow" x="-40%" y="-40%" width="180%" height="180%">
+                      <feGaussianBlur stdDeviation="2.2" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+                  <g class="scan-ring">
+                    <path d="M18 28h324M18 122h324M18 218h324" />
+                    <path d="M180 28v190" />
+                  </g>
+                  <rect class="diagram-label-bg" x="58" y="2" width="66" height="24" />
+                  <rect class="diagram-label-bg" x="219" y="2" width="66" height="24" />
+                  <text class="diagram-label" x="91" y="20">FRONT</text>
+                  <text class="diagram-label" x="252" y="20">BACK</text>
+                  <g class="human front" transform="translate(52 24)">
+                    <g class="body-skin">
+                      <circle cx="60" cy="16" r="15" />
+                      <path d="M49 31h22l6 16H43Z" />
+                      <path d="M38 50c12-8 32-8 44 0l-9 68H47Z" />
+                      <path d="M39 54 22 126l-14-4 13-48c3-11 9-17 18-20Z" />
+                      <path d="M81 54 98 126l14-4-13-48c-3-11-9-17-18-20Z" />
+                      <path d="M47 118h26l10 24H37Z" />
+                      <path d="M39 142h19l-5 78H29Z" />
+                      <path d="M62 142h19l10 78H67Z" />
+                      <path d="M29 220h25" />
+                      <path d="M67 220h25" />
+                    </g>
+                    <g class="muscle-lit" filter="url(#muscleGlow)">
+                      <ellipse cx="50" cy="65" rx="15" ry="10" />
+                      <ellipse cx="70" cy="65" rx="15" ry="10" />
+                      <path d="M47 78h26l-4 36-9 18-9-18Z" />
+                      <path d="M36 57 23 121c4 2 9 2 13 0l10-54Z" />
+                      <path d="M84 57 97 121c-4 2-9 2-13 0L74 67Z" />
+                      <path d="M42 146h15l-4 70H33Z" />
+                      <path d="M63 146h15l9 70H67Z" />
+                    </g>
+                    <g class="muscle-map">
+                      <path d="M39 58c11 8 31 8 42 0" />
+                      <path d="M45 79c10 6 20 6 30 0" />
+                      <path d="M50 95h20" />
+                      <path d="M51 110h18" />
+                      <path d="M60 50v84" />
+                      <path d="M43 147c5 15 6 39 3 70" />
+                      <path d="M77 147c-5 15-6 39-3 70" />
+                    </g>
+                  </g>
+                  <g class="human back" transform="translate(204 24)">
+                    <g class="body-skin">
+                      <circle cx="60" cy="16" r="15" />
+                      <path d="M49 31h22l6 16H43Z" />
+                      <path d="M38 50c12-8 32-8 44 0l-9 68H47Z" />
+                      <path d="M39 54 22 126l-14-4 13-48c3-11 9-17 18-20Z" />
+                      <path d="M81 54 98 126l14-4-13-48c-3-11-9-17-18-20Z" />
+                      <path d="M47 118h26l10 24H37Z" />
+                      <path d="M39 142h19l-5 78H29Z" />
+                      <path d="M62 142h19l10 78H67Z" />
+                      <path d="M29 220h25" />
+                      <path d="M67 220h25" />
+                    </g>
+                    <g class="muscle-lit" filter="url(#muscleGlow)">
+                      <path d="M35 59c12-10 38-10 50 0l-9 38-16 28-16-28Z" />
+                      <path d="M40 100c11 10 29 10 40 0l9 24c-15 14-43 14-58 0Z" />
+                      <path d="M36 57 23 121c4 2 9 2 13 0l10-54Z" />
+                      <path d="M84 57 97 121c-4 2-9 2-13 0L74 67Z" />
+                      <path d="M42 146h15l-4 70H33Z" />
+                      <path d="M63 146h15l9 70H67Z" />
+                    </g>
+                    <g class="muscle-map">
+                      <path d="M37 60c13 10 33 10 46 0" />
+                      <path d="M43 83c11 8 23 8 34 0" />
+                      <path d="M43 104c11 7 23 7 34 0" />
+                      <path d="M60 50v84" />
+                      <path d="M43 147c5 15 6 39 3 70" />
+                      <path d="M77 147c-5 15-6 39-3 70" />
+                    </g>
+                  </g>
+                </svg>
+                <strong>Chest · Shoulders · Triceps · Core · Glutes · Quads · Calves</strong>
+              </div>
             </div>
-            <div class="video-hud">
-              <span>BURPEE DEMO</span>
-              <strong>30 sec burst</strong>
+            <div class="muscle-panel compact clean">
+              <span>Muscle engagement</span>
+              <div class="bar-stack" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <strong>100%</strong>
             </div>
-            <div class="video-controls" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
+            <div class="key-panel compact clean">
+              <span>Key points</span>
+              <strong>Full body movement · Core tight · Land softly · Control your reps · Breathe steadily</strong>
             </div>
           </div>
+          <div class="burpee-anim-stage clean">
+            <figure class="burpee-pose step-one">
+              <img src="./assets/burpee-steps/step-1-stand.png" alt="Burpee step 1 standing position" />
+              <figcaption>
+                <b>1</b>
+                <span>
+                  <strong>Stand</strong>
+                  <small>Feet shoulder width apart</small>
+                </span>
+              </figcaption>
+            </figure>
+            <figure class="burpee-pose step-two">
+              <img src="./assets/burpee-steps/step-2-squat.png" alt="Burpee step 2 squat position" />
+              <figcaption>
+                <b>2</b>
+                <span>
+                  <strong>Squat</strong>
+                  <small>Drop hips down and place hands on ground</small>
+                </span>
+              </figcaption>
+            </figure>
+            <figure class="burpee-pose step-three">
+              <img src="./assets/burpee-steps/step-3-kick-back.png" alt="Burpee step 3 plank kick back position" />
+              <figcaption>
+                <b>3</b>
+                <span>
+                  <strong>Kick back</strong>
+                  <small>Jump feet back to plank position</small>
+                </span>
+              </figcaption>
+            </figure>
+            <figure class="burpee-pose step-four">
+              <img src="./assets/burpee-steps/step-4-push-up.png" alt="Burpee step 4 push up position" />
+              <figcaption>
+                <b>4</b>
+                <span>
+                  <strong>Push up</strong>
+                  <small>Lower chest to ground and push back up</small>
+                </span>
+              </figcaption>
+            </figure>
+            <figure class="burpee-pose step-five">
+              <img src="./assets/burpee-steps/step-5-bring-feet-in.png" alt="Burpee step 5 bring feet in position" />
+              <figcaption>
+                <b>5</b>
+                <span>
+                  <strong>Bring feet in</strong>
+                  <small>Jump feet forward to squat position</small>
+                </span>
+              </figcaption>
+            </figure>
+            <figure class="burpee-pose step-six">
+              <img src="./assets/burpee-steps/step-6-jump-up.png" alt="Burpee step 6 jump up position" />
+              <figcaption>
+                <b>6</b>
+                <span>
+                  <strong>Jump up</strong>
+                  <small>Explode upward with arms overhead</small>
+                </span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="movement-rail clean" aria-label="Burpee movement steps">
+            <span class="active">1 Stand</span>
+            <span class="active">2 Squat</span>
+            <span class="active">3 Kick back</span>
+            <span class="active">4 Push up</span>
+            <span class="active">5 Bring feet in</span>
+            <span class="active">6 Jump up</span>
+          </div>
+        </div>
+        <div class="exercise-video" aria-label="Burpee drill summary">
           <div class="exercise-brief">
             <h3>Raise heart rate: Burpees</h3>
             <p>Work hard until breathing is heavy and HR is close to the target zone, then move straight into the cognitive task.</p>
@@ -568,18 +905,28 @@
           <span>Target load</span>
           <strong>180 <small>bpm</small></strong>
         </div>
-        <p>Complete the physical burst first. When heart rate is around the target zone, unlock the cognitive test battery.</p>
+        <p>Complete the physical burst first. When heart rate is around the target zone, launch the post-load test with no delay.</p>
+        <div class="load-settings">
+          <label><input id="bpmGatekeeper" type="checkbox" /> BPM gate 160+</label>
+          <label><input id="timeLoad" type="checkbox" /> Time load</label>
+          <label><input id="sensoryLoad" type="checkbox" /> Sensory load</label>
+          <label><input id="secondaryLoad" type="checkbox" /> Secondary task</label>
+        </div>
         <label>
           Current heart rate
           <input id="heartRateInput" type="number" inputmode="numeric" min="80" max="220" value="180" />
         </label>
-        <button class="primary wide" id="confirmHeartRate" type="button">Confirm HR</button>
+        <button class="primary wide" id="confirmHeartRate" type="button">Tap when heart is racing / at target BPM</button>
       </section>
       <section class="cognitive-panel">
         <div class="test-tabs" aria-label="Cognitive test type">
           <button class="test-tab active" data-test="sequence" type="button">Sequence</button>
           <button class="test-tab" data-test="colour" type="button">Colour</button>
           <button class="test-tab" data-test="maths" type="button">Maths</button>
+          <button class="test-tab" data-test="nback" type="button">N-Back</button>
+          <button class="test-tab" data-test="tracker" type="button">Grid Pop</button>
+          <button class="test-tab" data-test="vigilance" type="button">Threat Flash</button>
+          <button class="test-tab" data-test="recite" type="button">Recite</button>
         </div>
         <div class="sequence-head">
           <div>
@@ -603,7 +950,40 @@
           </div>
           <div class="choice-grid" id="mathsChoices" aria-label="Quick maths choices"></div>
         </div>
+        <div class="cognitive-task" id="nbackTask">
+          <div class="nback-grid locked" id="nbackGrid" aria-label="Dual N-Back grid"></div>
+          <div class="dual-buttons">
+            <button class="choice-button" id="visualMatch" type="button">Visual match</button>
+            <button class="choice-button" id="audioMatch" type="button">Audio match</button>
+          </div>
+        </div>
+        <div class="cognitive-task" id="trackerTask">
+          <div class="tracker-field grid-pop-field locked" id="trackerField" aria-label="Grid Pop tracking field"></div>
+        </div>
+        <div class="cognitive-task" id="vigilanceTask">
+          <button class="vigilance-cue locked" id="vigilanceCue" type="button">
+            <span class="vigilance-symbol">WAIT</span>
+          </button>
+          <div class="choice-grid peripheral-choices" id="peripheralChoices" aria-label="Peripheral number choices"></div>
+        </div>
+        <div class="cognitive-task" id="reciteTask">
+          <div class="maths-card locked" id="reciteCard">
+            <span id="recitePrompt">100 - 7</span>
+          </div>
+          <div class="choice-grid" id="reciteChoices" aria-label="Backward recitation choices"></div>
+        </div>
         <button class="secondary wide" id="resetSequence" type="button">Reset drill</button>
+      </section>
+      <section class="cooldown-gate" id="cooldownGate" aria-live="polite">
+        <div class="cooldown-orb" aria-hidden="true">
+          <span>BOX</span>
+          <strong id="cooldownTarget">-- bpm</strong>
+        </div>
+        <div>
+          <h3>Cooldown gate</h3>
+          <p id="cooldownCopy">Breathing unlocks after the post-load test. Drive heart rate down with box breathing to complete the session.</p>
+        </div>
+        <button class="primary wide" id="completeCooldown" type="button">Check recovery HR</button>
       </section>
     </dialog>
 
@@ -622,6 +1002,30 @@
       <button class="primary wide" id="moduleDetailAction" type="button">Start module</button>
     </dialog>
 
+    <dialog id="mealDetailDialog" class="dialog meal-detail-dialog">
+      <div class="dialog-head">
+        <h2 id="mealDetailTitle">Meal</h2>
+        <button class="icon-button plain" id="closeMealDetail" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="meal-detail-meta" id="mealDetailMeta"></div>
+      <section class="meal-detail-block">
+        <h3>Ingredient amounts</h3>
+        <ul class="ingredient-list" id="mealIngredientList"></ul>
+      </section>
+      <section class="meal-detail-block">
+        <h3>Prep rundown</h3>
+        <ol class="prep-list" id="mealPrepList"></ol>
+      </section>
+      <section class="meal-detail-block">
+        <h3>Why this works</h3>
+        <p id="mealWhyCopy"></p>
+      </section>
+    </dialog>
+
     <dialog id="progressDialog" class="dialog progress-dialog">
       <div class="dialog-head">
         <h2>Progress</h2>
@@ -633,7 +1037,7 @@
       </div>
       <div class="progress-metrics">
         <article><strong>5</strong><span>Ready modules</span></article>
-        <article><strong>82%</strong><span>Readiness</span></article>
+        <article><strong>0</strong><span>Stress drills</span></article>
         <article><strong>3</strong><span>Pressure tools</span></article>
       </div>
       <p>Track completion, pressure drill attempts, and recovery work here as the app grows.</p>
@@ -641,6 +1045,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="./app.js?v=native-health-sync"></script>
+    <script src="./app.js?v=burpee-clean-v13"></script>
   </body>
 </html>
