@@ -6,7 +6,7 @@
     <meta id="themeColorMeta" name="theme-color" content="#070908" />
     <title>Forge Training</title>
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=burpee-clean-v13" />
+    <link rel="stylesheet" href="./styles.css?v=burpee-test-v1" />
   </head>
   <body data-theme="police">
     <svg class="icon-sprite" aria-hidden="true">
@@ -78,6 +78,20 @@
         <path d="M4 19V5" />
         <path d="M4 19h16" />
         <path d="M8 15V9M12 15V7M16 15v-4" />
+      </symbol>
+      <symbol id="icon-series" viewBox="0 0 24 24">
+        <path d="M5 18.5 9 14l4 2 6-8.5" />
+        <path d="M5 18.5h14" />
+        <circle cx="5" cy="18.5" r="1.8" />
+        <circle cx="9" cy="14" r="1.8" />
+        <circle cx="13" cy="16" r="1.8" />
+        <circle cx="19" cy="7.5" r="1.8" />
+      </symbol>
+      <symbol id="icon-medal" viewBox="0 0 24 24">
+        <path d="m8 3 4 6 4-6" />
+        <path d="M9 3h6" />
+        <circle cx="12" cy="15" r="5" />
+        <path d="M12 12.8v4.4M9.8 15h4.4" />
       </symbol>
       <symbol id="icon-train" viewBox="0 0 24 24">
         <path d="M12 3v18" />
@@ -220,6 +234,149 @@
               <small>Coming next: short sprint load with fast recovery tracking.</small>
             </button>
             <button class="primary wide" id="startSelectedDrill" type="button">Start selected drill</button>
+          </section>
+
+          <section class="stack command-stack">
+            <div class="section-heading">
+              <h2>Workout tests</h2>
+              <span>Fitness benchmark</span>
+            </div>
+            <button class="workout-test-card" id="burpeeFitnessTestButton" type="button">
+              <span class="test-index">MH</span>
+              <span>
+                <strong>100 Burpees For Time</strong>
+                <small>Men's Health style benchmark: complete 100 clean burpees as fast as possible, log the time, then retest later.</small>
+              </span>
+            </button>
+            <button class="workout-test-card" id="burpeeCapacityTestButton" type="button">
+              <span class="test-index">3M</span>
+              <span>
+                <strong>3-minute burpee capacity</strong>
+                <small>Count clean reps in three minutes. Useful for a shorter operational fitness check.</small>
+              </span>
+            </button>
+            <button class="workout-test-card" id="burpeeFormTestButton" type="button">
+              <span class="test-index">F</span>
+              <span>
+                <strong>40/20 burpee control</strong>
+                <small>Three rounds of 40 seconds work and 20 seconds rest with strict form under fatigue.</small>
+              </span>
+            </button>
+          </section>
+        </section>
+
+        <section class="screen" id="seriesScreen">
+          <section class="stack series-hero">
+            <div class="section-heading">
+              <h2>Forge Series</h2>
+              <span>Challenge ladder</span>
+            </div>
+            <div class="series-brief">
+              <div>
+                <p class="label">Current mission</p>
+                <h3>8-Week Operator Awakening</h3>
+                <p>Build the functional base, complete HR cognitive drills, and unlock the first Forge digital patch.</p>
+              </div>
+              <div class="series-rank">
+                <svg aria-hidden="true"><use href="#icon-medal"></use></svg>
+                <strong>Bronze</strong>
+                <span>Entry tier</span>
+              </div>
+            </div>
+            <div class="mission-map" aria-label="Challenge progress map">
+              <span class="node active">0%</span>
+              <span class="line active"></span>
+              <span class="node active">25%</span>
+              <span class="line"></span>
+              <span class="node">50%</span>
+              <span class="line"></span>
+              <span class="node">75%</span>
+              <span class="line"></span>
+              <span class="node">Win</span>
+            </div>
+          </section>
+
+          <section class="stack">
+            <div class="section-heading">
+              <h2>Active challenges</h2>
+              <span>Solo or unit</span>
+            </div>
+            <div class="challenge-list">
+              <article class="challenge-card active">
+                <div class="challenge-head">
+                  <span class="row-icon"><svg aria-hidden="true"><use href="#icon-series"></use></svg></span>
+                  <div>
+                    <h3>Forge Foundations</h3>
+                    <p>Civilian functional base · 8 weeks</p>
+                  </div>
+                </div>
+                <div class="challenge-metrics">
+                  <span>4 strength</span>
+                  <span>2 conditioning</span>
+                  <span>1 recovery</span>
+                </div>
+                <p>Strength, conditioning, mobility, box breathing, scan-and-assess cues at 140-180 bpm.</p>
+                <button class="secondary wide challenge-action" data-challenge="Forge Foundations" type="button">Join challenge</button>
+              </article>
+
+              <article class="challenge-card">
+                <div class="challenge-head">
+                  <span class="row-icon"><svg aria-hidden="true"><use href="#icon-medal"></use></svg></span>
+                  <div>
+                    <h3>Shield Protocol</h3>
+                    <p>Police, corrections and custody · 8 weeks</p>
+                  </div>
+                </div>
+                <div class="challenge-metrics">
+                  <span>Grip</span>
+                  <span>Stairs</span>
+                  <span>Decision load</span>
+                </div>
+                <p>Grip strength, restraint simulations, crowd-control footwork, and high-HR response control.</p>
+                <button class="secondary wide challenge-action" data-challenge="Shield Protocol" type="button">Preview mission</button>
+              </article>
+
+              <article class="challenge-card">
+                <div class="challenge-head">
+                  <span class="row-icon"><svg aria-hidden="true"><use href="#icon-conditioning"></use></svg></span>
+                  <div>
+                    <h3>Ruck Assault</h3>
+                    <p>Military and operator · 12 weeks</p>
+                  </div>
+                </div>
+                <div class="challenge-metrics">
+                  <span>Ruck</span>
+                  <span>Load carry</span>
+                  <span>Recall</span>
+                </div>
+                <p>Rucking, tactical movement under load, obstacle-style circuits, and scenario memory under fatigue.</p>
+                <button class="secondary wide challenge-action" data-challenge="Ruck Assault" type="button">Preview mission</button>
+              </article>
+            </div>
+          </section>
+
+          <section class="stack compact">
+            <div class="section-heading">
+              <h2>Reward stack</h2>
+              <span>Digital + physical</span>
+            </div>
+            <div class="reward-grid">
+              <article>
+                <svg aria-hidden="true"><use href="#icon-medal"></use></svg>
+                <strong>Digital patch</strong>
+                <span>Unlocked at completion</span>
+              </article>
+              <article>
+                <svg aria-hidden="true"><use href="#icon-series"></use></svg>
+                <strong>Virtual map</strong>
+                <span>Milestones every 25%</span>
+              </article>
+              <article>
+                <svg aria-hidden="true"><use href="#icon-assign"></use></svg>
+                <strong>Team medal</strong>
+                <span>Paid or department tier</span>
+              </article>
+            </div>
           </section>
         </section>
 
@@ -428,6 +585,47 @@
               </div>
             </div>
           </section>
+
+          <section class="stack launch-board">
+            <div class="section-heading">
+              <h2>Launch board</h2>
+              <span>Business plan</span>
+            </div>
+            <div class="roadmap-grid">
+              <article>
+                <strong>Validate</strong>
+                <span>2-4 weeks</span>
+                <p>Survey 100 tactical fitness, police, corrections, military, and civilian resilience users.</p>
+              </article>
+              <article>
+                <strong>MVP</strong>
+                <span>4-12 weeks</span>
+                <p>Onboarding, 8-week base program, HR cognitive cues, meal plan, wearable-ready sync area.</p>
+              </article>
+              <article>
+                <strong>Launch</strong>
+                <span>NZ / AUS</span>
+                <p>Run the first Forge Challenge and collect beta stories before wider rollout.</p>
+              </article>
+            </div>
+            <div class="pricing-grid">
+              <article>
+                <span>Basic</span>
+                <strong>$9.99/mo</strong>
+                <p>8-week program, digital badges, manual tracking.</p>
+              </article>
+              <article>
+                <span>Pro</span>
+                <strong>$19.99/mo</strong>
+                <p>Full library, meal planning, challenge series, advanced cognitive drills.</p>
+              </article>
+              <article>
+                <span>Enterprise</span>
+                <strong>B2B</strong>
+                <p>Department teams, branded challenges, manager reporting, bulk licensing.</p>
+              </article>
+            </div>
+          </section>
         </section>
 
         <section class="screen" id="settingsScreen">
@@ -502,6 +700,10 @@
           <button class="nav-item active" data-nav="today" type="button">
             <svg aria-hidden="true"><use href="#icon-today"></use></svg>
             Today
+          </button>
+          <button class="nav-item" data-nav="series" type="button">
+            <svg aria-hidden="true"><use href="#icon-series"></use></svg>
+            Series
           </button>
           <button class="nav-item" data-nav="progress" type="button">
             <svg aria-hidden="true"><use href="#icon-progress"></use></svg>
@@ -987,6 +1189,41 @@
       </section>
     </dialog>
 
+    <dialog id="workoutTestDialog" class="dialog workout-test-dialog">
+      <div class="dialog-head">
+        <h2 id="workoutTestTitle">100 Burpees For Time</h2>
+        <button class="icon-button plain" id="closeWorkoutTest" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="test-scoreboard">
+        <article>
+          <span>Timer</span>
+          <strong id="workoutTestTimer">00:00</strong>
+        </article>
+        <article>
+          <span>Reps</span>
+          <strong id="workoutTestReps">0/100</strong>
+        </article>
+      </div>
+      <p id="workoutTestCopy">
+        Start the clock, complete 100 clean burpees, and tap Rep after each one. Stop when you reach 100 and save the time as your benchmark.
+      </p>
+      <ol class="test-standards" id="workoutTestStandards">
+        <li>Chest reaches the floor or controlled bottom position.</li>
+        <li>Feet return under the body before standing tall.</li>
+        <li>Jump or full hip extension finishes each rep.</li>
+      </ol>
+      <div class="test-actions">
+        <button class="primary wide" id="startWorkoutTest" type="button">Start test</button>
+        <button class="secondary wide" id="addWorkoutRep" type="button">Rep</button>
+        <button class="secondary wide" id="resetWorkoutTest" type="button">Reset</button>
+      </div>
+      <button class="primary wide" id="launchCognitiveAfterTest" type="button">Run cognitive test after</button>
+    </dialog>
+
     <dialog id="moduleDetailDialog" class="dialog module-detail-dialog">
       <div class="dialog-head">
         <h2 id="moduleDetailTitle">Module</h2>
@@ -1045,6 +1282,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="./app.js?v=burpee-clean-v13"></script>
+    <script src="./app.js?v=burpee-test-v1"></script>
   </body>
 </html>

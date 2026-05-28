@@ -125,6 +125,12 @@ const state = {
   reciteRound: 1,
   reciteAnswer: 0,
   cooldownTargetBpm: 0,
+  workoutTestMode: "hundred",
+  workoutTestTimer: null,
+  workoutTestSeconds: 0,
+  workoutTestReps: 0,
+  workoutTestTargetReps: 100,
+  workoutTestRunning: false,
   sequence: [],
   nextNumber: 1,
   sequenceAttempts: 0,
@@ -620,6 +626,7 @@ const mealPools = {
 
 const traineeScreen = document.querySelector("#traineeScreen");
 const trainScreen = document.querySelector("#trainScreen");
+const seriesScreen = document.querySelector("#seriesScreen");
 const mealPlanScreen = document.querySelector("#mealPlanScreen");
 const managerScreen = document.querySelector("#managerScreen");
 const settingsScreen = document.querySelector("#settingsScreen");
@@ -697,6 +704,16 @@ const completeCooldown = document.querySelector("#completeCooldown");
 const reciteCard = document.querySelector("#reciteCard");
 const recitePrompt = document.querySelector("#recitePrompt");
 const reciteChoices = document.querySelector("#reciteChoices");
+const workoutTestDialog = document.querySelector("#workoutTestDialog");
+const workoutTestTitle = document.querySelector("#workoutTestTitle");
+const workoutTestTimer = document.querySelector("#workoutTestTimer");
+const workoutTestReps = document.querySelector("#workoutTestReps");
+const workoutTestCopy = document.querySelector("#workoutTestCopy");
+const workoutTestStandards = document.querySelector("#workoutTestStandards");
+const startWorkoutTest = document.querySelector("#startWorkoutTest");
+const addWorkoutRep = document.querySelector("#addWorkoutRep");
+const resetWorkoutTest = document.querySelector("#resetWorkoutTest");
+const launchCognitiveAfterTest = document.querySelector("#launchCognitiveAfterTest");
 const mealPlanForm = document.querySelector("#mealPlanForm");
 const mealGoal = document.querySelector("#mealGoal");
 const mealBudget = document.querySelector("#mealBudget");
@@ -767,11 +784,15 @@ document.querySelector("#drillBreathingButton").addEventListener("click", () => 
 document.querySelector("#drillSitButton").addEventListener("click", openSebDialog);
 document.querySelector("#startSelectedDrill").addEventListener("click", openCognitiveDialog);
 document.querySelector("#burpeeWorkoutButton").addEventListener("click", () => showToast("Burpee selected"));
+document.querySelector("#burpeeFitnessTestButton").addEventListener("click", () => openWorkoutTest("hundred"));
+document.querySelector("#burpeeCapacityTestButton").addEventListener("click", () => openWorkoutTest("capacity"));
+document.querySelector("#burpeeFormTestButton").addEventListener("click", () => openWorkoutTest("control"));
 document.querySelector("#stressResetButton").addEventListener("click", openSebDialog);
 document.querySelector("#closeBreathing").addEventListener("click", closeBreathing);
 document.querySelector("#closeSeb").addEventListener("click", () => sebDialog.close());
 document.querySelector("#closeCognitive").addEventListener("click", closeCognitive);
 document.querySelector("#closeWorkout").addEventListener("click", closeWorkout);
+document.querySelector("#closeWorkoutTest").addEventListener("click", closeWorkoutTest);
 document.querySelector("#closeModuleDetail").addEventListener("click", () => moduleDetailDialog.close());
 document.querySelector("#closeMealDetail").addEventListener("click", () => mealDetailDialog.close());
 document.querySelector("#closeProgress").addEventListener("click", () => progressDialog.close());
@@ -787,6 +808,13 @@ visualMatch.addEventListener("click", () => handleNbackChoice("visual"));
 audioMatch.addEventListener("click", () => handleNbackChoice("audio"));
 vigilanceCue.addEventListener("click", handleVigilanceTap);
 completeCooldown.addEventListener("click", completeCooldownGate);
+startWorkoutTest.addEventListener("click", toggleWorkoutTest);
+addWorkoutRep.addEventListener("click", addWorkoutTestRep);
+resetWorkoutTest.addEventListener("click", resetWorkoutTestState);
+launchCognitiveAfterTest.addEventListener("click", () => {
+  closeWorkoutTest();
+  openCognitiveDialog();
+});
 moduleDetailAction.addEventListener("click", startActiveModule);
 mealPlanForm.addEventListener("submit", buildMealPlanFromForm);
 refreshWeekPlan.addEventListener("click", refreshFullMealPlan);
@@ -806,6 +834,14 @@ document.querySelectorAll("[data-health-source]").forEach((button) => {
 
 document.querySelectorAll(".nav-item").forEach((button) => {
   button.addEventListener("click", () => handleNav(button.dataset.nav));
+});
+
+document.querySelectorAll(".challenge-action").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".challenge-card").forEach((card) => card.classList.remove("active"));
+    button.closest(".challenge-card").classList.add("active");
+    showToast(`${button.dataset.challenge} selected`);
+  });
 });
 
 document.querySelectorAll(".test-tab").forEach((button) => {
@@ -983,6 +1019,7 @@ function setRole(role) {
   const isTrainee = role === "trainee";
   traineeScreen.classList.toggle("active", isTrainee);
   trainScreen.classList.remove("active");
+  seriesScreen.classList.remove("active");
   mealPlanScreen.classList.remove("active");
   managerScreen.classList.toggle("active", !isTrainee);
   settingsScreen.classList.remove("active");
@@ -1169,6 +1206,7 @@ function handleNav(destination) {
     state.role = "trainee";
     traineeScreen.classList.remove("active");
     trainScreen.classList.remove("active");
+    seriesScreen.classList.remove("active");
     managerScreen.classList.remove("active");
     settingsScreen.classList.remove("active");
     mealPlanScreen.classList.add("active");
@@ -1179,11 +1217,27 @@ function handleNav(destination) {
     return;
   }
 
+  if (destination === "series") {
+    state.role = "trainee";
+    traineeScreen.classList.remove("active");
+    trainScreen.classList.remove("active");
+    mealPlanScreen.classList.remove("active");
+    managerScreen.classList.remove("active");
+    settingsScreen.classList.remove("active");
+    seriesScreen.classList.add("active");
+    traineeRole.classList.add("active");
+    managerRole.classList.remove("active");
+    screenTitle.textContent = "FORGE series";
+    seriesScreen.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
   if (destination === "settings") {
     state.role = "trainee";
     traineeScreen.classList.remove("active");
     trainScreen.classList.remove("active");
     mealPlanScreen.classList.remove("active");
+    seriesScreen.classList.remove("active");
     managerScreen.classList.remove("active");
     settingsScreen.classList.add("active");
     traineeRole.classList.add("active");
@@ -1196,6 +1250,7 @@ function handleNav(destination) {
   if (destination === "train") {
     state.role = "trainee";
     traineeScreen.classList.remove("active");
+    seriesScreen.classList.remove("active");
     mealPlanScreen.classList.remove("active");
     managerScreen.classList.remove("active");
     settingsScreen.classList.remove("active");
@@ -2604,6 +2659,126 @@ function closeCognitive() {
   hideCooldownGate();
   document.body.classList.remove("sensory-load");
   cognitiveDialog.close();
+}
+
+const workoutTests = {
+  hundred: {
+    title: "100 Burpees For Time",
+    targetReps: 100,
+    copy:
+      "Start the clock, complete 100 clean burpees, and tap Rep after each one. Stop when you reach 100 and save the time as your benchmark.",
+    standards: [
+      "Chest reaches the floor or controlled bottom position.",
+      "Feet return under the body before standing tall.",
+      "Jump or full hip extension finishes each rep.",
+    ],
+  },
+  capacity: {
+    title: "3-minute burpee capacity",
+    targetReps: 0,
+    copy:
+      "Start the three-minute clock and count every clean rep. This gives a shorter field benchmark when you do not want the full 100-rep test.",
+    standards: [
+      "Keep each rep clean before chasing speed.",
+      "Stop counting reps that lose the bottom position or full stand.",
+      "Record total reps and compare against future attempts.",
+    ],
+  },
+  control: {
+    title: "40/20 burpee control",
+    targetReps: 0,
+    copy:
+      "Run three rounds: 40 seconds of burpees, 20 seconds of recovery. Count clean reps and watch how form holds under fatigue.",
+    standards: [
+      "Round one establishes pace.",
+      "Round two tests breathing and posture under load.",
+      "Round three tests composure and repeatable mechanics.",
+    ],
+  },
+};
+
+function openWorkoutTest(mode) {
+  state.workoutTestMode = mode;
+  resetWorkoutTestState();
+  renderWorkoutTest();
+  workoutTestDialog.showModal();
+}
+
+function renderWorkoutTest() {
+  const test = workoutTests[state.workoutTestMode] || workoutTests.hundred;
+  workoutTestTitle.textContent = test.title;
+  workoutTestCopy.textContent = test.copy;
+  workoutTestStandards.innerHTML = test.standards.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  workoutTestTimer.textContent = formatClock(state.workoutTestSeconds);
+  workoutTestReps.textContent = test.targetReps ? `${state.workoutTestReps}/${test.targetReps}` : `${state.workoutTestReps}`;
+  startWorkoutTest.textContent = state.workoutTestRunning ? "Pause test" : "Start test";
+}
+
+function toggleWorkoutTest() {
+  if (state.workoutTestRunning) {
+    stopWorkoutTestTimer();
+    renderWorkoutTest();
+    showToast("Workout test paused");
+    return;
+  }
+
+  state.workoutTestRunning = true;
+  startWorkoutTest.textContent = "Pause test";
+  state.workoutTestTimer = window.setInterval(() => {
+    state.workoutTestSeconds += 1;
+    if (state.workoutTestMode === "capacity" && state.workoutTestSeconds >= 180) {
+      finishWorkoutTest("3-minute test complete");
+      return;
+    }
+    if (state.workoutTestMode === "control" && state.workoutTestSeconds >= 180) {
+      finishWorkoutTest("40/20 control test complete");
+      return;
+    }
+    renderWorkoutTest();
+  }, 1000);
+  showToast("Workout test started");
+}
+
+function addWorkoutTestRep() {
+  if (!state.workoutTestRunning) toggleWorkoutTest();
+  state.workoutTestReps += 1;
+  if (state.workoutTestTargetReps && state.workoutTestReps >= state.workoutTestTargetReps) {
+    finishWorkoutTest(`Benchmark complete: ${formatClock(state.workoutTestSeconds)}`);
+    return;
+  }
+  renderWorkoutTest();
+}
+
+function finishWorkoutTest(message) {
+  stopWorkoutTestTimer();
+  renderWorkoutTest();
+  showToast(message);
+}
+
+function resetWorkoutTestState() {
+  stopWorkoutTestTimer();
+  const test = workoutTests[state.workoutTestMode] || workoutTests.hundred;
+  state.workoutTestSeconds = 0;
+  state.workoutTestReps = 0;
+  state.workoutTestTargetReps = test.targetReps;
+  renderWorkoutTest();
+}
+
+function stopWorkoutTestTimer() {
+  window.clearInterval(state.workoutTestTimer);
+  state.workoutTestTimer = null;
+  state.workoutTestRunning = false;
+}
+
+function closeWorkoutTest() {
+  stopWorkoutTestTimer();
+  workoutTestDialog.close();
+}
+
+function formatClock(totalSeconds) {
+  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  return `${minutes}:${seconds}`;
 }
 
 function showToast(message) {
