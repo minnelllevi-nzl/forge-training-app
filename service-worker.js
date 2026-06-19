@@ -1,4 +1,4 @@
-const CACHE_NAME = "forge-training-v53-cache-refresh";
+const CACHE_NAME = "forge-training-v55-meal-image-fix";
 const ASSETS = [
   "./",
   "./index.html",

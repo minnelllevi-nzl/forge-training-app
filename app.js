@@ -1342,7 +1342,211 @@ function generatedPrepSteps(prep, protein, carb, veg, sauce) {
   ];
 }
 
-const generatedMealPools = generateMealLibrary();
+function generateCuratedMealLibrary() {
+  const library = { breakfast: [], lunch: [], dinner: [], snack: [] };
+  const operationalProteins = mealComponents.proteins.filter((protein) =>
+    ["chicken breast", "turkey mince", "lean beef mince", "lean steak", "salmon", "tuna", "white fish", "tofu", "kidney beans", "red lentils"].includes(protein.name),
+  );
+  const breakfastProteins = mealComponents.breakfastProteins;
+  const bowlCarbs = mealComponents.carbs.filter((carb) => ["rice", "potatoes", "kumara", "quinoa", "pasta", "wholemeal wrap"].includes(carb.name));
+  const vegetables = mealComponents.vegetables;
+  const sauces = mealComponents.sauces;
+
+  const breakfastFruits = [
+    { name: "banana", label: "banana", calories: 105, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 medium" },
+    { name: "mixed berries", label: "berries", calories: 60, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "80g" },
+    { name: "apple", label: "apple", calories: 95, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 medium" },
+    { name: "peanut butter", label: "peanut butter", calories: 95, protein: 4, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 tbsp" },
+  ];
+
+  breakfastProteins
+    .filter((protein) => ["Greek yoghurt", "cottage cheese", "protein powder"].includes(protein.name))
+    .forEach((protein, proteinIndex) => {
+      breakfastFruits.forEach((fruit, fruitIndex) => {
+        const oats = findMealComponent("rolled oats");
+        library.breakfast.push(
+          curatedMeal("breakfast", `${capitalize(protein.label)} ${fruit.label} overnight oats`, [protein, oats, fruit, findMealComponent("chia seeds")], 90 + proteinIndex * 10 + fruitIndex * 5, 4),
+        );
+      });
+    });
+
+  breakfastProteins
+    .filter((protein) => ["eggs", "turkey slices", "tofu", "black beans"].includes(protein.name))
+    .forEach((protein, proteinIndex) => {
+      ["potatoes", "kumara", "wholemeal wrap", "wholegrain toast"].forEach((carbName, carbIndex) => {
+        ["spinach", "tomato", "salsa"].forEach((vegName, vegIndex) => {
+          const carb = findMealComponent(carbName);
+          const veg = findMealComponent(vegName);
+          const format = carbName.includes("wrap") ? "breakfast wrap" : carbName.includes("toast") ? "toast plate" : "breakfast hash";
+          library.breakfast.push(curatedMeal("breakfast", `${capitalize(protein.label)} ${veg.label} ${format}`, [protein, carb, veg], 100 + carbIndex * 20, 4 + (proteinIndex % 2) + vegIndex));
+        });
+      });
+    });
+
+  operationalProteins.forEach((protein, proteinIndex) => {
+    bowlCarbs.forEach((carb, carbIndex) => {
+      const veg = vegetables[(proteinIndex + carbIndex) % vegetables.length];
+      const sauce = sauces[(proteinIndex + carbIndex) % sauces.length];
+      if (carb.name === "wholemeal wrap") {
+        library.lunch.push(curatedMeal("lunch", `${capitalize(protein.label)} ${veg.label} patrol wrap`, [protein, carb, veg, sauce], 90, 3));
+      } else {
+        library.lunch.push(curatedMeal("lunch", `${capitalize(protein.label)} ${carb.label} ${veg.label} field bowl`, [protein, carb, veg, sauce], 110, 4));
+        library.dinner.push(curatedMeal("dinner", `${capitalize(protein.label)} ${carb.label} ${veg.label} dinner plate`, [protein, carb, veg, sauce], 155, 5));
+      }
+    });
+
+    ["rice", "quinoa", "potatoes"].forEach((carbName, index) => {
+      const carb = findMealComponent(carbName);
+      const veg = vegetables[(proteinIndex + index + 2) % vegetables.length];
+      library.lunch.push(curatedMeal("lunch", `${capitalize(protein.label)} ${veg.label} recovery salad`, [protein, carb, veg, findMealComponent("lemon dressing")], 65, 3));
+    });
+
+    const stirFryVegetables = vegetables.filter((vegetable) => !["cucumber", "tomatoes", "cabbage slaw"].includes(vegetable.name));
+    ["rice", "pasta", "quinoa"].forEach((carbName, index) => {
+      const carb = findMealComponent(carbName);
+      const veg = stirFryVegetables[(proteinIndex + index) % stirFryVegetables.length];
+      const vegLabel = veg.name === "stir fry vegetables" ? "vegetable" : veg.label;
+      const sauce = protein.name.includes("bean") || protein.name.includes("lentils") ? findMealComponent("chilli spice") : findMealComponent("soy sauce");
+      library.dinner.push(curatedMeal("dinner", `${capitalize(protein.label)} ${carb.label} ${vegLabel} stir-fry`, [protein, carb, veg, sauce], 135, 4));
+    });
+  });
+
+  const soupProteins = operationalProteins.filter((protein) => ["chicken breast", "tuna", "white fish", "tofu", "kidney beans", "red lentils"].includes(protein.name));
+  soupProteins.forEach((protein, index) => {
+    library.lunch.push(curatedMeal("lunch", `${capitalize(protein.label)} vegetable soup`, [protein, findMealComponent("potatoes"), findMealComponent("carrot"), findMealComponent("stock")], 70, 2));
+    library.dinner.push(curatedMeal("dinner", `${capitalize(protein.label)} recovery soup and rice`, [protein, findMealComponent("rice"), findMealComponent("mixed vegetables"), findMealComponent("stock")], 115, 3 + index % 2));
+  });
+
+  const snackBases = [
+    findMealComponent("Greek yoghurt"),
+    findMealComponent("cottage cheese"),
+    findMealComponent("boiled eggs"),
+    findMealComponent("hummus"),
+    findMealComponent("tuna"),
+    findMealComponent("protein powder"),
+    findMealComponent("peanut butter"),
+  ];
+  const snackPairMap = {
+    "Greek yoghurt": ["banana", "apple", "mixed berries", "rolled oats"],
+    "cottage cheese": ["mixed berries", "wholegrain crackers", "tomato", "cucumber"],
+    "boiled eggs": ["carrot sticks", "wholemeal toast", "cucumber", "potatoes"],
+    hummus: ["carrot sticks", "cucumber", "wholegrain crackers", "wholemeal toast"],
+    tuna: ["wholegrain crackers", "cucumber", "wholemeal toast", "carrot sticks"],
+    "protein powder": ["banana", "mixed berries", "rolled oats", "apple"],
+    "peanut butter": ["apple", "banana", "wholemeal toast", "rolled oats"],
+  };
+  snackBases.forEach((base, baseIndex) => {
+    snackPairMap[base.name].map(findMealComponent).forEach((add, addIndex) => {
+      library.snack.push(curatedMeal("snack", `${capitalize(base.label)} ${add.label} snack box`, [base, add], baseIndex % 2 ? 35 : 0, addIndex % 3));
+    });
+  });
+
+  return dedupeMealLibrary(library);
+}
+
+function curatedMeal(slot, name, components, extraCalories = 0, extraProtein = 0) {
+  const validComponents = components.filter(Boolean);
+  const calories = validComponents.reduce((total, item) => total + (item.calories || 45), 0) + extraCalories;
+  const protein = validComponents.reduce((total, item) => total + (item.protein || 1), 0) + extraProtein;
+  const diets = intersectDiets(...validComponents.map((item) => item.diets || ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"]));
+  const premium = validComponents.some((item) => item.cost === "standard" || premiumIngredients.some((premiumItem) => item.name?.toLowerCase().includes(premiumItem)));
+  return {
+    name,
+    calories,
+    protein,
+    tags: goalTagsForCalories(calories),
+    dietTags: [...new Set([...diets, protein >= highProteinThreshold({ calories }) ? "high-protein" : ""])].filter(Boolean),
+    cost: premium ? "standard" : "budget",
+    image: "",
+    source: "Forge curated meal library",
+    ingredients: validComponents.map((item) => item.name),
+    amounts: Object.fromEntries(validComponents.map((item) => [item.name, item.amount || ingredientAmounts[item.name] || "1 serve"])),
+    steps: curatedPrepSteps(slot, name, validComponents),
+  };
+}
+
+function curatedPrepSteps(slot, name, components) {
+  const ingredientText = components.map((item) => item.label || item.name).join(", ");
+  if (slot === "snack") {
+    return [
+      `Portion ${ingredientText} into a small container or pouch.`,
+      "Keep chilled items cold and dry items separate until eating.",
+      "Use it as a controlled snack between training, work, or recovery blocks.",
+    ];
+  }
+  if (/wrap/i.test(name)) {
+    return [
+      "Warm the wrap so it folds without tearing.",
+      `Layer ${ingredientText}, keeping wet ingredients in the centre.`,
+      "Roll tightly and pack in foil if taking it on shift.",
+    ];
+  }
+  if (/soup/i.test(name)) {
+    return [
+      "Simmer the stock or liquid base first.",
+      `Add ${ingredientText} and cook until the protein and vegetables are ready.`,
+      "Season lightly and portion into a bowl or meal-prep container.",
+    ];
+  }
+  if (/oats/i.test(name)) {
+    return [
+      "Mix the oats, protein base, and fruit in a container.",
+      "Chill overnight or cook gently if you want it warm.",
+      "Stir before eating and add water or milk if the texture is too thick.",
+    ];
+  }
+  return [
+    "Cook the protein first and keep the portion close to the listed amount.",
+    "Add the carbohydrate and vegetables, then heat or toss together.",
+    "Finish with the sauce or seasoning and portion for the training day.",
+  ];
+}
+
+function findMealComponent(name) {
+  const catalog = [
+    ...mealComponents.proteins,
+    ...mealComponents.breakfastProteins,
+    ...mealComponents.carbs,
+    ...mealComponents.vegetables,
+    ...mealComponents.sauces,
+    { name: "wholegrain toast", label: "toast", calories: 160, protein: 7, diets: ["vegetarian", "dairy-free", "halal-friendly"], amount: "2 slices" },
+    { name: "tomato", label: "tomato", calories: 25, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 medium" },
+    { name: "salsa", label: "salsa", calories: 35, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "2 tbsp" },
+    { name: "chia seeds", label: "chia", calories: 45, protein: 2, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 tbsp" },
+    { name: "banana", label: "banana", calories: 105, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 medium" },
+    { name: "apple", label: "apple", calories: 95, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 medium" },
+    { name: "mixed berries", label: "berries", calories: 60, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "80g" },
+    { name: "peanut butter", label: "peanut butter", calories: 95, protein: 4, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 tbsp" },
+    { name: "boiled eggs", label: "egg", calories: 155, protein: 13, diets: ["vegetarian", "gluten-free", "dairy-free", "halal-friendly"], amount: "2 eggs" },
+    { name: "hummus", label: "hummus", calories: 180, protein: 7, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "4 tbsp" },
+    { name: "carrot", label: "carrot", calories: 35, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 medium" },
+    { name: "carrot sticks", label: "carrots", calories: 45, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 cup" },
+    { name: "wholegrain crackers", label: "crackers", calories: 120, protein: 3, diets: ["vegetarian", "vegan", "dairy-free", "halal-friendly"], amount: "6 crackers" },
+    { name: "mixed nuts", label: "nuts", calories: 170, protein: 6, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "30g" },
+    { name: "wholemeal toast", label: "toast", calories: 160, protein: 7, diets: ["vegetarian", "dairy-free", "halal-friendly"], amount: "2 slices" },
+    { name: "stock", label: "stock", calories: 20, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "350ml" },
+  ];
+  return catalog.find((item) => item.name === name) || { name, label: name, calories: 60, protein: 2, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 serve" };
+}
+
+function dedupeMealLibrary(library) {
+  return Object.fromEntries(
+    Object.entries(library).map(([slot, meals]) => {
+      const seen = new Set();
+      return [
+        slot,
+        meals.filter((meal) => {
+          const key = meal.name.toLowerCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        }),
+      ];
+    }),
+  );
+}
+
+const generatedMealPools = generateCuratedMealLibrary();
 
 Object.entries(generatedMealPools).forEach(([slot, meals]) => {
   mealPools[slot].push(...meals);
@@ -1638,14 +1842,15 @@ function loadModules() {
 
 function loadMealProfile() {
   const fallback = {
-    goal: "lose",
+    goal: "maintain",
     diet: "any",
     budget: false,
     weeklyBudget: 90,
     people: 1,
     mealsCovered: 4,
     budgetPriority: "balanced",
-    avoidPremiumFoods: true,
+    avoidPremiumFoods: false,
+    libraryVersion: 2,
     weight: 86,
     height: 178,
     age: 32,
@@ -1660,7 +1865,14 @@ function loadMealProfile() {
     targetCalories: 2400,
   };
   const saved = localStorage.getItem("forgeMealProfile");
-  return saved ? { ...fallback, ...JSON.parse(saved) } : fallback;
+  if (!saved) return fallback;
+  const savedProfile = JSON.parse(saved);
+  return {
+    ...fallback,
+    ...savedProfile,
+    avoidPremiumFoods: savedProfile.libraryVersion ? savedProfile.avoidPremiumFoods : false,
+    libraryVersion: 2,
+  };
 }
 
 function loadProfessionTheme() {
@@ -2015,7 +2227,7 @@ function renderMealInputs() {
   mealPeople.value = state.mealProfile.people || 1;
   mealsCovered.value = String(state.mealProfile.mealsCovered || 4);
   budgetPriority.value = state.mealProfile.budgetPriority || "balanced";
-  avoidPremiumFoods.checked = state.mealProfile.avoidPremiumFoods !== false;
+  avoidPremiumFoods.checked = Boolean(state.mealProfile.avoidPremiumFoods);
   mealWeight.value = state.mealProfile.weight;
   mealHeight.value = state.mealProfile.height;
   mealAge.value = state.mealProfile.age;
@@ -2061,6 +2273,7 @@ function readMealProfileFromInputs() {
     steps: Number(stepCount.value) || 0,
     restingHeartRate: Number(restingHeartRate.value) || 60,
     recoveryFeel: recoveryFeel.value,
+    libraryVersion: 2,
     syncSource: state.mealProfile.syncSource || "Manual entry",
     permissionState: state.mealProfile.permissionState || "Not requested",
     lastSynced: state.mealProfile.lastSynced || "",
@@ -2229,18 +2442,37 @@ function applyDailyHealthData() {
 
 function buildWeekPlan(profile) {
   const targetCalories = profile.targetCalories || calculateCalories(profile);
+  const usedMeals = new Set();
+  const usedProteins = {};
   return dayNames.map((day, dayIndex) => {
     const meals = {};
     mealSlots.forEach((slot, slotIndex) => {
-      meals[slot] = pickMeal(slot, profile, targetCalories * mealTargets[slot], dayIndex + slotIndex);
+      const meal = pickMeal(slot, profile, targetCalories * mealTargets[slot], dayIndex + slotIndex, usedMeals, usedProteins);
+      meals[slot] = meal;
+      usedMeals.add(meal.name);
+      const protein = primaryMealProtein(meal);
+      if (protein) {
+        usedProteins[slot] ||= new Set();
+        usedProteins[slot].add(protein);
+      }
     });
     return { day, meals };
   });
 }
 
-function pickMeal(slot, profile, targetCalories, offset = 0) {
+function pickMeal(slot, profile, targetCalories, offset = 0, usedMeals = new Set(), usedProteins = {}) {
   const options = getMealOptions(slot, profile, targetCalories);
-  return options[offset % options.length];
+  const rotated = rotateMeals(options, offset * 7);
+  const unusedWithFreshProtein = rotated.find((meal) => !usedMeals.has(meal.name) && !usedProteins[slot]?.has(primaryMealProtein(meal)));
+  if (unusedWithFreshProtein) return unusedWithFreshProtein;
+  const unused = rotated.find((meal) => !usedMeals.has(meal.name));
+  return unused || rotated[0];
+}
+
+function rotateMeals(meals, offset = 0) {
+  if (!meals.length) return meals;
+  const start = offset % meals.length;
+  return [...meals.slice(start), ...meals.slice(0, start)];
 }
 
 function getMealOptions(slot, profile, targetCalories) {
@@ -2271,9 +2503,34 @@ function matchesDietPreference(meal, diet = "any") {
   return dietTagsForMeal(meal).includes(diet);
 }
 
+function primaryMealProtein(meal) {
+  const ingredientText = meal.ingredients.join(" ").toLowerCase();
+  const proteinMatches = [
+    ["chicken", /chicken/],
+    ["turkey", /turkey/],
+    ["beef", /beef|steak/],
+    ["salmon", /salmon/],
+    ["tuna", /tuna/],
+    ["white fish", /white fish| fish/],
+    ["lamb", /lamb/],
+    ["eggs", /egg|boiled eggs/],
+    ["greek yoghurt", /greek yoghurt|yoghurt/],
+    ["cottage cheese", /cottage cheese/],
+    ["protein powder", /protein powder/],
+    ["tofu", /tofu/],
+    ["beans", /kidney beans|black beans/],
+    ["lentils", /red lentils|lentils/],
+    ["hummus", /hummus/],
+    ["peanut butter", /peanut butter/],
+  ];
+  return proteinMatches.find(([, pattern]) => pattern.test(ingredientText))?.[0] || "";
+}
+
 function highProteinThreshold(meal) {
-  if (meal.calories <= 380) return 22;
-  if (meal.calories <= 600) return 32;
+  if (meal.calories <= 320) return 16;
+  if (meal.calories <= 430) return 20;
+  if (meal.calories <= 600) return 26;
+  if (meal.calories <= 760) return 34;
   return 40;
 }
 
@@ -2295,13 +2552,19 @@ function dietTagsForMeal(meal) {
 
 function mealScore(meal, targetCalories, profile) {
   const calorieScore = Math.abs(meal.calories - targetCalories);
-  const costScore = estimateMealCost(meal) * (profile.budgetPriority === "flexible" ? 22 : profile.budgetPriority === "strict" ? 70 : 42);
+  const costScore = estimateMealCost(meal) * (profile.budgetPriority === "flexible" ? 0 : profile.budgetPriority === "strict" ? 62 : 4);
   const premiumPenalty = profile.avoidPremiumFoods && hasPremiumIngredient(meal) ? 500 : 0;
   const standardPenalty = profile.budget && meal.cost !== "budget" ? 350 : 0;
-  return calorieScore + costScore + premiumPenalty + standardPenalty;
+  const dietTags = dietTagsForMeal(meal);
+  const ingredientText = meal.ingredients.join(" ").toLowerCase();
+  const defaultDietPenalty = !profile.diet || profile.diet === "any" ? (dietTags.includes("vegan") ? 120 : dietTags.includes("vegetarian") ? 60 : 0) : 0;
+  const plantMainPenalty =
+    !profile.diet || profile.diet === "any" ? (/tofu|kidney beans|red lentils|black beans|hummus/.test(ingredientText) ? 520 : 0) : 0;
+  return calorieScore + costScore + premiumPenalty + standardPenalty + defaultDietPenalty + plantMainPenalty;
 }
 
 function getMealCostAllowance(profile) {
+  if (!profile.budget && profile.budgetPriority !== "strict") return 0;
   const weeklyBudget = Number(profile.weeklyBudget) || 0;
   if (!weeklyBudget) return 0;
   const people = Math.max(1, Number(profile.people) || 1);
@@ -2364,7 +2627,7 @@ function refreshMeal(dayIndex, slot) {
 
 function pickClosestRandom(pool, targetCalories) {
   const ranked = [...pool].sort((a, b) => Math.abs(a.calories - targetCalories) - Math.abs(b.calories - targetCalories));
-  return ranked[randomInt(0, Math.min(7, ranked.length - 1))];
+  return ranked[randomInt(0, Math.min(12, ranked.length - 1))];
 }
 
 function renderMealPlan() {
@@ -2465,7 +2728,7 @@ function renderMealCard(meal, slot, dayIndex) {
   return `
     <div class="meal-card">
       <button class="meal-main" data-open-meal type="button" data-day="${dayIndex}" data-slot="${slot}">
-        <img class="meal-thumb" src="${escapeHtml(mealImage(meal, slot))}" alt="" loading="lazy" />
+        <img class="meal-thumb" src="${escapeHtml(mealImage(meal, slot))}" alt="" />
         <span>${escapeHtml(capitalize(slot))}</span>
         <strong>${escapeHtml(meal.name)}</strong>
         <small>${meal.calories} kcal · ${meal.protein}g protein · $${estimateMealCost(meal)} est · ${
@@ -2526,7 +2789,7 @@ function getIngredientAmount(ingredient, meal) {
 }
 
 function mealImage(meal, slot) {
-  return meal.image || generatedMealTile(meal, slot);
+  return generatedMealTile(meal, slot);
 }
 
 function generatedMealTile(meal, slot) {
@@ -2560,7 +2823,7 @@ function generatedMealTile(meal, slot) {
       <text x="36" y="318" fill="#8fc1af" font-family="Arial, sans-serif" font-size="18" font-weight="800">${diet}</text>
     </svg>
   `;
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
 }
 
 function mealAccent(meal, slot) {
