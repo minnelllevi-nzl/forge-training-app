@@ -3678,8 +3678,14 @@ renderBreathMethod();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js").catch(() => {
-      // The app still works without offline support.
-    });
+    navigator.serviceWorker
+      .register("./service-worker.js")
+      .then((registration) => {
+        registration.update();
+        if (registration.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
+      })
+      .catch(() => {
+        // The app still works without offline support.
+      });
   });
 }
