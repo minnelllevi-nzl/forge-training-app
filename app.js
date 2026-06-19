@@ -1,12 +1,13 @@
-const sitModuleTitle = "Stress Inoculation Training (SIT)";
+const aceModuleTitle = "ACE Cognitive Conditioning";
+const equilibriumModuleTitle = "Equilibrium breathing drill";
 
 const defaultModules = [
   {
     id: createId(),
-    title: sitModuleTitle,
+    title: aceModuleTitle,
     category: "Mental Health",
     notes:
-      "Stress indicators, Eyes Up awareness, and breathing/body language control for pressure moments.",
+      "Awareness, Composure, and Equilibrium drills for clear decisions under pressure.",
     media: "",
     assigned: true,
     core: true,
@@ -21,9 +22,9 @@ const defaultModules = [
   },
   {
     id: createId(),
-    title: "Box breathing drill",
+    title: equilibriumModuleTitle,
     category: "Breathing",
-    notes: "Four-count pressure breathing to steady attention before and after hard efforts.",
+    notes: "Equilibrium breathing to steady attention before and after hard efforts.",
     media: "",
     assigned: true,
   },
@@ -143,14 +144,14 @@ const state = {
 
 const breathMethods = {
   box: {
-    title: "Box breathing",
+    title: "Equilibrium breathing",
     phases: [
       { label: "Inhale", count: 4 },
       { label: "Hold", count: 4 },
       { label: "Exhale", count: 4 },
       { label: "Hold", count: 4 },
     ],
-    instruction: "Follow the count. Keep your jaw loose, shoulders low, and attention on the next breath.",
+    instruction: "Use the 4-4-4-4 box breath to restore Equilibrium, bring oxygen back to the brain, and steady decision-making.",
   },
   rocking: {
     title: "Rocking breathing",
@@ -624,6 +625,729 @@ const mealPools = {
   ],
 };
 
+const mealImageFallbacks = {
+  breakfast: "https://www.themealdb.com/images/media/meals/naqyel1608588563.jpg",
+  lunch: "https://www.themealdb.com/images/media/meals/1549542994.jpg",
+  dinner: "https://www.themealdb.com/images/media/meals/qptpvt1487339892.jpg",
+  snack: "https://www.themealdb.com/images/media/meals/2dsltq1560461468.jpg",
+};
+
+const expandedMealPools = {
+  breakfast: [
+    {
+      name: "Salmon egg performance toast",
+      calories: 590,
+      protein: 39,
+      tags: ["maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/1550440197.jpg",
+      source: "Inspired by TheMealDB salmon eggs benedict",
+      ingredients: ["salmon", "eggs", "wholegrain toast", "spinach", "Greek yoghurt"],
+      amounts: { salmon: "90g cooked or smoked", eggs: "2 eggs", "Greek yoghurt": "2 tbsp" },
+      steps: [
+        "Toast the bread and wilt the spinach in a pan or microwave.",
+        "Cook the eggs to preference, then layer salmon and eggs over the toast.",
+        "Spoon over yoghurt, season lightly, and eat while warm.",
+      ],
+    },
+    {
+      name: "Breakfast potatoes, eggs, greens",
+      calories: 540,
+      protein: 28,
+      tags: ["maintain", "build"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/1550441882.jpg",
+      source: "Inspired by TheMealDB breakfast potatoes",
+      ingredients: ["eggs", "potatoes", "spinach", "olive oil", "seasoning"],
+      amounts: { potatoes: "220g diced", eggs: "2 large eggs", spinach: "1 packed cup" },
+      steps: [
+        "Pan-cook diced potato with oil and seasoning until crisp at the edges.",
+        "Add spinach to wilt, then cook eggs beside the potatoes.",
+        "Plate together and add salt or pepper to taste.",
+      ],
+    },
+    {
+      name: "Overnight oats, yoghurt, berries",
+      calories: 480,
+      protein: 31,
+      tags: ["lose", "maintain", "build"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/uwq8001777540502.jpg",
+      source: "Forge field meal",
+      ingredients: ["rolled oats", "Greek yoghurt", "mixed berries", "chia seeds", "milk"],
+      amounts: { "rolled oats": "55g", "Greek yoghurt": "180g", milk: "120ml" },
+      steps: [
+        "Mix oats, yoghurt, milk, chia, and berries in a container.",
+        "Refrigerate overnight or for at least four hours.",
+        "Stir before eating and add water or milk if it is too thick.",
+      ],
+    },
+    {
+      name: "Shakshuka eggs and toast",
+      calories: 520,
+      protein: 30,
+      tags: ["lose", "maintain"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/eo0yfb1763600916.jpg",
+      source: "Inspired by TheMealDB vegetarian shakshuka",
+      ingredients: ["eggs", "tomatoes", "onion", "spinach", "wholegrain toast", "chilli spice"],
+      amounts: { tomatoes: "1 cup canned", onion: "1/2 onion", eggs: "2 eggs" },
+      steps: [
+        "Simmer tomatoes, onion, spinach, and spice until thick.",
+        "Crack eggs into the sauce, cover, and cook until set.",
+        "Serve with toast for a controlled carb base.",
+      ],
+    },
+    {
+      name: "Cottage cheese banana bowl",
+      calories: 430,
+      protein: 34,
+      tags: ["lose", "maintain"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/1543774956.jpg",
+      source: "Forge field meal",
+      ingredients: ["cottage cheese", "banana", "rolled oats", "mixed berries", "cinnamon"],
+      amounts: { "cottage cheese": "220g", "rolled oats": "30g", banana: "1 small" },
+      steps: [
+        "Spoon cottage cheese into a bowl.",
+        "Top with sliced banana, berries, oats, and cinnamon.",
+        "Eat cold, or pack in a sealed container for shift work.",
+      ],
+    },
+    {
+      name: "Turkey breakfast burrito",
+      calories: 640,
+      protein: 45,
+      tags: ["maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/1wj8w31763781990.jpg",
+      source: "Inspired by TheMealDB turkey banh mi",
+      ingredients: ["turkey slices", "eggs", "wholemeal wrap", "spinach", "tomato", "salsa"],
+      amounts: { "turkey slices": "90g", eggs: "2 eggs", "wholemeal wrap": "1 large" },
+      steps: [
+        "Scramble the eggs and warm the wrap.",
+        "Layer turkey, eggs, spinach, tomato, and salsa.",
+        "Roll tightly and toast seam-side down if eating immediately.",
+      ],
+    },
+    {
+      name: "Protein porridge with apple",
+      calories: 560,
+      protein: 36,
+      tags: ["maintain", "build"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/uwq8001777540502.jpg",
+      source: "Forge field meal",
+      ingredients: ["rolled oats", "protein powder", "milk", "apple", "cinnamon"],
+      amounts: { "rolled oats": "65g", "protein powder": "1 scoop", apple: "1/2 diced" },
+      steps: [
+        "Cook oats with milk until creamy.",
+        "Remove from heat and stir in protein powder.",
+        "Top with diced apple and cinnamon.",
+      ],
+    },
+  ],
+  lunch: [
+    {
+      name: "Salmon avocado salad bowl",
+      calories: 650,
+      protein: 44,
+      tags: ["lose", "maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/1549542994.jpg",
+      source: "Inspired by TheMealDB salmon avocado salad",
+      ingredients: ["salmon", "greens", "cucumber", "rice", "lemon dressing"],
+      amounts: { salmon: "150g", greens: "2 cups", rice: "3/4 cup cooked" },
+      steps: [
+        "Cook or reheat salmon and rice.",
+        "Build a bowl with greens and cucumber.",
+        "Add salmon, rice, and lemon dressing just before eating.",
+      ],
+    },
+    {
+      name: "Chicken fried rice field bowl",
+      calories: 720,
+      protein: 48,
+      tags: ["maintain", "build"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/wuyd2h1765655837.jpg",
+      source: "Inspired by TheMealDB chicken fried rice",
+      ingredients: ["chicken breast", "rice", "eggs", "frozen vegetables", "soy sauce"],
+      amounts: { "chicken breast": "140g", rice: "1.25 cups cooked", eggs: "1 egg" },
+      steps: [
+        "Cook chicken pieces in a hot pan.",
+        "Add rice, vegetables, egg, and soy sauce.",
+        "Stir until hot and pack into a container.",
+      ],
+    },
+    {
+      name: "Beef pho recovery bowl",
+      calories: 610,
+      protein: 42,
+      tags: ["lose", "maintain"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/pbzcrx1763765096.jpg",
+      source: "Inspired by TheMealDB beef pho",
+      ingredients: ["lean steak", "rice", "stock", "greens", "lime"],
+      amounts: { "lean steak": "130g sliced", rice: "3/4 cup cooked", stock: "350ml" },
+      steps: [
+        "Heat stock until simmering and add greens.",
+        "Add cooked rice and thin steak slices until just cooked.",
+        "Finish with lime and eat as a warm recovery meal.",
+      ],
+    },
+    {
+      name: "Tuna nicoise patrol salad",
+      calories: 540,
+      protein: 41,
+      tags: ["lose", "maintain"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/yypwwq1511304979.jpg",
+      source: "Inspired by TheMealDB tuna nicoise",
+      ingredients: ["tuna", "boiled eggs", "potatoes", "green beans", "lettuce", "lemon dressing"],
+      amounts: { tuna: "1 can", "boiled eggs": "1 egg", potatoes: "180g" },
+      steps: [
+        "Boil potatoes and green beans until tender.",
+        "Add lettuce, tuna, egg, and cooled vegetables to a bowl.",
+        "Dress lightly and keep chilled until lunch.",
+      ],
+    },
+    {
+      name: "Turkey banh mi style wrap",
+      calories: 570,
+      protein: 40,
+      tags: ["lose", "maintain"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/1wj8w31763781990.jpg",
+      source: "Inspired by TheMealDB turkey banh mi",
+      ingredients: ["turkey slices", "wholemeal wrap", "cabbage slaw", "cucumber", "Greek yoghurt dressing"],
+      amounts: { "turkey slices": "110g", "wholemeal wrap": "1 large", "cabbage slaw": "1 cup" },
+      steps: [
+        "Warm the wrap so it rolls without tearing.",
+        "Layer turkey, slaw, cucumber, and yoghurt dressing.",
+        "Roll tightly, slice in half, and pack wrapped in foil.",
+      ],
+    },
+    {
+      name: "Vegetarian chilli rice bowl",
+      calories: 620,
+      protein: 30,
+      tags: ["lose", "maintain", "build"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/wqurxy1511453156.jpg",
+      source: "Inspired by TheMealDB vegetarian chilli",
+      ingredients: ["kidney beans", "black beans", "rice", "tomatoes", "corn", "chilli spice"],
+      amounts: { "kidney beans": "1/2 can", "black beans": "1/2 can", rice: "1 cup cooked" },
+      steps: [
+        "Simmer beans, tomatoes, corn, and chilli spice until thick.",
+        "Spoon over cooked rice.",
+        "Cool before packing, or eat hot as a high-fibre lunch.",
+      ],
+    },
+    {
+      name: "Noodle bowl chicken salad",
+      calories: 640,
+      protein: 43,
+      tags: ["maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/zry07j1763779321.jpg",
+      source: "Inspired by TheMealDB noodle bowl salad",
+      ingredients: ["chicken breast", "rice", "cabbage slaw", "cucumber", "soy sauce", "lime"],
+      amounts: { "chicken breast": "150g", rice: "1 cup cooked", "cabbage slaw": "1.5 cups" },
+      steps: [
+        "Cook chicken and slice it thin.",
+        "Combine rice, slaw, cucumber, soy sauce, and lime.",
+        "Top with chicken and keep chilled if eating later.",
+      ],
+    },
+  ],
+  dinner: [
+    {
+      name: "Tandoori chicken, rice, greens",
+      calories: 760,
+      protein: 58,
+      tags: ["maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/qptpvt1487339892.jpg",
+      source: "Inspired by TheMealDB tandoori chicken",
+      ingredients: ["chicken breast", "rice", "Greek yoghurt", "greens", "seasoning", "lime"],
+      amounts: { "chicken breast": "180g", rice: "1 cup cooked", "Greek yoghurt": "3 tbsp" },
+      steps: [
+        "Coat chicken with yoghurt, seasoning, and lime.",
+        "Bake or pan-cook until cooked through.",
+        "Serve with rice and greens for a high-protein dinner.",
+      ],
+    },
+    {
+      name: "Honey teriyaki salmon bowl",
+      calories: 720,
+      protein: 47,
+      tags: ["maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
+      source: "Inspired by TheMealDB honey teriyaki salmon",
+      ingredients: ["salmon", "rice", "broccoli", "soy sauce", "honey", "garlic"],
+      amounts: { salmon: "160g", rice: "1 cup cooked", broccoli: "1.5 cups" },
+      steps: [
+        "Bake or pan-sear salmon with soy, honey, and garlic.",
+        "Steam broccoli while rice warms.",
+        "Serve salmon over rice with broccoli on the side.",
+      ],
+    },
+    {
+      name: "Beef lo mein training bowl",
+      calories: 780,
+      protein: 52,
+      tags: ["maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/1529444830.jpg",
+      source: "Inspired by TheMealDB beef lo mein",
+      ingredients: ["lean steak", "pasta", "stir fry vegetables", "soy sauce", "garlic"],
+      amounts: { "lean steak": "160g", pasta: "1.25 cups cooked", "stir fry vegetables": "2 cups" },
+      steps: [
+        "Sear sliced steak quickly and set aside.",
+        "Stir fry vegetables, then add pasta and soy sauce.",
+        "Return steak to the pan and toss until hot.",
+      ],
+    },
+    {
+      name: "Turkey meatloaf, potatoes, beans",
+      calories: 690,
+      protein: 53,
+      tags: ["lose", "maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/ypuxtw1511297463.jpg",
+      source: "Inspired by TheMealDB turkey meatloaf",
+      ingredients: ["turkey mince", "potatoes", "green beans", "onion", "seasoning"],
+      amounts: { "turkey mince": "180g", potatoes: "220g", "green beans": "1.5 cups" },
+      steps: [
+        "Shape seasoned turkey mince with onion into a small loaf or patties.",
+        "Bake or pan-cook until fully cooked.",
+        "Serve with potatoes and green beans.",
+      ],
+    },
+    {
+      name: "Lamb tagine couscous bowl",
+      calories: 820,
+      protein: 50,
+      tags: ["maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg",
+      source: "Inspired by TheMealDB lamb tagine",
+      ingredients: ["lean lamb", "couscous", "carrot", "tomatoes", "seasoning"],
+      amounts: { "lean lamb": "160g", couscous: "1 cup cooked", tomatoes: "1/2 can" },
+      steps: [
+        "Brown lamb with seasoning.",
+        "Simmer with tomatoes and carrot until tender.",
+        "Serve over couscous and portion leftovers for lunch.",
+      ],
+    },
+    {
+      name: "Fish soup and potato bowl",
+      calories: 560,
+      protein: 43,
+      tags: ["lose", "maintain"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/7n8su21699013057.jpg",
+      source: "Inspired by TheMealDB fish soup",
+      ingredients: ["white fish", "potatoes", "stock", "carrot", "greens", "lime"],
+      amounts: { "white fish": "170g", potatoes: "200g", stock: "400ml" },
+      steps: [
+        "Simmer potatoes and carrot in stock until tender.",
+        "Add fish and greens for the final few minutes.",
+        "Finish with lime and serve hot.",
+      ],
+    },
+    {
+      name: "Kidney bean curry and rice",
+      calories: 640,
+      protein: 29,
+      tags: ["lose", "maintain", "build"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/sywrsu1511463066.jpg",
+      source: "Inspired by TheMealDB kidney bean curry",
+      ingredients: ["kidney beans", "rice", "tomatoes", "onion", "garlic", "chilli spice"],
+      amounts: { "kidney beans": "1 can", rice: "1 cup cooked", tomatoes: "1/2 can" },
+      steps: [
+        "Cook onion and garlic until soft.",
+        "Add beans, tomatoes, and spice; simmer until thick.",
+        "Serve over rice and save extra portions.",
+      ],
+    },
+  ],
+  snack: [
+    {
+      name: "Tuna egg rice cakes",
+      calories: 340,
+      protein: 31,
+      tags: ["lose", "maintain"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/2dsltq1560461468.jpg",
+      source: "Inspired by TheMealDB tuna and egg briks",
+      ingredients: ["tuna", "boiled eggs", "wholegrain crackers", "cucumber"],
+      amounts: { tuna: "1/2 can", "boiled eggs": "1 egg", "wholegrain crackers": "4 crackers" },
+      steps: [
+        "Mash tuna and egg together with pepper.",
+        "Spoon onto crackers and add cucumber on the side.",
+        "Eat soon after assembling so the crackers stay crisp.",
+      ],
+    },
+    {
+      name: "Greek yoghurt protein cup",
+      calories: 300,
+      protein: 34,
+      tags: ["lose", "maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/1543774956.jpg",
+      source: "Forge field meal",
+      ingredients: ["Greek yoghurt", "protein powder", "mixed berries", "chia seeds"],
+      amounts: { "Greek yoghurt": "200g", "protein powder": "1/2 scoop", "mixed berries": "70g" },
+      steps: [
+        "Stir protein powder into yoghurt until smooth.",
+        "Top with berries and chia.",
+        "Keep chilled and eat after training or between calls.",
+      ],
+    },
+    {
+      name: "Hummus patrol box",
+      calories: 360,
+      protein: 15,
+      tags: ["lose", "maintain"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/93iok31766436070.jpg",
+      source: "Forge field meal",
+      ingredients: ["hummus", "carrot sticks", "cucumber", "wholegrain crackers"],
+      amounts: { hummus: "4 tbsp", "carrot sticks": "1 cup", cucumber: "1/2 cucumber" },
+      steps: [
+        "Portion hummus into a small container.",
+        "Slice vegetables and pack crackers separately.",
+        "Dip as needed for a steady-energy snack.",
+      ],
+    },
+    {
+      name: "Jerky orange nut pack",
+      calories: 390,
+      protein: 30,
+      tags: ["maintain", "build"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/z1hz7z1765316430.jpg",
+      source: "Forge field meal",
+      ingredients: ["beef jerky", "mixed nuts", "orange"],
+      amounts: { "beef jerky": "45g", "mixed nuts": "25g", orange: "1 medium" },
+      steps: [
+        "Pack jerky and nuts in a small bag.",
+        "Keep the orange whole until eating.",
+        "Use this when refrigeration is not available.",
+      ],
+    },
+    {
+      name: "Apple peanut butter yoghurt",
+      calories: 330,
+      protein: 21,
+      tags: ["lose", "maintain"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/uwq8001777540502.jpg",
+      source: "Forge field meal",
+      ingredients: ["apple", "peanut butter", "plain yoghurt", "cinnamon"],
+      amounts: { apple: "1 medium", "peanut butter": "1 tbsp", "plain yoghurt": "170g" },
+      steps: [
+        "Slice apple into wedges.",
+        "Serve with yoghurt and peanut butter.",
+        "Dust with cinnamon for sweetness without adding much energy.",
+      ],
+    },
+    {
+      name: "Cottage cheese cracker stack",
+      calories: 310,
+      protein: 27,
+      tags: ["lose", "maintain"],
+      cost: "standard",
+      image: "https://www.themealdb.com/images/media/meals/1549542994.jpg",
+      source: "Forge field meal",
+      ingredients: ["cottage cheese", "wholegrain crackers", "tomato", "pepper"],
+      amounts: { "cottage cheese": "170g", "wholegrain crackers": "6 crackers", tomato: "1 small" },
+      steps: [
+        "Spoon cottage cheese onto crackers.",
+        "Top with tomato and pepper.",
+        "Assemble just before eating for better texture.",
+      ],
+    },
+    {
+      name: "Boiled egg potato mini box",
+      calories: 370,
+      protein: 20,
+      tags: ["maintain", "build"],
+      cost: "budget",
+      image: "https://www.themealdb.com/images/media/meals/yypwwq1511304979.jpg",
+      source: "Forge field meal",
+      ingredients: ["boiled eggs", "potatoes", "Greek yoghurt dressing", "green beans"],
+      amounts: { "boiled eggs": "2 eggs", potatoes: "150g", "green beans": "1 cup" },
+      steps: [
+        "Boil eggs, potatoes, and green beans ahead of time.",
+        "Cool, portion, and add yoghurt dressing.",
+        "Eat cold as a mini recovery meal.",
+      ],
+    },
+  ],
+};
+
+Object.entries(expandedMealPools).forEach(([slot, meals]) => {
+  mealPools[slot].push(...meals);
+});
+
+const dietLabels = {
+  any: "Any balanced",
+  "high-protein": "High protein",
+  vegetarian: "Vegetarian",
+  vegan: "Vegan",
+  "gluten-free": "Gluten-free",
+  "dairy-free": "Dairy-free",
+  "halal-friendly": "Halal-friendly",
+};
+
+const generatedImages = {
+  oats: "https://www.themealdb.com/images/media/meals/uwq8001777540502.jpg",
+  eggs: "https://www.themealdb.com/images/media/meals/eo0yfb1763600916.jpg",
+  toast: "https://www.themealdb.com/images/media/meals/1550440197.jpg",
+  chicken: "https://www.themealdb.com/images/media/meals/qptpvt1487339892.jpg",
+  beef: "https://www.themealdb.com/images/media/meals/1529444830.jpg",
+  salmon: "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
+  tuna: "https://www.themealdb.com/images/media/meals/yypwwq1511304979.jpg",
+  fish: "https://www.themealdb.com/images/media/meals/7n8su21699013057.jpg",
+  turkey: "https://www.themealdb.com/images/media/meals/ypuxtw1511297463.jpg",
+  lamb: "https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg",
+  beans: "https://www.themealdb.com/images/media/meals/sywrsu1511463066.jpg",
+  tofu: "https://www.themealdb.com/images/media/meals/wqurxy1511453156.jpg",
+  salad: "https://www.themealdb.com/images/media/meals/zry07j1763779321.jpg",
+  snack: "https://www.themealdb.com/images/media/meals/93iok31766436070.jpg",
+};
+
+const mealComponents = {
+  breakfastProteins: [
+    { name: "eggs", label: "eggs", calories: 160, protein: 13, cost: "budget", diets: ["vegetarian", "gluten-free", "dairy-free", "halal-friendly"], image: "eggs", amount: "2 eggs" },
+    { name: "Greek yoghurt", label: "Greek yoghurt", calories: 190, protein: 21, cost: "standard", diets: ["vegetarian", "gluten-free", "halal-friendly"], image: "oats", amount: "200g" },
+    { name: "cottage cheese", label: "cottage cheese", calories: 165, protein: 24, cost: "standard", diets: ["vegetarian", "gluten-free", "halal-friendly"], image: "oats", amount: "170g" },
+    { name: "protein powder", label: "protein shake", calories: 130, protein: 25, cost: "standard", diets: ["vegetarian", "gluten-free"], image: "oats", amount: "1 scoop" },
+    { name: "turkey slices", label: "turkey", calories: 135, protein: 28, cost: "standard", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "turkey", amount: "100g" },
+    { name: "tofu", label: "tofu scramble", calories: 170, protein: 18, cost: "budget", diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], image: "tofu", amount: "180g" },
+    { name: "black beans", label: "black beans", calories: 160, protein: 10, cost: "budget", diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], image: "beans", amount: "3/4 cup" },
+  ],
+  proteins: [
+    { name: "chicken breast", label: "chicken", calories: 260, protein: 50, cost: "standard", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "chicken", amount: "160g cooked" },
+    { name: "turkey mince", label: "turkey", calories: 245, protein: 42, cost: "standard", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "turkey", amount: "160g cooked" },
+    { name: "lean beef mince", label: "lean beef", calories: 290, protein: 43, cost: "standard", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "beef", amount: "160g cooked" },
+    { name: "lean steak", label: "steak", calories: 320, protein: 48, cost: "standard", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "beef", amount: "170g cooked" },
+    { name: "salmon", label: "salmon", calories: 310, protein: 38, cost: "standard", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "salmon", amount: "150g fillet" },
+    { name: "tuna", label: "tuna", calories: 160, protein: 36, cost: "budget", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "tuna", amount: "1 can" },
+    { name: "white fish", label: "white fish", calories: 180, protein: 39, cost: "standard", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "fish", amount: "170g" },
+    { name: "lean lamb", label: "lamb", calories: 330, protein: 43, cost: "standard", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "lamb", amount: "160g cooked" },
+    { name: "eggs", label: "egg", calories: 160, protein: 13, cost: "budget", diets: ["vegetarian", "gluten-free", "dairy-free", "halal-friendly"], image: "eggs", amount: "2 eggs" },
+    { name: "tofu", label: "tofu", calories: 210, protein: 22, cost: "budget", diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], image: "tofu", amount: "200g" },
+    { name: "kidney beans", label: "kidney bean", calories: 230, protein: 15, cost: "budget", diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], image: "beans", amount: "1 cup" },
+    { name: "red lentils", label: "lentil", calories: 230, protein: 18, cost: "budget", diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], image: "beans", amount: "1 cup cooked" },
+  ],
+  carbs: [
+    { name: "rice", label: "rice", calories: 230, protein: 5, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 cup cooked" },
+    { name: "potatoes", label: "potato", calories: 210, protein: 5, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "230g" },
+    { name: "kumara", label: "kumara", calories: 190, protein: 4, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "220g" },
+    { name: "quinoa", label: "quinoa", calories: 220, protein: 8, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 cup cooked" },
+    { name: "couscous", label: "couscous", calories: 210, protein: 7, diets: ["vegetarian", "vegan", "dairy-free", "halal-friendly"], amount: "1 cup cooked" },
+    { name: "pasta", label: "pasta", calories: 250, protein: 8, diets: ["vegetarian", "vegan", "dairy-free", "halal-friendly"], amount: "1.25 cups cooked" },
+    { name: "wholemeal wrap", label: "wrap", calories: 190, protein: 7, diets: ["vegetarian", "vegan", "dairy-free", "halal-friendly"], amount: "1 large wrap" },
+    { name: "rolled oats", label: "oats", calories: 210, protein: 7, diets: ["vegetarian", "vegan", "dairy-free", "halal-friendly"], amount: "60g" },
+  ],
+  vegetables: [
+    { name: "broccoli", label: "broccoli", amount: "1.5 cups" },
+    { name: "spinach", label: "spinach", amount: "1 packed cup" },
+    { name: "green beans", label: "green beans", amount: "1 cup" },
+    { name: "cabbage slaw", label: "slaw", amount: "1.5 cups" },
+    { name: "stir fry vegetables", label: "stir-fry veg", amount: "2 cups" },
+    { name: "mixed vegetables", label: "mixed veg", amount: "1.5 cups" },
+    { name: "cucumber", label: "cucumber", amount: "1/2 cucumber" },
+    { name: "tomatoes", label: "tomatoes", amount: "1/2 can" },
+  ],
+  sauces: [
+    { name: "soy sauce", label: "soy", calories: 20, diets: ["vegetarian", "vegan", "dairy-free", "halal-friendly"], amount: "1 tbsp" },
+    { name: "lemon dressing", label: "lemon", calories: 45, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 tbsp" },
+    { name: "Greek yoghurt dressing", label: "yoghurt", calories: 70, diets: ["vegetarian", "gluten-free", "halal-friendly"], amount: "2 tbsp" },
+    { name: "salsa", label: "salsa", calories: 35, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "2 tbsp" },
+    { name: "chilli spice", label: "chilli", calories: 20, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 tsp" },
+  ],
+};
+
+function generateMealLibrary() {
+  const generated = { breakfast: [], lunch: [], dinner: [], snack: [] };
+
+  const breakfastStyles = [
+    { suffix: "bowl", extraCalories: 80, extraProtein: 4, prep: "bowl" },
+    { suffix: "wrap", extraCalories: 170, extraProtein: 6, prep: "wrap", requiredCarb: "wholemeal wrap" },
+    { suffix: "hash", extraCalories: 140, extraProtein: 3, prep: "pan" },
+    { suffix: "prep pot", extraCalories: 60, extraProtein: 3, prep: "cold" },
+  ];
+
+  mealComponents.breakfastProteins.forEach((protein, proteinIndex) => {
+    mealComponents.carbs.slice(0, 7).forEach((carb, carbIndex) => {
+      mealComponents.vegetables.slice(0, 5).forEach((veg, vegIndex) => {
+        const style = breakfastStyles[(proteinIndex + carbIndex + vegIndex) % breakfastStyles.length];
+        if (style.requiredCarb && carb.name !== style.requiredCarb) return;
+        generated.breakfast.push(buildGeneratedMeal("breakfast", protein, carb, veg, mealComponents.sauces[vegIndex % mealComponents.sauces.length], style));
+      });
+    });
+  });
+
+  const mealStyles = {
+    lunch: [
+      { suffix: "field bowl", extraCalories: 80, extraProtein: 2, prep: "bowl" },
+      { suffix: "patrol wrap", extraCalories: 120, extraProtein: 3, prep: "wrap", requiredCarb: "wholemeal wrap" },
+      { suffix: "recovery salad", extraCalories: 40, extraProtein: 2, prep: "cold" },
+      { suffix: "hot box", extraCalories: 90, extraProtein: 2, prep: "pan" },
+    ],
+    dinner: [
+      { suffix: "dinner plate", extraCalories: 120, extraProtein: 3, prep: "plate" },
+      { suffix: "stir-fry", extraCalories: 95, extraProtein: 2, prep: "pan" },
+      { suffix: "recovery bowl", extraCalories: 110, extraProtein: 2, prep: "bowl" },
+      { suffix: "batch cook", extraCalories: 130, extraProtein: 3, prep: "batch" },
+    ],
+  };
+
+  ["lunch", "dinner"].forEach((slot) => {
+    const operationalCarbs = mealComponents.carbs.filter((carb) => carb.name !== "rolled oats");
+    mealComponents.proteins.forEach((protein, proteinIndex) => {
+      operationalCarbs.forEach((carb, carbIndex) => {
+        mealComponents.vegetables.forEach((veg, vegIndex) => {
+          const style = mealStyles[slot][(proteinIndex + carbIndex + vegIndex) % mealStyles[slot].length];
+          if (style.requiredCarb && carb.name !== style.requiredCarb) return;
+          generated[slot].push(buildGeneratedMeal(slot, protein, carb, veg, mealComponents.sauces[(proteinIndex + vegIndex) % mealComponents.sauces.length], style));
+        });
+      });
+    });
+  });
+
+  const snackBases = [
+    { name: "Greek yoghurt", label: "yoghurt", calories: 190, protein: 21, cost: "standard", diets: ["vegetarian", "gluten-free", "halal-friendly"], image: "oats", amount: "200g" },
+    { name: "cottage cheese", label: "cottage cheese", calories: 165, protein: 24, cost: "standard", diets: ["vegetarian", "gluten-free", "halal-friendly"], image: "snack", amount: "170g" },
+    { name: "boiled eggs", label: "egg", calories: 155, protein: 13, cost: "budget", diets: ["vegetarian", "gluten-free", "dairy-free", "halal-friendly"], image: "eggs", amount: "2 eggs" },
+    { name: "hummus", label: "hummus", calories: 180, protein: 7, cost: "budget", diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], image: "snack", amount: "4 tbsp" },
+    { name: "tuna", label: "tuna", calories: 110, protein: 25, cost: "budget", diets: ["gluten-free", "dairy-free", "halal-friendly"], image: "tuna", amount: "1/2 can" },
+    { name: "protein powder", label: "protein", calories: 130, protein: 25, cost: "standard", diets: ["vegetarian", "gluten-free"], image: "oats", amount: "1 scoop" },
+    { name: "tofu", label: "tofu", calories: 140, protein: 15, cost: "budget", diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], image: "tofu", amount: "140g" },
+  ];
+  const snackAdds = [
+    { name: "banana", label: "banana", calories: 105, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 medium" },
+    { name: "apple", label: "apple", calories: 95, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 medium" },
+    { name: "mixed berries", label: "berries", calories: 60, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "80g" },
+    { name: "wholegrain crackers", label: "crackers", calories: 120, protein: 3, diets: ["vegetarian", "vegan", "dairy-free", "halal-friendly"], amount: "6 crackers" },
+    { name: "carrot sticks", label: "carrots", calories: 45, protein: 1, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "1 cup" },
+    { name: "mixed nuts", label: "nuts", calories: 170, protein: 6, diets: ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"], amount: "30g" },
+    { name: "rolled oats", label: "oats", calories: 105, protein: 4, diets: ["vegetarian", "vegan", "dairy-free", "halal-friendly"], amount: "30g" },
+  ];
+  snackBases.forEach((base, baseIndex) => {
+    snackAdds.forEach((add, addIndex) => {
+      generated.snack.push(buildGeneratedSnack(base, add, baseIndex + addIndex));
+    });
+  });
+
+  return generated;
+}
+
+function buildGeneratedMeal(slot, protein, carb, veg, sauce, style) {
+  const proteinBoost = protein.protein >= 35 || protein.name === "protein powder" ? ["high-protein"] : [];
+  const diets = intersectDiets(protein.diets, carb.diets, sauce.diets, ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"]);
+  const calories = protein.calories + carb.calories + 70 + (sauce.calories || 0) + style.extraCalories;
+  const proteinGrams = protein.protein + carb.protein + style.extraProtein;
+  const name = `${capitalize(protein.label)} ${carb.label} ${veg.label} ${style.suffix}`;
+  return {
+    name,
+    calories,
+    protein: proteinGrams,
+    tags: goalTagsForCalories(calories),
+    dietTags: [...new Set([...diets, ...proteinBoost])],
+    cost: protein.cost === "budget" && calories < 680 ? "budget" : "standard",
+    image: "",
+    source: "Forge expanded meal library",
+    ingredients: [protein.name, carb.name, veg.name, sauce.name],
+    amounts: {
+      [protein.name]: protein.amount,
+      [carb.name]: carb.amount,
+      [veg.name]: veg.amount,
+      [sauce.name]: sauce.amount,
+    },
+    steps: generatedPrepSteps(style.prep, protein.label, carb.label, veg.label, sauce.label),
+  };
+}
+
+function buildGeneratedSnack(base, add, index) {
+  const diets = intersectDiets(base.diets, add.diets, ["vegetarian", "vegan", "gluten-free", "dairy-free", "halal-friendly"]);
+  const calories = base.calories + add.calories + (index % 3 === 0 ? 35 : 0);
+  const proteinGrams = base.protein + add.protein;
+  return {
+    name: `${capitalize(base.label)} ${add.label} snack`,
+    calories,
+    protein: proteinGrams,
+    tags: goalTagsForCalories(calories),
+    dietTags: [...new Set([...diets, proteinGrams >= 24 ? "high-protein" : ""])].filter(Boolean),
+    cost: base.cost === "budget" ? "budget" : "standard",
+    image: "",
+    source: "Forge expanded snack library",
+    ingredients: [base.name, add.name],
+    amounts: {
+      [base.name]: base.amount,
+      [add.name]: add.amount,
+    },
+    steps: [
+      "Portion both ingredients before the shift or training block.",
+      "Keep cold items chilled and dry items separate until eating.",
+      "Use it as a controlled snack rather than grazing from the packet.",
+    ],
+  };
+}
+
+function intersectDiets(...dietLists) {
+  const [first = [], ...rest] = dietLists;
+  return first.filter((diet) => rest.every((list) => list.includes(diet)));
+}
+
+function goalTagsForCalories(calories) {
+  if (calories <= 430) return ["lose", "maintain"];
+  if (calories >= 720) return ["maintain", "build"];
+  return ["lose", "maintain", "build"];
+}
+
+function generatedPrepSteps(prep, protein, carb, veg, sauce) {
+  if (prep === "wrap") {
+    return [
+      `Warm the wrap, then add ${protein}, ${veg}, and ${sauce}.`,
+      `Add the ${carb} portion only if it is not already the wrap base.`,
+      "Roll tightly and pack in foil for a clean field meal.",
+    ];
+  }
+  if (prep === "cold") {
+    return [
+      `Cook or prep the ${protein} and ${carb} ahead of time.`,
+      `Layer with ${veg}, then add ${sauce} just before eating.`,
+      "Keep chilled and use within the day.",
+    ];
+  }
+  if (prep === "batch") {
+    return [
+      `Batch cook the ${protein} with simple seasoning.`,
+      `Cook ${carb} and portion it with ${veg}.`,
+      `Add ${sauce}, cool quickly, and store extra portions for the week.`,
+    ];
+  }
+  return [
+    `Cook the ${protein} first and keep the portion controlled.`,
+    `Add ${carb} and ${veg}, then heat through.`,
+    `Finish with ${sauce} and adjust seasoning without adding hidden calories.`,
+  ];
+}
+
+const generatedMealPools = generateMealLibrary();
+
+Object.entries(generatedMealPools).forEach(([slot, meals]) => {
+  mealPools[slot].push(...meals);
+});
+
 const traineeScreen = document.querySelector("#traineeScreen");
 const trainScreen = document.querySelector("#trainScreen");
 const seriesScreen = document.querySelector("#seriesScreen");
@@ -716,6 +1440,7 @@ const resetWorkoutTest = document.querySelector("#resetWorkoutTest");
 const launchCognitiveAfterTest = document.querySelector("#launchCognitiveAfterTest");
 const mealPlanForm = document.querySelector("#mealPlanForm");
 const mealGoal = document.querySelector("#mealGoal");
+const mealDiet = document.querySelector("#mealDiet");
 const mealBudget = document.querySelector("#mealBudget");
 const weeklyFoodBudget = document.querySelector("#weeklyFoodBudget");
 const mealPeople = document.querySelector("#mealPeople");
@@ -745,6 +1470,7 @@ const moduleDetailNotes = document.querySelector("#moduleDetailNotes");
 const moduleDetailMedia = document.querySelector("#moduleDetailMedia");
 const moduleDetailAction = document.querySelector("#moduleDetailAction");
 const mealDetailDialog = document.querySelector("#mealDetailDialog");
+const mealDetailImage = document.querySelector("#mealDetailImage");
 const mealDetailTitle = document.querySelector("#mealDetailTitle");
 const mealDetailMeta = document.querySelector("#mealDetailMeta");
 const mealIngredientList = document.querySelector("#mealIngredientList");
@@ -753,10 +1479,10 @@ const mealWhyCopy = document.querySelector("#mealWhyCopy");
 const toast = document.querySelector("#toast");
 
 const resetCopyByStep = {
-  Recognize: "Name the stress indicator before it becomes your whole focus.",
-  Ground: "Press feet down, relax the jaw, and reconnect with the present scene.",
-  Breathe: "Use a controlled breath to slow the body before choosing action.",
-  Act: "Pick the next professional action: speak, move, pause, support, or disengage.",
+  Recognize: "Run your ACE check: scan the environment before the pressure narrows your focus.",
+  Ground: "Set Composure: eyes up, shoulders back, strong neutral posture.",
+  Breathe: "Reset with Equilibrium breathing before emotion takes over the decision.",
+  Act: "Choose the next clear action: speak, move, pause, support, or disengage.",
 };
 
 const iconByCategory = {
@@ -913,6 +1639,7 @@ function loadModules() {
 function loadMealProfile() {
   const fallback = {
     goal: "lose",
+    diet: "any",
     budget: false,
     weeklyBudget: 90,
     people: 1,
@@ -998,13 +1725,23 @@ function normalizeModule(module) {
       assigned: true,
     };
   }
-  if (module.title !== "SEB pressure cycle" && module.title !== sitModuleTitle) return module;
+  if (module.title === "Box breathing drill" || module.title === equilibriumModuleTitle) {
+    return {
+      ...module,
+      title: equilibriumModuleTitle,
+      category: "Breathing",
+      notes: "Equilibrium breathing to steady attention before and after hard efforts.",
+      assigned: true,
+    };
+  }
+  if (module.title !== "SEB pressure cycle" && module.title !== "Stress Inoculation Training (SIT)" && module.title !== aceModuleTitle) {
+    return module;
+  }
   return {
     ...module,
-    title: sitModuleTitle,
+    title: aceModuleTitle,
     category: "Mental Health",
-    notes:
-      "Stress indicators, Eyes Up awareness, and breathing/body language control for pressure moments.",
+    notes: "Awareness, Composure, and Equilibrium drills for clear decisions under pressure.",
     assigned: true,
     core: true,
   };
@@ -1092,14 +1829,14 @@ function renderAssigned() {
 }
 
 function moduleIcon(module) {
-  if (module.title === sitModuleTitle) return "icon-seb";
+  if (module.title === aceModuleTitle) return "icon-seb";
   if (module.title === "HR cognitive stress drill") return "icon-cognitive";
   return iconByCategory[module.category] || "icon-conditioning";
 }
 
 function categoryClass(module) {
   const source =
-    module.title === sitModuleTitle
+    module.title === aceModuleTitle
       ? "seb"
       : module.title === "HR cognitive stress drill"
         ? "cognitive"
@@ -1165,12 +1902,12 @@ function startActiveModule() {
 }
 
 function launchModule(module) {
-  if (module.title === sitModuleTitle || module.title === "Stress response reset") {
+  if (module.title === aceModuleTitle || module.title === "Stress response reset") {
     openSebDialog();
     return;
   }
 
-  if (module.title === "Box breathing drill") {
+  if (module.title === equilibriumModuleTitle || module.title === "Box breathing drill") {
     breathingDialog.showModal();
     return;
   }
@@ -1272,6 +2009,7 @@ function openHealthConnectionPanel() {
 
 function renderMealInputs() {
   mealGoal.value = state.mealProfile.goal;
+  mealDiet.value = state.mealProfile.diet || "any";
   mealBudget.checked = Boolean(state.mealProfile.budget);
   weeklyFoodBudget.value = state.mealProfile.weeklyBudget || 90;
   mealPeople.value = state.mealProfile.people || 1;
@@ -1308,6 +2046,7 @@ function buildMealPlanFromForm(event) {
 function readMealProfileFromInputs() {
   const profile = {
     goal: mealGoal.value,
+    diet: mealDiet.value,
     budget: mealBudget.checked,
     weeklyBudget: Number(weeklyFoodBudget.value) || 0,
     people: Math.max(1, Number(mealPeople.value) || 1),
@@ -1506,22 +2245,52 @@ function pickMeal(slot, profile, targetCalories, offset = 0) {
 
 function getMealOptions(slot, profile, targetCalories) {
   const goalMatches = mealPools[slot].filter((meal) => meal.tags.includes(profile.goal));
-  const pool = goalMatches.length ? goalMatches : mealPools[slot];
+  const dietMatches = goalMatches.filter((meal) => matchesDietPreference(meal, profile.diet));
+  const pool = dietMatches.length ? dietMatches : goalMatches.length ? goalMatches : mealPools[slot].filter((meal) => matchesDietPreference(meal, profile.diet));
+  const fallbackPool = pool.length ? pool : goalMatches.length ? goalMatches : mealPools[slot];
   const strictBudget = profile.budget || profile.budgetPriority === "strict";
   const budgetAllowance = getMealCostAllowance(profile);
   const allowanceBuffer = profile.budgetPriority === "flexible" ? 1.45 : profile.budgetPriority === "strict" ? 1.05 : 1.2;
-  const preferred = pool.filter((meal) => {
+  const preferred = fallbackPool.filter((meal) => {
     if (strictBudget && meal.cost !== "budget") return false;
     if (profile.avoidPremiumFoods && hasPremiumIngredient(meal)) return false;
     if (budgetAllowance && estimateMealCost(meal) > budgetAllowance * allowanceBuffer) return false;
     return true;
   });
-  const fallback = pool.filter((meal) => {
+  const fallback = fallbackPool.filter((meal) => {
     if (profile.avoidPremiumFoods && hasPremiumIngredient(meal)) return false;
     return !budgetAllowance || estimateMealCost(meal) <= budgetAllowance * 1.8;
   });
-  const options = preferred.length ? preferred : fallback.length ? fallback : pool;
+  const options = preferred.length ? preferred : fallback.length ? fallback : fallbackPool;
   return [...options].sort((a, b) => mealScore(a, targetCalories, profile) - mealScore(b, targetCalories, profile));
+}
+
+function matchesDietPreference(meal, diet = "any") {
+  if (!diet || diet === "any") return true;
+  if (diet === "high-protein") return meal.protein >= highProteinThreshold(meal);
+  return dietTagsForMeal(meal).includes(diet);
+}
+
+function highProteinThreshold(meal) {
+  if (meal.calories <= 380) return 22;
+  if (meal.calories <= 600) return 32;
+  return 40;
+}
+
+function dietTagsForMeal(meal) {
+  if (Array.isArray(meal.dietTags) && meal.dietTags.length) return meal.dietTags;
+  const ingredients = meal.ingredients.join(" ").toLowerCase();
+  const tags = ["halal-friendly"];
+  const meatOrFish = /(chicken|turkey|beef|steak|lamb|salmon|tuna|fish|jerky)/.test(ingredients);
+  const eggOrDairy = /(egg|yoghurt|cottage cheese|milk|cheese|protein powder)/.test(ingredients);
+  const gluten = /(toast|wrap|tortilla|pasta|couscous|cracker|oats)/.test(ingredients);
+  const dairy = /(yoghurt|cottage cheese|milk|cheese)/.test(ingredients);
+  if (!meatOrFish) tags.push("vegetarian");
+  if (!meatOrFish && !eggOrDairy) tags.push("vegan");
+  if (!gluten) tags.push("gluten-free");
+  if (!dairy) tags.push("dairy-free");
+  if (meal.protein >= highProteinThreshold(meal)) tags.push("high-protein");
+  return tags;
 }
 
 function mealScore(meal, targetCalories, profile) {
@@ -1559,6 +2328,10 @@ function estimateWeekCost(mealPlan, people = 1) {
   return roundCurrency(perPerson * Math.max(1, Number(people) || 1));
 }
 
+function totalMealLibraryCount() {
+  return mealSlots.reduce((total, slot) => total + mealPools[slot].length, 0);
+}
+
 function roundCurrency(value) {
   return Math.round(value * 2) / 2;
 }
@@ -1579,6 +2352,7 @@ function refreshMeal(dayIndex, slot) {
   const fallback = mealPools[slot].filter(
     (meal) =>
       meal.tags.includes(state.mealProfile.goal) &&
+      matchesDietPreference(meal, state.mealProfile.diet) &&
       (!state.mealProfile.avoidPremiumFoods || !hasPremiumIngredient(meal)) &&
       meal.name !== current.name,
   );
@@ -1590,7 +2364,7 @@ function refreshMeal(dayIndex, slot) {
 
 function pickClosestRandom(pool, targetCalories) {
   const ranked = [...pool].sort((a, b) => Math.abs(a.calories - targetCalories) - Math.abs(b.calories - targetCalories));
-  return ranked[randomInt(0, Math.min(2, ranked.length - 1))];
+  return ranked[randomInt(0, Math.min(7, ranked.length - 1))];
 }
 
 function renderMealPlan() {
@@ -1614,6 +2388,10 @@ function renderMealPlan() {
     <article>
       <span>Goal</span>
       <strong>${escapeHtml(goalLabel)}</strong>
+    </article>
+    <article>
+      <span>Diet mode</span>
+      <strong>${escapeHtml(dietLabels[profile.diet] || dietLabels.any)}</strong>
     </article>
     <article>
       <span>Daily target</span>
@@ -1651,6 +2429,10 @@ function renderMealPlan() {
       <span>People covered</span>
       <strong>${profile.people || 1}<small> ppl</small></strong>
     </article>
+    <article>
+      <span>Meal library</span>
+      <strong>${totalMealLibraryCount()}<small> options</small></strong>
+    </article>
   `;
 
   weeklyMealPlan.innerHTML = state.mealPlan
@@ -1683,6 +2465,7 @@ function renderMealCard(meal, slot, dayIndex) {
   return `
     <div class="meal-card">
       <button class="meal-main" data-open-meal type="button" data-day="${dayIndex}" data-slot="${slot}">
+        <img class="meal-thumb" src="${escapeHtml(mealImage(meal, slot))}" alt="" loading="lazy" />
         <span>${escapeHtml(capitalize(slot))}</span>
         <strong>${escapeHtml(meal.name)}</strong>
         <small>${meal.calories} kcal · ${meal.protein}g protein · $${estimateMealCost(meal)} est · ${
@@ -1708,11 +2491,15 @@ function openMealDetail(dayIndex, slot) {
   if (!meal) return;
 
   mealDetailTitle.textContent = meal.name;
+  mealDetailImage.src = mealImage(meal, slot);
+  mealDetailImage.alt = "";
   mealDetailMeta.innerHTML = `
     <article><span>Day</span><strong>${escapeHtml(dayPlan.day)} ${escapeHtml(capitalize(slot))}</strong></article>
-    <article><span>Energy</span><strong>${meal.calories}<small> kcal</small></strong></article>
-    <article><span>Protein</span><strong>${meal.protein}<small> g</small></strong></article>
+    <article><span>Energy est</span><strong>${meal.calories}<small> kcal</small></strong></article>
+    <article><span>Protein est</span><strong>${meal.protein}<small> g</small></strong></article>
     <article><span>Est cost</span><strong>$${estimateMealCost(meal)}<small> pp</small></strong></article>
+    <article><span>Source</span><strong>${escapeHtml(meal.source || "Forge estimate")}</strong></article>
+    <article><span>Diet tags</span><strong>${escapeHtml(formatDietTags(meal))}</strong></article>
   `;
   mealIngredientList.innerHTML = meal.ingredients
     .map(
@@ -1730,6 +2517,7 @@ function openMealDetail(dayIndex, slot) {
 }
 
 function getIngredientAmount(ingredient, meal) {
+  if (meal.amounts?.[ingredient]) return meal.amounts[ingredient];
   if (ingredientAmounts[ingredient]) return ingredientAmounts[ingredient];
   if (/spice|seasoning|salt|pepper|cinnamon/i.test(ingredient)) return "to taste";
   if (meal.calories >= 700) return "1 large serve";
@@ -1737,7 +2525,87 @@ function getIngredientAmount(ingredient, meal) {
   return "1 standard serve";
 }
 
+function mealImage(meal, slot) {
+  return meal.image || generatedMealTile(meal, slot);
+}
+
+function generatedMealTile(meal, slot) {
+  const accent = mealAccent(meal, slot);
+  const title = escapeSvgText(meal.name);
+  const ingredients = escapeSvgText(meal.ingredients.slice(0, 4).join(" · "));
+  const diet = escapeSvgText(formatDietTags(meal).split(" · ").slice(0, 2).join(" · "));
+  const calories = escapeSvgText(`${meal.calories} kcal · ${meal.protein}g protein`);
+  const circles = meal.ingredients.slice(0, 5).map((ingredient, index) => {
+    const color = ingredientColor(ingredient);
+    const x = 72 + index * 52;
+    const y = index % 2 ? 82 : 62;
+    return `<circle cx="${x}" cy="${y}" r="22" fill="${color}" opacity="0.95"/><circle cx="${x - 6}" cy="${y - 6}" r="7" fill="#ffffff" opacity="0.16"/>`;
+  }).join("");
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="${title}">
+      <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#101313"/>
+          <stop offset="0.62" stop-color="${accent}"/>
+          <stop offset="1" stop-color="#090b0b"/>
+        </linearGradient>
+      </defs>
+      <rect width="640" height="360" rx="28" fill="url(#bg)"/>
+      <circle cx="154" cy="88" r="74" fill="none" stroke="#d0b982" stroke-width="3" opacity="0.28"/>
+      <circle cx="154" cy="88" r="54" fill="#111313" opacity="0.72"/>
+      ${circles}
+      <text x="36" y="196" fill="#f4efe3" font-family="Arial, sans-serif" font-size="34" font-weight="800">${title}</text>
+      <text x="36" y="238" fill="#d0b982" font-family="Arial, sans-serif" font-size="22" font-weight="700">${calories}</text>
+      <text x="36" y="278" fill="#c9c1af" font-family="Arial, sans-serif" font-size="19" font-weight="700">${ingredients}</text>
+      <text x="36" y="318" fill="#8fc1af" font-family="Arial, sans-serif" font-size="18" font-weight="800">${diet}</text>
+    </svg>
+  `;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function mealAccent(meal, slot) {
+  const ingredients = meal.ingredients.join(" ").toLowerCase();
+  if (/salmon|tuna|fish/.test(ingredients)) return "#124f56";
+  if (/beef|steak|lamb/.test(ingredients)) return "#51241f";
+  if (/chicken|turkey|egg/.test(ingredients)) return "#50441f";
+  if (/tofu|bean|lentil|hummus/.test(ingredients)) return "#244b34";
+  if (slot === "snack") return "#334049";
+  return "#2c3f34";
+}
+
+function ingredientColor(ingredient) {
+  const value = ingredient.toLowerCase();
+  if (/salmon|tuna|fish/.test(value)) return "#60c2c9";
+  if (/beef|steak|lamb/.test(value)) return "#c26755";
+  if (/chicken|turkey|egg/.test(value)) return "#e0c15f";
+  if (/tofu|bean|lentil|hummus/.test(value)) return "#75b86e";
+  if (/rice|potato|kumara|pasta|oats|quinoa|couscous|wrap/.test(value)) return "#d0b982";
+  if (/spinach|broccoli|beans|greens|slaw|cucumber|vegetables/.test(value)) return "#64a878";
+  if (/berry|apple|banana|orange/.test(value)) return "#c98554";
+  return "#8fc1af";
+}
+
+function escapeSvgText(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .slice(0, 72);
+}
+
+function formatDietTags(meal) {
+  const tags = dietTagsForMeal(meal);
+  if (!tags.length) return "Balanced";
+  return tags
+    .filter((tag) => tag !== "")
+    .slice(0, 4)
+    .map((tag) => dietLabels[tag] || capitalize(tag.replace(/-/g, " ")))
+    .join(" · ");
+}
+
 function buildPrepSteps(meal, slot) {
+  if (Array.isArray(meal.steps) && meal.steps.length) return meal.steps;
   const ingredients = meal.ingredients.join(" ").toLowerCase();
   if (slot === "snack") {
     return [
@@ -1795,7 +2663,7 @@ function renderIngredients(ingredients = []) {
 
 function saveSebReflection() {
   localStorage.setItem("forgeSebReflection", sebReflection.value.trim());
-  showToast("SEB reflection saved");
+  showToast("ACE reflection saved");
 }
 
 function toggleWorkout() {
@@ -1928,7 +2796,7 @@ function finishPostLoadTest() {
   state.cognitiveUnlocked = false;
   state.stressStats.completedAt = new Date().toISOString();
   document.body.classList.remove("sensory-load");
-  lockCognitiveTask("Post-load complete. Cooldown gate active: use box breathing and lower heart rate.");
+  lockCognitiveTask("Post-load complete. Cooldown gate active: use Equilibrium breathing and lower heart rate.");
   showCooldownGate();
   runProtocolCountdown("Recovery tracking", recoverySeconds, finishRecoveryTracking);
   renderProtocolMetrics();
@@ -1975,7 +2843,7 @@ function completeCooldownGate() {
   }
 
   if (cooldownCopy) {
-    cooldownCopy.textContent = `Keep box breathing. Current entry is ${heartRate || "--"} bpm; target is below ${state.cooldownTargetBpm} bpm.`;
+    cooldownCopy.textContent = `Keep Equilibrium breathing. Current entry is ${heartRate || "--"} bpm; target is below ${state.cooldownTargetBpm} bpm.`;
   }
   showToast("Keep breathing down");
 }

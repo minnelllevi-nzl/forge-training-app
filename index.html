@@ -6,7 +6,7 @@
     <meta id="themeColorMeta" name="theme-color" content="#070908" />
     <title>Forge Training</title>
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=burpee-test-v1" />
+    <link rel="stylesheet" href="./styles.css?v=meals-v3" />
   </head>
   <body data-theme="police">
     <svg class="icon-sprite" aria-hidden="true">
@@ -145,7 +145,7 @@
             <button class="training-row" id="breathingButton" type="button">
               <span class="row-icon breath"><svg aria-hidden="true"><use href="#icon-breath"></use></svg></span>
               <span>
-                <strong>Box breathing drill</strong>
+                <strong>Equilibrium breathing</strong>
                 <small>4 in · 4 hold · 4 out · 4 hold</small>
               </span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -155,8 +155,8 @@
             <button class="training-row" id="sebButton" type="button">
               <span class="row-icon seb"><svg aria-hidden="true"><use href="#icon-seb"></use></svg></span>
               <span>
-                <strong>Stress Inoculation Training (SIT)</strong>
-                <small>Stress indicators · Eyes up · Breathing and body language</small>
+                <strong>ACE Cognitive Conditioning</strong>
+                <small>Awareness · Composure · Equilibrium</small>
               </span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
@@ -207,13 +207,13 @@
               </button>
               <button class="drill-card" id="drillBreathingButton" type="button">
                 <span class="row-icon breath"><svg aria-hidden="true"><use href="#icon-breath"></use></svg></span>
-                <strong>Breathing control</strong>
-                <small>Box, rocking and reset breathing methods.</small>
+                <strong>Equilibrium control</strong>
+                <small>Box, rocking and recovery methods for internal reset.</small>
               </button>
               <button class="drill-card" id="drillSitButton" type="button">
                 <span class="row-icon seb"><svg aria-hidden="true"><use href="#icon-seb"></use></svg></span>
-                <strong>SIT pressure cycle</strong>
-                <small>Stress cues, awareness and body control.</small>
+                <strong>ACE pressure cycle</strong>
+                <small>Awareness, Composure and Equilibrium under pressure.</small>
               </button>
             </div>
           </section>
@@ -315,7 +315,7 @@
                   <span>2 conditioning</span>
                   <span>1 recovery</span>
                 </div>
-                <p>Strength, conditioning, mobility, box breathing, scan-and-assess cues at 140-180 bpm.</p>
+                <p>Strength, conditioning, mobility, Equilibrium breathing, and ACE checks at 140-180 bpm.</p>
                 <button class="secondary wide challenge-action" data-challenge="Forge Foundations" type="button">Join challenge</button>
               </article>
 
@@ -444,6 +444,18 @@
               </p>
             </section>
             <div class="input-grid">
+              <label>
+                Diet preference
+                <select id="mealDiet">
+                  <option value="any" selected>Any balanced</option>
+                  <option value="high-protein">High protein</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="vegan">Vegan</option>
+                  <option value="gluten-free">Gluten-free</option>
+                  <option value="dairy-free">Dairy-free</option>
+                  <option value="halal-friendly">Halal-friendly</option>
+                </select>
+              </label>
               <label>
                 Weight kg
                 <input id="mealWeight" type="number" inputmode="decimal" min="40" max="180" value="86" />
@@ -788,7 +800,7 @@
 
     <dialog id="breathingDialog" class="dialog breath-dialog">
       <div class="dialog-head">
-        <h2 id="breathTitle">Box breathing</h2>
+        <h2 id="breathTitle">Equilibrium breathing</h2>
         <button class="icon-button plain" id="closeBreathing" type="button" aria-label="Close">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6l12 12M18 6 6 18" />
@@ -804,7 +816,7 @@
         <span id="breathPhase">Inhale</span>
         <strong id="breathCount">4</strong>
       </div>
-      <p id="breathInstruction">Follow the count. Keep your jaw loose, shoulders low, and attention on the next breath.</p>
+      <p id="breathInstruction">Use the 4-4-4-4 box breath to restore Equilibrium, bring oxygen back to the brain, and steady decision-making.</p>
       <button class="primary wide" id="breathControl" type="button">Begin drill</button>
     </dialog>
 
@@ -823,7 +835,7 @@
       </div>
       <ol class="drill-list">
         <li>Loaded carry or bodyweight circuit to raise heart rate.</li>
-        <li>Controlled recovery: eyes up, posture set, breathing under control.</li>
+        <li>Controlled recovery: eyes up, posture set, Equilibrium breathing under control.</li>
         <li>Move into a pressure tool or cognitive task while still under load.</li>
       </ol>
       <button class="primary wide" id="workoutControl" type="button">Begin effort</button>
@@ -831,44 +843,44 @@
 
     <dialog id="sebDialog" class="dialog seb-dialog">
       <div class="dialog-head">
-        <h2>Stress Inoculation Training (SIT)</h2>
+        <h2>ACE Cognitive Conditioning</h2>
         <button class="icon-button plain" id="closeSeb" type="button" aria-label="Close">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6l12 12M18 6 6 18" />
           </svg>
         </button>
       </div>
-      <div class="seb-cycle" aria-label="SEB cycle">
+      <div class="seb-cycle" aria-label="ACE cycle">
         <article>
-          <strong>S</strong>
-          <span>Stress indicators</span>
-          <p>Notice trigger cues, body signals, thoughts, and emotion shifts.</p>
+          <strong>A</strong>
+          <span>Awareness</span>
+          <p>Maintain 360-degree awareness of people, threats, opportunities, terrain, and changes in the environment.</p>
+        </article>
+        <article>
+          <strong>C</strong>
+          <span>Composure</span>
+          <p>Eyes up, shoulders back, strong neutral posture. Project control even when tired or under pressure.</p>
         </article>
         <article>
           <strong>E</strong>
-          <span>Eyes up</span>
-          <p>Lift attention, scan the scene, and find the next useful action.</p>
-        </article>
-        <article>
-          <strong>B</strong>
-          <span>Breathing and body language</span>
-          <p>Control breath, posture, hands, jaw, and voice under pressure.</p>
+          <span>Equilibrium</span>
+          <p>Regulate breathing to calm the nervous system, oxygenate the brain, and protect clear decisions.</p>
         </article>
       </div>
       <section class="seb-panel">
-        <h3>No Ah F**k moment reset</h3>
+        <h3>Enter ACE mode</h3>
         <div class="reset-steps">
-          <button class="reset-step active" data-step="Recognize" type="button">Recognize</button>
-          <button class="reset-step" data-step="Ground" type="button">Ground</button>
-          <button class="reset-step" data-step="Breathe" type="button">Breathe</button>
+          <button class="reset-step active" data-step="Recognize" type="button">Awareness</button>
+          <button class="reset-step" data-step="Ground" type="button">Composure</button>
+          <button class="reset-step" data-step="Breathe" type="button">Equilibrium</button>
           <button class="reset-step" data-step="Act" type="button">Act</button>
         </div>
-        <p id="resetCopy">Name the stress indicator before it becomes your whole focus.</p>
+        <p id="resetCopy">Run your ACE check: scan the environment before the pressure narrows your focus.</p>
       </section>
       <section class="seb-panel">
         <h3>Action plan</h3>
         <label>
-          What's important to me now?
+          What does my ACE state need now?
           <textarea id="sebReflection" rows="3" placeholder="Safety, professionalism, the team, the task..."></textarea>
         </label>
         <button class="primary wide" id="saveSebReflection" type="button">Save reflection</button>
@@ -876,9 +888,9 @@
       <section class="seb-panel">
         <h3>Training outcomes</h3>
         <ul class="outcome-list">
-          <li>Explain the SIT/SEB components and how they connect.</li>
-          <li>Apply the cycle in high-pressure scenarios.</li>
-          <li>Use grounding, breathing, and mental resets to regain control.</li>
+          <li>Explain Awareness, Composure, and Equilibrium as one pressure-control sequence.</li>
+          <li>Apply an ACE check in high-pressure scenarios.</li>
+          <li>Use posture, scan discipline, and Equilibrium breathing to regain control.</li>
           <li>Self-assess reactions and create a personal response plan.</li>
         </ul>
       </section>
@@ -1183,7 +1195,7 @@
         </div>
         <div>
           <h3>Cooldown gate</h3>
-          <p id="cooldownCopy">Breathing unlocks after the post-load test. Drive heart rate down with box breathing to complete the session.</p>
+          <p id="cooldownCopy">Equilibrium breathing unlocks after the post-load test. Drive heart rate down with the 4-4-4-4 box breath to complete the session.</p>
         </div>
         <button class="primary wide" id="completeCooldown" type="button">Check recovery HR</button>
       </section>
@@ -1248,6 +1260,7 @@
           </svg>
         </button>
       </div>
+      <img class="meal-detail-image" id="mealDetailImage" src="" alt="" />
       <div class="meal-detail-meta" id="mealDetailMeta"></div>
       <section class="meal-detail-block">
         <h3>Ingredient amounts</h3>
@@ -1282,6 +1295,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="./app.js?v=burpee-test-v1"></script>
+    <script src="./app.js?v=meals-v3"></script>
   </body>
 </html>

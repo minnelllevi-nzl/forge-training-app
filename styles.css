@@ -1868,6 +1868,20 @@ textarea {
   text-align: left;
 }
 
+.meal-thumb,
+.meal-detail-image {
+  width: 100%;
+  object-fit: cover;
+  background: #0d0f0f;
+}
+
+.meal-thumb {
+  height: 92px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+}
+
 .meal-main:focus-visible {
   outline: 2px solid var(--sand);
   outline-offset: 4px;
@@ -1910,6 +1924,12 @@ textarea {
   gap: 8px;
 }
 
+.meal-detail-image {
+  height: 190px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
 .meal-detail-meta article,
 .meal-detail-block {
   border: 1px solid #3f433f;
@@ -1934,6 +1954,7 @@ textarea {
 .meal-detail-meta strong {
   color: var(--sand);
   font-size: 15px;
+  line-height: 1.15;
 }
 
 .meal-detail-meta small {
